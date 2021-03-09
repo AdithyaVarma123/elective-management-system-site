@@ -23,4 +23,35 @@ export class UserService {
             });
         });
     }
+
+    changePassword(oldPassword: string,newPassword: string): Promise<boolean> {
+
+        return new Promise<boolean>((resolve, reject) => {
+            const outer = this.http.put(this.user + 'changePassword',{
+                oldPassword,
+                newPassword
+            }).subscribe(res => {
+                outer.unsubscribe();
+                resolve(true);
+            }, err => {
+                outer.unsubscribe();
+                reject(err);
+            });
+        });
+    }
+
+    resetPassword(email:string): Promise<boolean> {
+
+        return new Promise<boolean>((resolve, reject) => {
+            const outer = this.http.put(this.user + 'requestReset',{
+                user:email
+            }).subscribe(res => {
+                outer.unsubscribe();
+                resolve(true);
+            }, err => {
+                outer.unsubscribe();
+                reject(err);
+            });
+        });
+    }
 }

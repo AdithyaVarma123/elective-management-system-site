@@ -3,11 +3,14 @@ import {UserService} from '../services/user/user.service';
 import {User} from '../models/general';
 import {ToastService} from '../services/util/toast.service';
 import constants from '../constants';
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 @Component({
     selector: 'app-page-profile',
     templateUrl: './page-profile.component.html',
-    styleUrls: ['./page-profile.component.scss']
+    styleUrls: ['./page-profile.component.scss'],
+    providers: [DialogService]
 })
 export class PageProfileComponent implements OnInit {
     user: User = {
@@ -20,6 +23,7 @@ export class PageProfileComponent implements OnInit {
         electives: undefined
     };
     constructor(
+        public dialogService: DialogService,
         private userService: UserService,
         private toast: ToastService
     ) {
@@ -29,5 +33,14 @@ export class PageProfileComponent implements OnInit {
     }
 
     ngOnInit(): void { }
+
+    changePass() {
+        this.dialogService.open(ChangePasswordComponent, {
+            header: 'Change password',
+            width: '20%'
+        });
+
+
+    }
 
 }

@@ -1,11 +1,11 @@
 <div class="p-grid margin">
     <div class="p-col-1 p-offset-4">
-        <p-avatar icon="pi pi-user" styleClass="p-mr-2" size="xlarge" shape="circle"></p-avatar>
+        <p-avatar icon="pi pi-user" styleClass="p-mr-2"  shape="circle"></p-avatar>
     </div>
     <div class="p-col-3">
         <h3>{{user.name}}</h3>
         <h3>{{user.username}}</h3>
         <h3>{{user.rollNo}}</h3>
-        <button pButton type="button" label="Change password"></button>
+        <button pButton type="button" label="Change password" (click)="changePass()"></button>
     </div>
 </div>
