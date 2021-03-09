@@ -7,6 +7,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {FormsModule} from '@angular/forms';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const PageLoginRoutes: Routes = [
     {
@@ -25,7 +26,8 @@ const PageLoginRoutes: Routes = [
         RouterModule.forChild(PageLoginRoutes)
     ],
     declarations: [
-        PageLoginComponent
+        PageLoginComponent,
+        ForgotPasswordComponent
     ]
 })
 export class PageLoginModule { }

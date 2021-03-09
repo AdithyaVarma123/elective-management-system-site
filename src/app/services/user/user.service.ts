@@ -24,6 +24,9 @@ export class UserService {
         });
     }
 
+
+
+
     changePassword(oldPassword: string,newPassword: string): Promise<boolean> {
 
         return new Promise<boolean>((resolve, reject) => {
@@ -39,6 +42,7 @@ export class UserService {
             });
         });
     }
+
 
     resetPassword(email:string): Promise<boolean> {
 

@@ -3,11 +3,15 @@ import {AuthService} from '../services/auth/auth.service';
 import {scopes} from '../models/general';
 import {ToastService} from '../services/util/toast.service';
 import {Router} from '@angular/router';
+import {DialogService} from "primeng/dynamicdialog";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
+import {ChangePasswordComponent} from "../page-profile/change-password/change-password.component";
 
 @Component({
   selector: 'app-page-login',
   templateUrl: './page-login.component.html',
-  styleUrls: ['./page-login.component.scss']
+  styleUrls: ['./page-login.component.scss'],
+    providers: [DialogService]
 })
 export class PageLoginComponent implements OnInit {
 
@@ -18,7 +22,8 @@ export class PageLoginComponent implements OnInit {
     constructor(
         private auth: AuthService,
         private toast: ToastService,
-        private router: Router
+        private router: Router,
+        private dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -27,6 +32,13 @@ export class PageLoginComponent implements OnInit {
                 this.router.navigate(['profile']).then().catch();
             }
         }, 500);
+    }
+
+    popup(): void{
+        this.dialogService.open(ForgotPasswordComponent, {
+            header: 'Change password',
+            width: '20%'
+        });
     }
 
     login(): void {
