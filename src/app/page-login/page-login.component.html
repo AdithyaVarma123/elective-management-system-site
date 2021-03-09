@@ -1,7 +1,32 @@
-<div class="p-grid">
-  <div class="p-col">1</div>
-  <div class="p-col">2</div>
-  <div class="p-col">3</div>
+<div class="p-grid parent center-vertical">
+    <div class="p-col-4 p-offset-4">
+        <div>
+            <div class="p-fluid">
+                <div class="p-field p-grid">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" pInputText [(ngModel)]="username">
+                </div>
+                <div class="p-field p-grid">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" pInputText [(ngModel)]="password">
+                </div>
+                <div class="p-formgroup-inline">
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="student" value="student" [(ngModel)]="role" inputId="student"></p-radioButton>
+                        <label for="student">student</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="teacher" value="teacher" [(ngModel)]="role" inputId="teacher"></p-radioButton>
+                        <label for="teacher">teacher</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="admin" value="admin" [(ngModel)]="role" inputId="admin"></p-radioButton>
+                        <label for="admin">admin</label>
+                    </div>
+                </div>
+            </div>
+            <button pButton type="button" label="Forgot password" class="p-button-danger float-left"></button>
+            <button pButton type="button" label="Login" class="float-right" (click)="login()"></button>
+        </div>
+    </div>
 </div>
-
-
