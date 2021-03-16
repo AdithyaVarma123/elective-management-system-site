@@ -15,6 +15,14 @@ const routes: Routes = [
         path: 'profile',
         canActivate: [AuthGuard],
         loadChildren: () => import('./page-profile/page-profile.module').then(m => m.PageProfileModule)
+    },
+    {
+        path: 'administration',
+        loadChildren: () => import('./page-administration/page-administration.module').then(m => m.PageAdministrationModule)
+    },
+    {
+        path: 'resetPassword',
+        loadChildren: () => import('./page-reset-password/page-reset-password.module').then(m => m.PageResetPasswordModule)
     }
 ];
 @NgModule({

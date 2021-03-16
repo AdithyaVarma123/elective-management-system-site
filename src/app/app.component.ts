@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
                     {
                         label: 'Administration',
                         icon: 'pi pi-cog',
+                        routerLink: ['administration'],
                         visible: this.auth.getScope() === 'admin'
                     }
                 ];

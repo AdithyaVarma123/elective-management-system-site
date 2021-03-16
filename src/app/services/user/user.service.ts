@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../../models/general';
 import constants from '../../constants';
+import {boolToString} from "../../util/general";
 
 @Injectable({
     providedIn: 'root'
