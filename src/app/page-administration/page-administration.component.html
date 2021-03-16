@@ -1,0 +1,15 @@
+<div class="p-grid margin">
+
+
+    </div>
+    <div class="p-col-5" >
+
+        <p-fileUpload  name="myfile[]"
+                      url="http://localhost:3000/upload"
+                      customUpload="true"
+                      chooseLabel="upload CSV to add user"
+                      uploadLabel="Upload"
+                      (uploadHandler)="uploadCSV($event.files)"
+                      ></p-fileUpload>
+</div>
+
