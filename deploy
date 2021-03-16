@@ -1,1 +1,2 @@
+npm i -d
 ng build --prod
