@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import {FileUploadModule} from 'primeng/fileupload';
 import { PageAdministrationComponent } from './page-administration.component';
 import {ButtonModule} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
+import {FormsModule} from "@angular/forms";
+import {AccordionModule} from "primeng/accordion";
 
 
 const PageAdministrationRoutes: Routes = [
@@ -15,13 +18,20 @@ const PageAdministrationRoutes: Routes = [
 
 @NgModule({
   imports: [
+    InputTextModule,
+    ButtonModule,
+    FormsModule,
     CommonModule,
     RouterModule.forChild(PageAdministrationRoutes),
     ButtonModule,
-    FileUploadModule
+    FileUploadModule,
+    AccordionModule,
   ],
   declarations: [
     PageAdministrationComponent
   ]
 })
-export class PageAdministrationModule { }
+export class PageAdministrationModule {
+
+
+}

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-
 import { PageProfileComponent } from './page-profile.component';
 import {AvatarModule} from 'primeng/avatar';
 import {ButtonModule} from 'primeng/button';
