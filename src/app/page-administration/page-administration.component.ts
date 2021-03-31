@@ -91,6 +91,7 @@ export class PageAdministrationComponent implements OnInit {
   addUser(): void{
 
       let body;
+      if(this.userRole==='student')
       if(!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.batch)){
         this.toast.red('invalid batch code');
         return;
@@ -100,7 +101,6 @@ export class PageAdministrationComponent implements OnInit {
           "users":{
             "name":this.uname,
             "username":this.username,
-            "password":this.password,
             "rollNo":this.rollNo,
             "role":this.userRole,
             "batch": this.batch,
@@ -113,7 +113,6 @@ export class PageAdministrationComponent implements OnInit {
           "users": {
             "name": this.uname,
             "username": this.username,
-            "password": this.password,
             "rollNo": this.rollNo,
             "role": this.userRole,
           },
