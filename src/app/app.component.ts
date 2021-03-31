@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem, PrimeNGConfig} from 'primeng/api';
 import {AuthService} from './services/auth/auth.service';
 import {ToastService} from './services/util/toast.service';
+import {NotificationService} from './services/util/notification.service';
 
 @Component({
     selector: 'app-root',
@@ -17,9 +18,11 @@ export class AppComponent implements OnInit {
         private primengConfig: PrimeNGConfig,
         public auth: AuthService,
         private toastService: ToastService,
+        private notificationService: NotificationService
     ) {
         this.auth.attemptAutoAuth().then(status => {
             if (status) {
+                this.notificationService.subscribeToNotifications();
                 this.items = [
                     {
                         label: 'Profile',

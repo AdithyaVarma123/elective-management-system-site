@@ -12,6 +12,8 @@ import {MessageService} from 'primeng/api';
 import {InputTextModule} from 'primeng/inputtext';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './services/auth/token.interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
     declarations: [
@@ -26,7 +28,8 @@ import {TokenInterceptor} from './services/auth/token.interceptor';
         InputTextModule,
         MenubarModule,
         ButtonModule,
-        HttpClientModule
+        HttpClientModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: true })
     ],
   providers: [
       MessageService,

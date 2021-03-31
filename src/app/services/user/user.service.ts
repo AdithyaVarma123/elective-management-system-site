@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../models/general';
 import constants from '../../constants';
 import {boolToString, getCode} from "../../util/general";
@@ -72,6 +72,7 @@ export class UserService {
                 outer.unsubscribe();
                 reject(err);
             });
+            console.log(outer);
         });
     }
 

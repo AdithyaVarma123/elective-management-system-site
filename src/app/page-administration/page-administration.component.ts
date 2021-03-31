@@ -147,5 +147,35 @@ export class PageAdministrationComponent implements OnInit {
       this.toast.red(constants.unknownError);
     });
   }
+<<<<<<< HEAD
 
+  deleteUser(): void{
+    this.userService.deleteUser(this.delRol).then(res => {
+      if(res)
+        this.toast.green('User deleted');
+    }).catch(err => {
+      this.toast.red(constants.unknownError);
+    });
+  }
+  addBatch() {
+    this.batches.push('');
+  }
+  addTeacher() {
+    this.teachers.push('');
+  }
+  addAttribute() {
+    this.attributes.push({'value':'','key':''});
+  }
+  trackByIdx(index: number, obj: any): any {
+    return index;
+  }
+=======
+  trackByIdx(index: number, obj: any): any {
+    return index;
+  }
+  deleteUser(): void {}
+  addAttribute(): void {}
+  addTeacher(): void {}
+  addBatch(): void {}
+>>>>>>> c145dad86991641f308e902ed470389a585b5cef
 }
