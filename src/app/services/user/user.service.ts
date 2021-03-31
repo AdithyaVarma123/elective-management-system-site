@@ -132,9 +132,22 @@ export class UserService {
     }
 
     deleteUser(delRol): Promise<boolean> {
-        let body = [delRol];
-        return new Promise<boolean>((resolve, reject) => {
-            const outer = this.http.request('delete', this.user + 'delete', { body });
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            const query = qs.stringify({
+                "rollNo":delRol
+            });
+            let id = await new Promise<string>((resolve, reject) => {
+                const outer = this.http.get(this.user + 'user-by-roll-no?' + query);
+                outer.subscribe((res: any) => {
+                    console.log(res);
+                    resolve(res.id);
+                }, err => {
+                    console.log(err);
+                    reject(err);
+                });
+            });
+            const outer = this.http.request('delete', this.user + 'delete', { body:[id] });
             outer.subscribe(res => {
                 console.log(res);
                 resolve(true);
