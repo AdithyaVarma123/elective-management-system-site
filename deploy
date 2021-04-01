@@ -1,2 +1,2 @@
 npm i -d
-ng build --prod
+ng build --prod --base-href /app/
