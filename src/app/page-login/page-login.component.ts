@@ -43,6 +43,7 @@ export class PageLoginComponent implements OnInit {
         });
     }
 
+
     login(): void {
         this.auth.login(this.username, this.password, this.role).then(status => {
             if (status) {
@@ -51,5 +52,6 @@ export class PageLoginComponent implements OnInit {
         }).catch(err => {
             this.toast.red(err.error, 3000, false, err?.error_description);
         });
+
     }
 }
