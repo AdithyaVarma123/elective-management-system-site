@@ -37,7 +37,7 @@ export interface Elective {
     courseCode: string;
     version: number;
     strength: number;
-    attributes: { value: string, key: string }[];
+    attributes: { value: string; key: string }[];
     batches: Batch[];
     teachers: User[];
 }
