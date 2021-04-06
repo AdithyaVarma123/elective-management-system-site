@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PageProfileComponent } from './page-profile.component';
-import {AvatarModule} from 'primeng/avatar';
-import {ButtonModule} from 'primeng/button';
-import {DynamicDialogModule} from "primeng/dynamicdialog";
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import {InputTextModule} from "primeng/inputtext";
-import {FormsModule} from "@angular/forms";
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 const PageProfileRoutes: Routes = [
     {
@@ -24,11 +24,8 @@ const PageProfileRoutes: Routes = [
         RouterModule.forChild(PageProfileRoutes),
         DynamicDialogModule,
         InputTextModule,
-        FormsModule,
+        FormsModule
     ],
-    declarations: [
-        PageProfileComponent,
-        ChangePasswordComponent
-    ]
+    declarations: [PageProfileComponent, ChangePasswordComponent]
 })
-export class PageProfileModule { }
+export class PageProfileModule {}

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PageLoginComponent } from './page-login.component';
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {FormsModule} from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 const PageLoginRoutes: Routes = [
     {
@@ -18,6 +19,8 @@ const PageLoginRoutes: Routes = [
 
 @NgModule({
     imports: [
+        HttpClient,
+        HttpClientModule,
         CommonModule,
         InputTextModule,
         ButtonModule,
@@ -25,9 +28,6 @@ const PageLoginRoutes: Routes = [
         RadioButtonModule,
         RouterModule.forChild(PageLoginRoutes)
     ],
-    declarations: [
-        PageLoginComponent,
-        ForgotPasswordComponent
-    ]
+    declarations: [PageLoginComponent, ForgotPasswordComponent]
 })
-export class PageLoginModule { }
+export class PageLoginModule {}

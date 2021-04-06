@@ -9,20 +9,21 @@ function getRandomInt(): number {
             (byteArray[0] >= 48 && byteArray[0] <= 57)
         )
     ) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return getRandomInt();
     }
     return byteArray[0];
 }
 export function getCode(len: number, wishList = 'abcdef0123456789'): string {
     return Array.from(window.crypto.getRandomValues(new Uint32Array(len)))
-    .map((x) => wishList[x % wishList.length])
-    .join('');
+        .map((x) => wishList[x % wishList.length])
+        .join('');
 }
 
 export function fromHexString(hexString: string): Uint8Array {
-    return new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)))
+    return new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
 }
 
-export function boolToString(inp:boolean): string {
-    return inp?'true':'false';
+export function boolToString(inp: boolean): string {
+    return inp ? 'true' : 'false';
 }
