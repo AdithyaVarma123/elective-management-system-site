@@ -6,22 +6,31 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
+      - name: Clone repository
+        uses: actions/checkout@master
+      - name: Setup node
+        uses: actions/setup-node@master
         with:
           node-version: '15'
-      - uses: warchant/setup-sonar-scanner@v3
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test
-      - run: sonar-scanner
+      - name: Setup sonar-scanner
+        uses: warchant/setup-sonar-scanner@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build website
+        run: npm run build
+      - name: Run tests
+        run: npm run test
+      - name: Run sonar-scanner
+        run: sonar-scanner
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   deploy:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: papeloto/action-zip@v1
+      - name: Initial setup
+        uses: actions/checkout@v2
+      - name: Setup zipper
+        uses: papeloto/action-zip@v1
         with:
           files: dist/elective-management-system-site
       - name: Upload dist zip
@@ -31,6 +40,7 @@ jobs:
           url: "http://amrita-elective.tk:4000/new-frontend-build"
           method: "POST"
           files: '{"file":"result.zip"}'
+          contentType: 'multipart/form-data'
           data: ${{ secrets.EC2_LOGIN }}
       - run: echo ${{ steps.uploadFile.outputs.response }}
       - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
