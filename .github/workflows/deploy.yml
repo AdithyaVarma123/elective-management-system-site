@@ -32,9 +32,9 @@ jobs:
       - name: Initial setup
         uses: actions/checkout@v2
       - name: Setup zipper
-        uses: papeloto/action-zip@v1
+        uses: montudor/action-zip@v0.1.1
         with:
-          files: "${{ github.workspace }}/dist/elective-management-system-site/"
+          args: zip -qq -r result.zip "${{ github.workspace }}/dist/elective-management-system-site/"
       - name: Upload dist zip
         uses: fjogeleit/http-request-action@master
         id: uploadFile
