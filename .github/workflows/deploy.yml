@@ -41,12 +41,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist
-          path: dist/
       - run: ls -R
-      - name: Zip dist
-        uses: montudor/action-zip@v0.1.1
-        with:
-          args: zip -qq -r result.zip "${{ github.workspace }}/dist/"
       - name: Upload dist zip
         uses: fjogeleit/http-request-action@master
         id: uploadFile
@@ -54,7 +49,7 @@ jobs:
           url: "http://amrita-elective.tk:4000/new-frontend-build"
           method: "POST"
           data: ${{ secrets.EC2_LOGIN }}
-          files: '{"file":"result.zip"}'
+          files: '{"file":"dist.zip"}'
       - run: echo ${{ steps.uploadFile.outputs.response }}
       - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
         run: exit 0
