@@ -36,8 +36,8 @@ jobs:
     steps:
       - name: Initial setup
         uses: actions/checkout@v2
+      - run: mkdir dist
       - name: Get dist artifact
-        run: mkdir dist
         uses: actions/download-artifact@v2
         with:
           name: dist
