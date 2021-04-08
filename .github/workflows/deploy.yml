@@ -25,16 +25,27 @@ jobs:
       - name: Run sonar-scanner
         run: sonar-scanner
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Set dist artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: "${{ github.workspace }}/dist/elective-management-system-site/"
   deploy:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
       - name: Initial setup
         uses: actions/checkout@v2
-      - name: Setup zipper
+      - name: Get dist artifact
+        run: mkdir dist
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist/
+      - name: Zip dist
         uses: montudor/action-zip@v0.1.1
         with:
-          args: zip -qq -r result.zip "${{ github.workspace }}/dist/elective-management-system-site/"
+          args: zip -qq -r result.zip "${{ github.workspace }}/dist/"
       - name: Upload dist zip
         uses: fjogeleit/http-request-action@master
         id: uploadFile
