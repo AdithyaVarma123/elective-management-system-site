@@ -9,8 +9,9 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-coverage-istanbul-reporter'),
+      require('karma-sonarqube-reporter')
     ],
     client: {
       jasmine: {
@@ -21,8 +22,22 @@ module.exports = function (config) {
       },
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
+    coverageIstanbulReporter: {
+      reports: [ 'html', 'lcov', 'text-lcov', 'lcovonly' ],
+      fixWebpackSourcePaths: true
+    },
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
+    },
+    sonarqubeReporter: {
+      basePath: 'src/app',
+      outputFolder: 'coverage',
+      filePattern: '**/*spec.ts',
+      encoding: 'utf-8',
+      legacyMode: false,
+      reportName: (metadata) => {
+        return metadata.concat('xml').join('.');
+      }
     },
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/elective-management-system-site'),
@@ -32,13 +47,13 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'sonarqube'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
+    browsers: ['ChromeHeadless'],
+    singleRun: true,
+    restartOnFileChange: false
   });
 };

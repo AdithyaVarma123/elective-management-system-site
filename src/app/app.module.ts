@@ -12,7 +12,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './services/auth/token.interceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 
 @NgModule({
     declarations: [AppComponent],
