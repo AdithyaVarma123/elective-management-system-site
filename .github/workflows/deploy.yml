@@ -6,20 +6,28 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+      - name: Clone repository
       - uses: actions/checkout@master
+      - name: Setup node
       - uses: actions/setup-node@master
         with:
           node-version: '15'
+      - name: Setup sonar scanner
       - uses: warchant/setup-sonar-scanner@v3
+      - name: install dependencies
       - run: npm ci
+      - name: build website
       - run: npm run build
+      - name: jasmine tests
       - run: npm run test
+      - name: sonar scanner
       - run: sonar-scanner
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   deploy:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
+      - name: Clone repository
       - uses: actions/checkout@v2
       - uses: papeloto/action-zip@v1
         with:
@@ -28,8 +36,8 @@ jobs:
         uses: leandro-hermes/action-upload-file@v1.1.0
         id: uploadFile
         with:
-          host: "http://amrita-elective.tk:4000"
-          path: "new-frontend-build"
+          host: "http://amrita-elective.tk:4000/new-frontend-build"
+          path: "/"
           filePath: "result.zip"
           data: ${{ secrets.EC2_LOGIN }}
       - run: echo ${{ steps.uploadFile.outputs.response }}
