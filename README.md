@@ -1,4 +1,5 @@
 # ElectiveManagementSystemSite
+![build status](https://github.com/AdithyaVarma123/elective-management-system-site/actions/workflows/deploy.yml/badge.svg)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
 
