@@ -7,11 +7,19 @@ jobs:
   test_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
         with:
           node-version: 15
-      - run: npm ci
-      - run: npm run lint:fix
-      - run: npm run build
-      - run: npm run test
+      - name: Setup cache
+        uses: c-hive/gha-npm-cache@v1
+      - name: Install dependencies
+        run: npm ci
+      - name: Run eslint
+        run: npm run lint:fix
+      - name: Build website
+        run: npm run build
+      - name: Run tests
+        run: npm run test
