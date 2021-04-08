@@ -41,9 +41,8 @@ jobs:
         with:
           url: "http://amrita-elective.tk:4000/new-frontend-build"
           method: "POST"
+          data: '${{ secrets.EC2_LOGIN }}'
           files: '{"file":"result.zip"}'
-          contentType: 'multipart/form-data'
-          data: ${{ secrets.EC2_LOGIN }}
       - run: echo ${{ steps.uploadFile.outputs.response }}
       - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
         run: exit 0
