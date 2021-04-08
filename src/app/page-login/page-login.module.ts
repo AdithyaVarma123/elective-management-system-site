@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 const PageLoginRoutes: Routes = [
     {
@@ -19,7 +19,6 @@ const PageLoginRoutes: Routes = [
 
 @NgModule({
     imports: [
-        HttpClient,
         HttpClientModule,
         CommonModule,
         InputTextModule,
