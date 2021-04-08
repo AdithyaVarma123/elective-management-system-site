@@ -34,7 +34,7 @@ jobs:
       - name: Setup zipper
         uses: papeloto/action-zip@v1
         with:
-          files: dist/elective-management-system-site
+          files: "${{ github.workspace }}/dist/elective-management-system-site/"
       - name: Upload dist zip
         uses: fjogeleit/http-request-action@master
         id: uploadFile
