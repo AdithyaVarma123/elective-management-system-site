@@ -11,8 +11,9 @@ jobs:
         with:
           node-version: '15'
       - uses: warchant/setup-sonar-scanner@v3
-      - run: yarn install
-      - run: yarn test:unit
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test
       - run: sonar-scanner
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   deploy:
