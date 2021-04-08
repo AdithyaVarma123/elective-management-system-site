@@ -25,12 +25,12 @@ jobs:
         with:
           files: dist/elective-management-system-site
       - name: Upload dist zip
-        uses: leandro-hermes/action-upload-file@v1.1.0
+        uses: fjogeleit/http-request-action@master
         id: uploadFile
         with:
-          host: "http://amrita-elective.tk:4000/new-frontend-build"
-          path: "/"
-          filePath: "result.zip"
+          url: "http://amrita-elective.tk:4000/new-frontend-build"
+          method: "POST"
+          files: '{"file":"result.zip"}'
           data: ${{ secrets.EC2_LOGIN }}
       - run: echo ${{ steps.uploadFile.outputs.response }}
       - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
