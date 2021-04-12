@@ -5,6 +5,7 @@ import { ToastService } from '../services/util/toast.service';
 import constants from '../constants';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { NotificationService } from '../services/util/notification.service';
 
 @Component({
     selector: 'app-page-profile',
@@ -13,6 +14,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     providers: [DialogService]
 })
 export class PageProfileComponent implements OnInit {
+    subscribed = true;
+    label = 'Subscribe';
     user: User = {
         name: '',
         id: '',
@@ -22,7 +25,12 @@ export class PageProfileComponent implements OnInit {
         batch: undefined,
         electives: undefined
     };
-    constructor(public dialogService: DialogService, private userService: UserService, private toast: ToastService) {
+    constructor(
+        public dialogService: DialogService,
+        private userService: UserService,
+        private toast: ToastService,
+        private notifservice: NotificationService
+    ) {
         this.userService
             .getBasic()
             .then((res) => (this.user = res))
@@ -32,7 +40,25 @@ export class PageProfileComponent implements OnInit {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    ngOnInit(): void {}
+    async ngOnInit(): Promise<void> {
+        await this.userService.getNotificationStatus().then((result) => {
+            if (result) {
+                this.label = 'Unsubscribe';
+            }
+            this.subscribed = result;
+            console.log(this.label);
+            console.log(result);
+        });
+    }
+
+    subscription(): void {
+        if (this.subscribed) {
+            this.notifservice.unsubscribeToNotifications();
+        } else {
+            console.log('here');
+            this.notifservice.subscribeToNotifications();
+        }
+    }
 
     changePass() {
         this.dialogService.open(ChangePasswordComponent, {

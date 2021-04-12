@@ -14,7 +14,7 @@ export class NotificationService {
         'BM1czT5G3TkD1ieKRhPVozuoxC0DYwaC3np25qh0LaQpIYz0V6Ux5XdN-43TZ-oMuVwBMn53QXT5qV8wzgtXtqg';
     private url = constants.server + '/notifications/';
 
-    private static getName(): string {
+    public static getName(): string {
         const name = localStorage.getItem('name');
         if (name !== null && name !== undefined && name.length > 0) {
             return name;
@@ -24,7 +24,7 @@ export class NotificationService {
         }
     }
 
-    private static getBrowserName(): string {
+    public static getBrowserName(): string {
         const { userAgent } = navigator;
         let match = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
         let temp;
@@ -73,6 +73,23 @@ export class NotificationService {
                     this.clickHandler();
                 })
                 .catch((err) => console.error('Could not subscribe to notifications', err));
+        }
+    }
+
+    public unsubscribeToNotifications(): void {
+        if (this.swPush.isEnabled) {
+            this.swPush
+                .requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
+                .then((sub) => {
+                    this.http
+                        .post(this.url + 'unsubscribe', {
+                            sub,
+                            name: NotificationService.getBrowserName() + NotificationService.getName()
+                        })
+                        .subscribe();
+                    this.clickHandler();
+                })
+                .catch((err) => console.error('Could not unsubscribe to notifications', err));
         }
     }
 

@@ -4,6 +4,7 @@ import { User } from '../../models/general';
 import constants from '../../constants';
 import { boolToString } from '../../util/general';
 import * as qs from 'query-string';
+import {NotificationService} from "../util/notification.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ import * as qs from 'query-string';
 export class UserService {
     private user = constants.server + '/users/';
     private electives = constants.server + '/electives/';
+    private notification = constants.server + '/notifications/';
 
     constructor(private http: HttpClient) {}
 
@@ -188,6 +190,58 @@ export class UserService {
                 },
                 (err) => {
                     console.log(err);
+                    outer.unsubscribe();
+                    reject(err);
+                }
+            );
+        });
+    }
+
+    getNotificationStatus(): Promise<boolean> {
+        const query = qs.stringify({
+            name: NotificationService.getBrowserName() + NotificationService.getName()
+        });
+        return new Promise<boolean>((resolve, reject) => {
+            const outer = this.http.get(this.notification + 'isSubscribed?' + query).subscribe(
+                (res: any) => {
+                    if (res['subscribed']) resolve(true);
+                    else resolve(false);
+                    outer.unsubscribe();
+                },
+                (err) => {
+                    outer.unsubscribe();
+                    reject(err);
+                }
+            );
+        });
+    }
+
+    unsubscribe(): Promise<boolean> {
+        const body = {};
+        return new Promise<boolean>((resolve, reject) => {
+            const outer = this.http.post(this.notification + 'isSubscribed', body).subscribe(
+                () => {
+                    outer.unsubscribe();
+                    resolve(true);
+                },
+                (err) => {
+                    outer.unsubscribe();
+                    reject(err);
+                }
+            );
+        });
+    }
+
+    subscribeNotif(): Promise<boolean> {
+
+        const body = {};
+        return new Promise<boolean>((resolve, reject) => {
+            const outer = this.http.put(this.notification + 'subscribe', body).subscribe(
+                () => {
+                    outer.unsubscribe();
+                    resolve(true);
+                },
+                (err) => {
                     outer.unsubscribe();
                     reject(err);
                 }
