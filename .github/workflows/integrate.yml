@@ -23,3 +23,18 @@ jobs:
         run: npm run build
       - name: Run tests
         run: npm run test
+      - name: set time
+        uses: gerred/actions/current-time@master
+        id: current-time
+      - name: Discord notification success
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{"title":"Integration successful","color":2664261,"fields":[{"name":"Triggered by:","value":"${{ github.actor }}"},{"name":"Event: pull request","value":"[${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }})"},{"name":"Workflow","value":"[${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"}],"timestamp":"${{ steps.current-time.outputs.time }}"}]'
+        uses: Ilshidur/action-discord@master
+      - name: Discord notification failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{"title":"Integration failed","color":12845619,"fields":[{"name":"Triggered by:","value":"${{ github.actor }}"},{"name":"Event: pull request","value":"[${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }})"},{"name":"Workflow","value":"[${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"}],"timestamp":"${{ steps.current-time.outputs.time }}"}]'
+        uses: Ilshidur/action-discord@master

@@ -55,6 +55,20 @@ jobs:
           method: "POST"
           data: ${{ secrets.EC2_LOGIN }}
           files: '{"file":"result.zip"}'
+      - name: set time
+        uses: gerred/actions/current-time@master
+        id: current-time
+      - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
+        name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{"title":"Deployment successful","color":2664261,"fields":[{"name":"Triggered by:","value":"${{ github.actor }}"},{"name":"Workflow","value":"[${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"}],"timestamp":"${{ steps.current-time.outputs.time }}"}]'
+        uses: Ilshidur/action-discord@master
+      - if: ${{ steps.uploadFile.outputs.response != '"OK"' }}
+        name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{"title":"Deployment failed","color":12845619,"fields":[{"name":"Triggered by:","value":"${{ github.actor }}"},{"name":"Workflow","value":"[${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"}],"timestamp":"${{ steps.current-time.outputs.time }}"}]'
       - run: echo ${{ steps.uploadFile.outputs.response }}
       - if: ${{ steps.uploadFile.outputs.response == '"OK"' }}
         run: exit 0
