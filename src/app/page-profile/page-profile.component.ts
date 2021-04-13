@@ -46,8 +46,6 @@ export class PageProfileComponent implements OnInit {
                 this.label = 'Unsubscribe';
             }
             this.subscribed = result;
-            console.log(this.label);
-            console.log(result);
         });
     }
 
@@ -55,7 +53,6 @@ export class PageProfileComponent implements OnInit {
         if (this.subscribed) {
             this.notifservice.unsubscribeToNotifications();
         } else {
-            console.log('here');
             this.notifservice.subscribeToNotifications();
         }
     }
