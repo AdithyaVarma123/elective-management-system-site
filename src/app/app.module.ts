@@ -25,7 +25,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         MenubarModule,
         ButtonModule,
         HttpClientModule,
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: true })
     ],
     providers: [
         MessageService,
