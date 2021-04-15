@@ -4,7 +4,7 @@ import { User } from '../../models/general';
 import constants from '../../constants';
 import { boolToString } from '../../util/general';
 import * as qs from 'query-string';
-import {NotificationService} from "../util/notification.service";
+import { NotificationService } from '../util/notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -197,6 +197,67 @@ export class UserService {
         });
     }
 
+    getlogDetails(page, sortBy, dir = 'desc'): any {
+        const query = qs.stringify({
+            page: page,
+            sortBy: sortBy,
+            dir: dir
+        });
+        return new Promise<any>((resolve) => {
+            const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
+                (res: any) => {
+                    let i = 0;
+                    for (const x of res['docs']) {
+                        res['docs'][i]['rollNo'] = res['docs'][i]['user']['rollNo'];
+                        i += 1;
+                    }
+                    i = 0;
+                    for (const x of res['docs']) {
+                        const date = new Date(x['createdAt']);
+                        const hour = date.getHours() % 12;
+                        const ampm = date.getHours() > 12 ? 'pm' : 'am';
+                        res['docs'][i]['createdAt'] =
+                            date.getFullYear() +
+                            '-' +
+                            (date.getMonth() + 1) +
+                            '-' +
+                            date.getDate() +
+                            ' ' +
+                            hour +
+                            ':' +
+                            date.getMinutes() +
+                            ampm;
+                        i += 1;
+                    }
+                    i = 0;
+                    for (const x of res['docs']) {
+                        const date = new Date(x['updatedAt']);
+                        const hour = date.getHours() % 12;
+                        const ampm = date.getHours() > 12 ? 'pm' : 'am';
+                        res['docs'][i]['updatedAt'] =
+                            date.getFullYear() +
+                            '-' +
+                            (date.getMonth() + 1) +
+                            '-' +
+                            date.getDate() +
+                            ' ' +
+                            hour +
+                            ':' +
+                            date.getMinutes() +
+                            ampm;
+                        i += 1;
+                    }
+                    resolve(res['docs']);
+                    outer.unsubscribe();
+                },
+                (err) => {
+                    console.log(err);
+                    outer.unsubscribe();
+                }
+            );
+        });
+    }
+
     getNotificationStatus(): Promise<boolean> {
         const query = qs.stringify({
             name: NotificationService.getBrowserName() + NotificationService.getName()
@@ -233,7 +294,6 @@ export class UserService {
     }
 
     subscribeNotif(): Promise<boolean> {
-
         const body = {};
         return new Promise<boolean>((resolve, reject) => {
             const outer = this.http.put(this.notification + 'subscribe', body).subscribe(
