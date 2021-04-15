@@ -203,6 +203,7 @@ export class UserService {
             sortBy: sortBy,
             dir: dir
         });
+        console.log(page);
         return new Promise<any>((resolve) => {
             const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
                 (res: any) => {
@@ -247,7 +248,7 @@ export class UserService {
                             ampm;
                         i += 1;
                     }
-                    resolve(res['docs']);
+                    resolve(res);
                     outer.unsubscribe();
                 },
                 (err) => {
