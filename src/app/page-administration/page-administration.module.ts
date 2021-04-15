@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { HttpClientModule } from '@angular/common/http';
+import { TableModule } from 'primeng/table';
 
 const PageAdministrationRoutes: Routes = [
     {
@@ -18,6 +19,7 @@ const PageAdministrationRoutes: Routes = [
 
 @NgModule({
     imports: [
+        TableModule,
         HttpClientModule,
         InputTextModule,
         ButtonModule,

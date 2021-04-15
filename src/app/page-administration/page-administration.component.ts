@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
+import { Record } from './record';
 
 @Component({
     selector: 'app-page-administration',
@@ -9,6 +10,9 @@ import { ToastService } from '../services/util/toast.service';
     styleUrls: ['./page-administration.component.scss']
 })
 export class PageAdministrationComponent implements OnInit {
+    records: Record[];
+    showDetails = false;
+    cols: any[];
     eName = '';
     password = '';
     courseCode = '';
@@ -28,11 +32,22 @@ export class PageAdministrationComponent implements OnInit {
     updatePassword = '';
     updateRollNo = '';
     updateBatch = '';
+    page = 0;
 
     constructor(private userService: UserService, private toast: ToastService) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    ngOnInit() {}
+    ngOnInit() {
+        this.cols = [
+            { field: 'browser', header: 'Browser' },
+            { field: 'createdAt', header: 'Created at' },
+            { field: 'device', header: 'Device' },
+            { field: 'ip', header: 'IP' },
+            { field: 'platform', header: 'Platform' },
+            { field: 'updatedAt', header: 'Updated at' },
+            { field: 'rollNo', header: 'Roll Number' }
+        ];
+    }
 
     updateUser(): void {
         if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.updateBatch)) {
@@ -74,7 +89,6 @@ export class PageAdministrationComponent implements OnInit {
             batches: this.batches,
             teachers: this.teachers
         };
-        console.log(body);
         this.userService
             .addelective(body)
             .then((res) => {
@@ -83,6 +97,22 @@ export class PageAdministrationComponent implements OnInit {
             .catch(() => {
                 this.toast.red(constants.unknownError);
             });
+    }
+
+    getLogDetails(next: boolean): void {
+        if (next) {
+            this.page += 1;
+            this.userService.getlogDetails(this.page, 'time').then((data) => {
+                this.records = data;
+                this.showDetails = true;
+            });
+        } else {
+            this.page -= 1;
+            this.userService.getlogDetails(this.page, 'time').then((data) => {
+                this.records = data;
+                this.showDetails = true;
+            });
+        }
     }
 
     addUser(): void {
@@ -114,8 +144,6 @@ export class PageAdministrationComponent implements OnInit {
                 defaultRollNoAsEmail: true
             };
         }
-
-        console.log(body);
         this.userService
             .addUser(body)
             .then((res) => {

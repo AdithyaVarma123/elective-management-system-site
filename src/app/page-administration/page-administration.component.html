@@ -227,6 +227,34 @@
                     </div>
                 </p-accordionTab>
             </div>
+            <div class="p-p-2">
+                <p-accordionTab header="Get user log details:">
+                    <div class="p-col-12">
+                        <h2>Get user log details:</h2>
+                        <div class="p-col-9">
+                            <button class="p-button" (click)="getLogDetails(true)">Get details</button>
+                        </div>
+                        <p-table *ngIf="showDetails" [columns]="cols" [value] = "records">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <button *ngIf="showDetails" style="margin-left:1px;margin-top:1px;text-align: center" class="p-button" (click)="getLogDetails(true)">Next page</button>
+                        <button *ngIf="showDetails&&page>1" style="margin-left:5px;margin-top:1px;text-align: center" class="p-button" (click)="getLogDetails(false)">Prev page</button>
+                    </div>
+                </p-accordionTab>
+            </div>
         </p-accordion>
     </div>
 </div>
