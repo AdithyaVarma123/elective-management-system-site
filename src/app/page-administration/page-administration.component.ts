@@ -3,7 +3,7 @@ import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
-
+import {LazyLoadEvent} from "primeng/api";
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -11,6 +11,7 @@ import { Record } from './record';
 })
 export class PageAdministrationComponent implements OnInit {
     records: Record[];
+    loading = false;
     showDetails = false;
     cols: any[];
     eName = '';
@@ -33,6 +34,7 @@ export class PageAdministrationComponent implements OnInit {
     updateRollNo = '';
     updateBatch = '';
     page = 0;
+    totalRecords = 0;
 
     constructor(private userService: UserService, private toast: ToastService) {}
 
@@ -42,11 +44,12 @@ export class PageAdministrationComponent implements OnInit {
             { field: 'browser', header: 'Browser' },
             { field: 'createdAt', header: 'Created at' },
             { field: 'device', header: 'Device' },
-            { field: 'ip', header: 'IP' },
+            { field: 'ip', header: 'IP address' },
             { field: 'platform', header: 'Platform' },
-            { field: 'updatedAt', header: 'Updated at' },
             { field: 'rollNo', header: 'Roll Number' }
         ];
+        // @ts-ignore
+        this.getLogDetails({first: 0});
     }
 
     updateUser(): void {
@@ -99,20 +102,14 @@ export class PageAdministrationComponent implements OnInit {
             });
     }
 
-    getLogDetails(next: boolean): void {
-        if (next) {
-            this.page += 1;
-            this.userService.getlogDetails(this.page, 'time').then((data) => {
-                this.records = data;
-                this.showDetails = true;
-            });
-        } else {
-            this.page -= 1;
-            this.userService.getlogDetails(this.page, 'time').then((data) => {
-                this.records = data;
-                this.showDetails = true;
-            });
-        }
+    getLogDetails(event: LazyLoadEvent): void {
+        this.loading = true;
+        this.page = event.first === 0 ? 0 : event.first / 25;
+        this.userService.getlogDetails(this.page, 'time').then((data) => {
+            this.records = [...data.docs];
+            this.totalRecords = data.count;
+            this.loading = false;
+        });
     }
 
     addUser(): void {
