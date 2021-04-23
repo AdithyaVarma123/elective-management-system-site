@@ -38,29 +38,35 @@ export class PageProfileComponent implements OnInit {
                 this.toast.red(constants.unknownError);
             });
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    async ngOnInit(): Promise<void> {
-        await this.userService.getNotificationStatus().then((result) => {
-            if (result) {
-                this.label = 'Unsubscribe';
-            }
-            this.subscribed = result;
-        });
+    ngOnInit(){
+        this.notifyButton();
     }
 
     subscription(): void {
         if (this.subscribed) {
-            this.notifservice.unsubscribeToNotifications();
+            this.notifservice.unsubscribeToNotifications()
         } else {
             this.notifservice.subscribeToNotifications();
         }
+        setTimeout(() => {
+            this.label = 'Unsubscribe';
+            this.notifyButton();
+        }, 1500);
     }
 
     changePass() {
         this.dialogService.open(ChangePasswordComponent, {
             header: 'Change password',
             width: '20%'
+        });
+    }
+
+    notifyButton() {
+        this.userService.getNotificationStatus().then((result) => {
+            if (result) {
+                this.label = 'Unsubscribe';
+            }
+            this.subscribed = result;
         });
     }
 }
