@@ -1,27 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../../models/general';
 import constants from '../../constants';
 import { boolToString } from '../../util/general';
 import * as qs from 'query-string';
 import { NotificationService } from '../util/notification.service';
+import { IUserModel } from "../../models/user-model";
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
     private user = constants.server + '/users/';
-    private electives = constants.server + '/electives/';
     private notification = constants.server + '/notifications/';
 
     constructor(private http: HttpClient) {}
 
-    getBasic(): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
+    getBasic(): Promise<IUserModel> {
+        return new Promise<IUserModel>((resolve, reject) => {
             const outer = this.http.get(this.user + 'basic').subscribe(
                 (res) => {
                     outer.unsubscribe();
-                    resolve(res as User);
+                    resolve(res as IUserModel);
                 },
                 (err) => {
                     outer.unsubscribe();
@@ -70,36 +69,15 @@ export class UserService {
         });
     }
 
-    addelective(body): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            const outer = this.http.post(this.electives + 'add', body).subscribe(
-                (res: any) => {
-                    outer.unsubscribe();
-                    console.log(res);
-                    if (res.failed.length == 0) resolve(true);
-                    else resolve(false);
-                },
-                (err) => {
-                    console.log(err);
-                    outer.unsubscribe();
-                    reject(err);
-                }
-            );
-            console.log(outer);
-        });
-    }
-
     addUser(body): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             const outer = this.http.post(this.user + 'create', body).subscribe(
                 (res: any) => {
                     outer.unsubscribe();
-                    console.log(res);
                     if (res.failed.length == 0) resolve(true);
                     else resolve(false);
                 },
                 (err) => {
-                    console.log(err);
                     outer.unsubscribe();
                     reject(err);
                 }
@@ -112,12 +90,10 @@ export class UserService {
             const outer = this.http.put(this.user + 'update', body).subscribe(
                 (res: any) => {
                     outer.unsubscribe();
-                    console.log(res);
                     if (res.failed.length == 0) resolve(true);
                     else resolve(false);
                 },
                 (err) => {
-                    console.log(err);
                     outer.unsubscribe();
                     reject(err);
                 }
@@ -132,12 +108,10 @@ export class UserService {
             data.append('defaultRollNoAsEmail', boolToString(defaultroll));
             const outer = this.http.post(this.user + 'create-csv', data).subscribe(
                 (res) => {
-                    console.log(res);
                     outer.unsubscribe();
                     resolve(true);
                 },
                 (err) => {
-                    console.log(err);
                     outer.unsubscribe();
                     reject(err);
                 }
@@ -154,11 +128,9 @@ export class UserService {
                 const outer = this.http.get(this.user + 'user-by-roll-no?' + query);
                 outer.subscribe(
                     (res: any) => {
-                        console.log(res);
                         resolve(res.id);
                     },
                     (err) => {
-                        console.log(err);
                         reject(err);
                     }
                 );
@@ -166,31 +138,9 @@ export class UserService {
             const outer = this.http.request('delete', this.user + 'delete', { body: [id] });
             outer.subscribe(
                 (res) => {
-                    console.log(res);
                     resolve(true);
                 },
                 (err) => {
-                    console.log(err);
-                    reject(err);
-                }
-            );
-        });
-    }
-
-    uploadcsvforelective(file: File, defaultroll: boolean): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            const data = new FormData();
-            data.append('file', file, file.name);
-            data.append('defaultRollNoAsEmail', boolToString(defaultroll));
-            const outer = this.http.post(this.electives + 'add-csv', data).subscribe(
-                (res) => {
-                    console.log(res);
-                    outer.unsubscribe();
-                    resolve(true);
-                },
-                (err) => {
-                    console.log(err);
-                    outer.unsubscribe();
                     reject(err);
                 }
             );
@@ -203,7 +153,6 @@ export class UserService {
             sortBy: sortBy,
             dir: dir
         });
-        console.log(page);
         return new Promise<any>((resolve) => {
             const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
                 (res: any) => {
@@ -252,7 +201,6 @@ export class UserService {
                     outer.unsubscribe();
                 },
                 (err) => {
-                    console.log(err);
                     outer.unsubscribe();
                 }
             );
