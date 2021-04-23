@@ -34,8 +34,14 @@ export class AppComponent implements OnInit {
                         },
                         {
                             label: 'Electives',
+                            icon: 'pi pi-file',
+                            routerLink: ['electives'],
+                            visible: this.auth.getScope() !== 'student'
+                        },
+                        {
+                            label: 'Forms',
                             icon: 'pi pi-th-large',
-                            routerLink: ['electives']
+                            routerLink: ['forms']
                         },
                         {
                             label: 'Classes',
