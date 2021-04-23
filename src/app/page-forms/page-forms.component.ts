@@ -8,10 +8,10 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-page-electives',
-    templateUrl: './page-electives.component.html',
-    styleUrls: ['./page-electives.component.scss'],
+    templateUrl: './page-forms.component.html',
+    styleUrls: ['./page-forms.component.scss'],
 })
-export class PageElectivesComponent implements OnInit {
+export class PageFormsComponent implements OnInit {
 
     start = new Date();
     end;
