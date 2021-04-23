@@ -1,1 +1,65 @@
-<div class="app-page-electives">PageElectives worked!</div>
+<!-- Admin scope -->
+
+<div class="p-grid center-horizontal" *ngIf="this.authService.getScope() !== 'student'">
+    <div class="p-col-8">
+        <p-tabView>
+            <p-tabPanel header="Create form" [disabled]="this.authService.getScope() === 'teacher'">
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <label class="margin-right">Start time</label>
+                        <p-calendar [(ngModel)]="start" showTime="true" hourFormat="24"></p-calendar>
+                    </div>
+                    <div class="p-col-6">
+                        <label class="margin-right">End time</label>
+                        <p-calendar [(ngModel)]="end" showTime="true" hourFormat="24"></p-calendar>
+                    </div>
+                    <div class="p-col-4 p-offset-2">
+                        <label class="margin-right">Number of electives</label>
+                        <input id="courseCode" type="number" pInputText [(ngModel)]="numElectives" min="1"/>
+                    </div>
+                    <div class="p-col-4">
+                        <label class="margin-right">Should select all</label>
+                        <p-dropdown [options]="['Yes', 'No']" [(ngModel)]="shouldSelectAll"></p-dropdown>
+                    </div>
+                    <div class="p-col-6 p-offset-3">
+                        <label class="margin-right">Select electives</label>
+                        <p-autoComplete [(ngModel)]="selectedElective" [suggestions]="suggestedElectives" (completeMethod)="search($event)" field="name" [dropdown]="true">
+                            <ng-template let-elective pTemplate="item">
+                                {{elective.name}}, {{elective.courseCode}}, {{elective.version}}
+                            </ng-template>
+                        </p-autoComplete>
+                        <p-dropdown [options]="['Name', 'Course code']" [(ngModel)]="searchBy"></p-dropdown>
+                        <button pButton type="button" class="p-button-raised margin-left" label="Add" icon="pi pi-plus" (click)="addElective()"></button>
+                    </div>
+                    <div class="p-col-6 p-offset-3">
+                        <p-card>
+                            <p-chip *ngFor="let elective of selectedElectives" class="margin-sides" label="{{elective.name}}, {{elective.courseCode}}, {{elective.version}}" [removable]="true"></p-chip>
+                        </p-card>
+                    </div>
+                    <div class="p-col-2 p-offset-5">
+                        <button pButton label="Create form" type="button" (click)="createForm()" style="width: 100%"></button>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Active forms" [selected]="this.authService.getScope() === 'teacher'">
+                <div class="item">
+                    <p-card class="item" *ngFor="let item of forms; let i = index;" header="Electives form {{i + 1}}" (click)="openForm(i)">
+                        To be filled by {{item.end}}
+                    </p-card>
+                    <h3 *ngIf="!(!!forms.length)">No active forms!</h3>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>
+
+<!-- Student scope -->
+
+<div class="p-grid center-horizontal" *ngIf="this.authService.getScope() === 'student'">
+    <div class="p-col-8">
+        <p-card class="item" *ngFor="let item of forms; let i = index;" header="Electives form {{i + 1}}" (click)="openForm(i)">
+            To be filled by {{item.end}}
+        </p-card>
+        <h3 *ngIf="!(!!forms.length)">No active forms!</h3>
+    </div>
+</div>
