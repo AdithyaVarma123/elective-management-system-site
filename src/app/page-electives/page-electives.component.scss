@@ -1,0 +1,7 @@
+.item {
+	margin: 1em;
+	cursor: pointer;
+}
+:host ::ng-deep .p-calendar {
+	width: 60%;
+}

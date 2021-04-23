@@ -4,6 +4,7 @@ import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
 import {LazyLoadEvent} from "primeng/api";
+import { ElectivesService } from "../services/electives/electives.service";
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -36,7 +37,7 @@ export class PageAdministrationComponent implements OnInit {
     page = 0;
     totalRecords = 0;
 
-    constructor(private userService: UserService, private toast: ToastService) {}
+    constructor(private userService: UserService, private toast: ToastService, private electiveService: ElectivesService) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ngOnInit() {
@@ -92,8 +93,8 @@ export class PageAdministrationComponent implements OnInit {
             batches: this.batches,
             teachers: this.teachers
         };
-        this.userService
-            .addelective(body)
+        this.electiveService
+            .addElective(body)
             .then((res) => {
                 if (res) this.toast.green('elective added');
             })
@@ -163,8 +164,8 @@ export class PageAdministrationComponent implements OnInit {
     }
 
     uploadCSVforElective(evt: any): void {
-        this.userService
-            .uploadcsvforelective(evt[0], true)
+        this.electiveService
+            .addElectivesCSV(evt[0], true)
             .then((res) => {
                 if (res) this.toast.green('Electives added');
             })

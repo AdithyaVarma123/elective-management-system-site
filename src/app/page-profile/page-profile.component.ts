@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
-import { User } from '../models/general';
 import { ToastService } from '../services/util/toast.service';
 import constants from '../constants';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NotificationService } from '../services/util/notification.service';
+import { IUserModel } from "../models/user-model";
 
 @Component({
     selector: 'app-page-profile',
@@ -16,14 +16,14 @@ import { NotificationService } from '../services/util/notification.service';
 export class PageProfileComponent implements OnInit {
     subscribed = true;
     label = 'Subscribe';
-    user: User = {
+    user: IUserModel = {
+        classes: [], password: "",
         name: '',
         id: '',
         username: '',
         rollNo: '',
         role: 'student',
-        batch: undefined,
-        electives: undefined
+        batch: undefined
     };
     constructor(
         public dialogService: DialogService,

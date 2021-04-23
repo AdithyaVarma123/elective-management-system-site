@@ -11,33 +11,5 @@ export interface RefreshTokens {
     access_token: string;
 }
 
-export interface Batch {
-    id: string;
-    year: number;
-    numYears: number;
-    degree: string;
-    course: string;
-    batchString: string;
-}
 
-export interface User {
-    name: string;
-    username: string;
-    role: scopes;
-    rollNo: string;
-    batch: Batch;
-    electives: Elective[];
-    id: string;
-}
-
-export interface Elective {
-    id: string;
-    name: string;
-    description: string;
-    courseCode: string;
-    version: number;
-    strength: number;
-    attributes: { value: string; key: string }[];
-    batches: Batch[];
-    teachers: User[];
-}
+export type electiveAttributes = { key: string; value: string }[];
