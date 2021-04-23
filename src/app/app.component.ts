@@ -34,7 +34,8 @@ export class AppComponent implements OnInit {
                         },
                         {
                             label: 'Electives',
-                            icon: 'pi pi-th-large'
+                            icon: 'pi pi-th-large',
+                            routerLink: ['electives']
                         },
                         {
                             label: 'Classes',
