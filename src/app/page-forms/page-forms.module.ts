@@ -12,6 +12,9 @@ import { DropdownModule } from "primeng/dropdown";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { ButtonModule } from "primeng/button";
 import { ChipModule } from "primeng/chip";
+import { TableModule } from "primeng/table";
+import { DialogModule } from "primeng/dialog";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
 
 const PageElectivesRoutes: Routes = [
     {
@@ -32,7 +35,10 @@ const PageElectivesRoutes: Routes = [
         DropdownModule,
         AutoCompleteModule,
         ButtonModule,
-        ChipModule
+        ChipModule,
+        TableModule,
+        DialogModule,
+        ConfirmDialogModule
     ],
     declarations: [
         PageFormsComponent

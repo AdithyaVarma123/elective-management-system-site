@@ -3,7 +3,7 @@
 <div class="p-grid center-horizontal" *ngIf="this.authService.getScope() !== 'student'">
     <div class="p-col-8">
         <p-tabView>
-            <p-tabPanel header="Create form" [disabled]="this.authService.getScope() === 'teacher'">
+            <p-tabPanel header="Create form" [disabled]="!isAdmin">
                 <div class="p-grid">
                     <div class="p-col-6">
                         <label class="margin-right">Start time</label>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="p-col-4">
                         <label class="margin-right">Should select all</label>
-                        <p-dropdown [options]="['Yes', 'No']" [(ngModel)]="shouldSelectAll"></p-dropdown>
+                        <p-dropdown [options]="option" [(ngModel)]="shouldSelectAll" optionValue="value" optionLabel="name"></p-dropdown>
                     </div>
                     <div class="p-col-6 p-offset-3">
                         <label class="margin-right">Select electives</label>
@@ -42,24 +42,118 @@
                 </div>
             </p-tabPanel>
             <p-tabPanel header="Active forms" [selected]="this.authService.getScope() === 'teacher'">
-                <div class="item">
-                    <p-card class="item" *ngFor="let item of forms; let i = index;" header="Electives form {{i + 1}}" (click)="openForm(i)">
-                        To be filled by {{item.end}}
-                    </p-card>
-                    <h3 *ngIf="!(!!forms.length)">No active forms!</h3>
+                <div class="p-grid" *ngFor="let item of activeForms; let i = index;">
+                    <div class="p-col-10">
+                        <p-card class="item" header="Electives form {{i + 1}}" (click)="openForm(i)">
+                            To be filled by {{item.end}}
+                        </p-card>
+                    </div>
+                    <div class="p-col-2 center-vertical">
+                        <button pButton label="View responses" type="button" (click)="viewResponses(item)" style="width: 100%"></button>
+                    </div>
                 </div>
+            </p-tabPanel>
+            <p-tabPanel header="Forms" [disabled]="!isAdmin">
+                <p-table [value]="forms" [lazy]="true" [paginator]="true"
+                         [rows]="25" [totalRecords]="totalRecords"
+                         [loading]="loading"
+                         (onLazyLoad)="setPageForms($event)" dataKey="id">
+                    <ng-template pTemplate="header">
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>State</th>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-form>
+                        <tr>
+                            <td>{{form.start}}</td>
+                            <td>{{form.end}}</td>
+                            <td>{{form.state ? 'Active' : 'Inactive'}}</td>
+                            <td>
+                                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editForm(form)"></button>
+                                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteForm(form)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </p-tabPanel>
         </p-tabView>
     </div>
 </div>
 
+<!-- Edit form dialog -->
+
+<p-dialog [(visible)]="editDialog" [style]="{width: '650px'}" header="Edit form" [modal]="true" styleClass="p-fluid">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <label class="margin-right">Start time</label>
+            <p-calendar [(ngModel)]="currentForm.start" showTime="true" hourFormat="24"></p-calendar>
+        </div>
+        <div class="p-col-12">
+            <label class="margin-right">End time</label>
+            <p-calendar [(ngModel)]="currentForm.end" showTime="true" hourFormat="24"></p-calendar>
+        </div>
+        <div class="p-col-6">
+            <label class="margin-right">Number of electives</label>
+            <input type="number" pInputText [(ngModel)]="currentForm.shouldSelect" min="1"/>
+        </div>
+        <div class="p-col-6">
+            <label class="margin-right">Should select all</label>
+            <p-dropdown [options]="option" [(ngModel)]="selectAllAtForm" optionLabel="name" optionValue="value"></p-dropdown>
+        </div>
+        <div class="p-col-8">
+            <label>Select electives</label>
+            <p-autoComplete [(ngModel)]="selectedElective" [suggestions]="suggestedElectives" (completeMethod)="search($event)" field="name" [dropdown]="true" class="p-d-inline">
+                <ng-template let-elective pTemplate="item">
+                    {{elective.name}}, {{elective.courseCode}}, {{elective.version}}
+                </ng-template>
+            </p-autoComplete>
+            <p-dropdown [options]="['Name', 'Course code']" [(ngModel)]="searchBy"></p-dropdown>
+        </div>
+        <div class="p-col-4 center-vertical">
+            <button pButton type="button" class="p-button-raised" label="Add" icon="pi pi-plus" (click)="addElectiveToCurrentForm()"></button>
+        </div>
+        <div class="p-col-12">
+            <p-card>
+                <p-chip *ngFor="let elective of currentForm.electives" class="margin-sides" label="{{elective.name}}, {{elective.courseCode}}, {{elective.version}}" [removable]="true"></p-chip>
+            </p-card>
+        </div>
+        <div class="p-col-4 p-offset-4">
+            <button pButton type="button" class="p-button-raised" label="Update" (click)="update()"></button>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- View responses dialog -->
+
+<p-dialog [(visible)]="responsesDialog" [style]="{width: '950px'}" header="Form responses" [modal]="true" styleClass="p-fluid">
+    <p-table [value]="responses" [lazy]="true" [paginator]="true"
+             [rows]="25" [totalRecords]="totalRecords"
+             [loading]="loading"
+             (onLazyLoad)="setPageResponses($event)" dataKey="id">
+        <ng-template pTemplate="header">
+            <th>User</th>
+            <th>Time</th>
+            <th>N° selections</th>
+        </ng-template>
+        <ng-template pTemplate="body" let-response>
+            <tr>
+                <td>{{response.user.rollNo}}</td>
+                <td>{{response.time}}</td>
+                <td>{{response.responses.length}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
 <!-- Student scope -->
 
 <div class="p-grid center-horizontal" *ngIf="this.authService.getScope() === 'student'">
     <div class="p-col-8">
-        <p-card class="item" *ngFor="let item of forms; let i = index;" header="Electives form {{i + 1}}" (click)="openForm(i)">
+        <p-card class="item" *ngFor="let item of activeForms; let i = index;" header="Electives form {{i + 1}}" (click)="openForm(i)">
             To be filled by {{item.end}}
         </p-card>
-        <h3 *ngIf="!(!!forms.length)">No active forms!</h3>
+        <h3 *ngIf="!(!!activeForms.length)">No active forms!</h3>
     </div>
 </div>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
