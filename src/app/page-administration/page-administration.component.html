@@ -231,23 +231,32 @@
                 <p-accordionTab header="Get user log details:">
                     <div class="p-col-12">
                         <h2>Get user log details:</h2>
-                        <p-table [columns]="cols" [value] = "records" [lazy]="true" [loading]="loading" (onLazyLoad)="getLogDetails($event)" [paginator]="true" [rows]="25" [totalRecords]="totalRecords">
+                        <p-table
+                            [columns]="cols"
+                            [value]="records"
+                            [lazy]="true"
+                            [loading]="loading"
+                            (onLazyLoad)="getLogDetails($event)"
+                            [paginator]="true"
+                            [rows]="25"
+                            [totalRecords]="totalRecords"
+                        >
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">
-                                        {{col.header}}
+                                        {{ col.header }}
                                     </th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns">
                                 <tr>
                                     <td *ngFor="let col of columns">
-                                        {{rowData[col.field]}}
+                                        {{ rowData[col.field] }}
                                     </td>
                                 </tr>
                             </ng-template>
                         </p-table>
-                        </div>
+                    </div>
                 </p-accordionTab>
             </div>
         </p-accordion>

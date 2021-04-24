@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PageFormsComponent } from './page-forms.component';
-import { CardModule } from "primeng/card";
-import { TabViewModule } from "primeng/tabview";
-import { InputTextModule } from "primeng/inputtext";
-import { CalendarModule } from "primeng/calendar";
-import { FormsModule } from "@angular/forms";
-import { DropdownModule } from "primeng/dropdown";
-import { AutoCompleteModule } from "primeng/autocomplete";
-import { ButtonModule } from "primeng/button";
-import { ChipModule } from "primeng/chip";
-import { TableModule } from "primeng/table";
-import { DialogModule } from "primeng/dialog";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { CardModule } from 'primeng/card';
+import { TabViewModule } from 'primeng/tabview';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const PageElectivesRoutes: Routes = [
     {
@@ -40,8 +40,6 @@ const PageElectivesRoutes: Routes = [
         DialogModule,
         ConfirmDialogModule
     ],
-    declarations: [
-        PageFormsComponent
-    ]
+    declarations: [PageFormsComponent]
 })
-export class PageFormsModule { }
+export class PageFormsModule {}

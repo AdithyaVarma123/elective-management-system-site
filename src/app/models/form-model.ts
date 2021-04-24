@@ -7,5 +7,5 @@ export interface IFormModel {
     shouldSelect: number;
     selectAllAtForm: boolean;
     electives: IElectiveModel[];
-    state ?: boolean;
+    state?: boolean;
 }

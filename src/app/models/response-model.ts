@@ -1,6 +1,6 @@
-import { IElectiveModel } from "./elective-model";
-import { IUserModel } from "./user-model";
-import { IFormModel } from "./form-model";
+import { IElectiveModel } from './elective-model';
+import { IUserModel } from './user-model';
+import { IFormModel } from './form-model';
 
 export interface IResponseModel {
     id?: string;

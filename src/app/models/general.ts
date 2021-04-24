@@ -11,5 +11,4 @@ export interface RefreshTokens {
     access_token: string;
 }
 
-
 export type electiveAttributes = { key: string; value: string }[];

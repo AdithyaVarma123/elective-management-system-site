@@ -1,6 +1,6 @@
-import { scopes } from "./general";
-import { IBatchModel } from "./batch-model";
-import { IClassModel } from "./class-model";
+import { scopes } from './general';
+import { IBatchModel } from './batch-model';
+import { IClassModel } from './class-model';
 
 export interface IUserModel {
     id?: string;

@@ -3,8 +3,8 @@ import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
-import {LazyLoadEvent} from "primeng/api";
-import { ElectivesService } from "../services/electives/electives.service";
+import { LazyLoadEvent } from 'primeng/api';
+import { ElectivesService } from '../services/electives/electives.service';
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -37,7 +37,11 @@ export class PageAdministrationComponent implements OnInit {
     page = 0;
     totalRecords = 0;
 
-    constructor(private userService: UserService, private toast: ToastService, private electiveService: ElectivesService) {}
+    constructor(
+        private userService: UserService,
+        private toast: ToastService,
+        private electiveService: ElectivesService
+    ) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ngOnInit() {
@@ -50,7 +54,7 @@ export class PageAdministrationComponent implements OnInit {
             { field: 'rollNo', header: 'Roll Number' }
         ];
         // @ts-ignore
-        this.getLogDetails({first: 0});
+        this.getLogDetails({ first: 0 });
     }
 
     updateUser(): void {

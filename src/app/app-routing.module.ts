@@ -30,12 +30,12 @@ const routes: Routes = [
     {
         path: 'forms',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./page-forms/page-forms.module').then(m => m.PageFormsModule)
+        loadChildren: () => import('./page-forms/page-forms.module').then((m) => m.PageFormsModule)
     },
     {
         path: 'fill-form/:id',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./page-fill-form/page-fill-form.module').then(m => m.PageFillFormModule)
+        loadChildren: () => import('./page-fill-form/page-fill-form.module').then((m) => m.PageFillFormModule)
     }
 ];
 @NgModule({

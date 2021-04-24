@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PageFillFormComponent } from './page-fill-form.component';
-import { CardModule } from "primeng/card";
-import { PickListModule } from "primeng/picklist";
-import { ButtonModule } from "primeng/button";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { CardModule } from 'primeng/card';
+import { PickListModule } from 'primeng/picklist';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const PageFillFormRoutes: Routes = [
     {
@@ -24,8 +24,6 @@ const PageFillFormRoutes: Routes = [
         ButtonModule,
         ConfirmDialogModule
     ],
-    declarations: [
-        PageFillFormComponent
-    ]
+    declarations: [PageFillFormComponent]
 })
-export class PageFillFormModule { }
+export class PageFillFormModule {}
