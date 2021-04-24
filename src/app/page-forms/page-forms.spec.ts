@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageElectivesComponent } from './page-electives.component';
+import { PageFormsComponent } from './page-forms.component';
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { MessageService } from "primeng/api";
 
 describe('PageElectivesComponent', () => {
-  let component: PageElectivesComponent;
-  let fixture: ComponentFixture<PageElectivesComponent>;
+  let component: PageFormsComponent;
+  let fixture: ComponentFixture<PageFormsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageElectivesComponent ],
+      declarations: [ PageFormsComponent ],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [MessageService]
     })
@@ -19,7 +19,7 @@ describe('PageElectivesComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageElectivesComponent);
+    fixture = TestBed.createComponent(PageFormsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

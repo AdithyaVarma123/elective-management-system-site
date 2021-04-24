@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageElectivesComponent } from './page-electives.component';
+import { PageFormsComponent } from './page-forms.component';
 import { CardModule } from "primeng/card";
 import { TabViewModule } from "primeng/tabview";
 import { InputTextModule } from "primeng/inputtext";
@@ -16,7 +16,7 @@ import { ChipModule } from "primeng/chip";
 const PageElectivesRoutes: Routes = [
     {
         path: '',
-        component: PageElectivesComponent
+        component: PageFormsComponent
     }
 ];
 
@@ -35,7 +35,7 @@ const PageElectivesRoutes: Routes = [
         ChipModule
     ],
     declarations: [
-        PageElectivesComponent
+        PageFormsComponent
     ]
 })
-export class PageElectivesModule { }
+export class PageFormsModule { }

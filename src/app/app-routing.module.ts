@@ -28,9 +28,9 @@ const routes: Routes = [
             import('./page-reset-password/page-reset-password.module').then((m) => m.PageResetPasswordModule)
     },
     {
-        path: 'electives',
+        path: 'forms',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./page-electives/page-electives.module').then(m => m.PageElectivesModule)
+        loadChildren: () => import('./page-forms/page-forms.module').then(m => m.PageFormsModule)
     }
 ];
 @NgModule({
