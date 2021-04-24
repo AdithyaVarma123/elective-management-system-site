@@ -5,7 +5,7 @@ import constants from '../constants';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NotificationService } from '../services/util/notification.service';
-import { IUserModel } from "../models/user-model";
+import { IUserModel } from '../models/user-model';
 
 @Component({
     selector: 'app-page-profile',
@@ -17,7 +17,8 @@ export class PageProfileComponent implements OnInit {
     subscribed = true;
     label = 'Subscribe';
     user: IUserModel = {
-        classes: [], password: "",
+        classes: [],
+        password: '',
         name: '',
         id: '',
         username: '',
@@ -38,13 +39,13 @@ export class PageProfileComponent implements OnInit {
                 this.toast.red(constants.unknownError);
             });
     }
-    ngOnInit(){
+    ngOnInit() {
         this.notifyButton();
     }
 
     subscription(): void {
         if (this.subscribed) {
-            this.notifservice.unsubscribeToNotifications()
+            this.notifservice.unsubscribeToNotifications();
         } else {
             this.notifservice.subscribeToNotifications();
         }

@@ -4,7 +4,7 @@ import constants from '../../constants';
 import { boolToString } from '../../util/general';
 import * as qs from 'query-string';
 import { NotificationService } from '../util/notification.service';
-import { IUserModel } from "../../models/user-model";
+import { IUserModel } from '../../models/user-model';
 
 @Injectable({
     providedIn: 'root'
@@ -107,7 +107,7 @@ export class UserService {
             data.append('file', file, file.name);
             data.append('defaultRollNoAsEmail', boolToString(defaultroll));
             const outer = this.http.post(this.user + 'create-csv', data).subscribe(
-                (res) => {
+                () => {
                     outer.unsubscribe();
                     resolve(true);
                 },
@@ -137,7 +137,7 @@ export class UserService {
             });
             const outer = this.http.request('delete', this.user + 'delete', { body: [id] });
             outer.subscribe(
-                (res) => {
+                () => {
                     resolve(true);
                 },
                 (err) => {
@@ -157,6 +157,7 @@ export class UserService {
             const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
                 (res: any) => {
                     let i = 0;
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     for (const x of res['docs']) {
                         res['docs'][i]['rollNo'] = res['docs'][i]['user']['rollNo'];
                         i += 1;
@@ -200,7 +201,7 @@ export class UserService {
                     resolve(res);
                     outer.unsubscribe();
                 },
-                (err) => {
+                () => {
                     outer.unsubscribe();
                 }
             );

@@ -1,0 +1,51 @@
+<div class="p-grid center-horizontal">
+    <div class="p-col-8">
+        <p-card header="Elective form">
+            <div class="p-grid">
+                <div class="p-col-12">
+                    <h2 class="p-d-inline">Start:</h2>
+                    &nbsp;<span class="p-d-inline">{{ form.start }}</span>
+                    <br />
+                    <h2 class="p-d-inline">End:</h2>
+                    &nbsp;<span class="p-d-inline">{{ form.end }}</span>
+                </div>
+                <span class="margin-left" *ngIf="form.selectAllAtForm"
+                    >Select the order of priority for the given electives</span
+                >
+                <span class="margin-left" *ngIf="!form.selectAllAtForm"
+                    >Select the order of priority for the given electives. A minimum of {{ form.shouldSelect }} must be
+                    chosen.</span
+                >
+                <div class="p-col-12">
+                    <p-pickList
+                        [source]="sourceElectiveListCopy"
+                        [target]="selectionOrder"
+                        [dragdrop]="true"
+                        [disabled]="!isStudent"
+                    >
+                        <ng-template let-elective pTemplate="item">
+                            <div>
+                                <h4>{{ elective.name }}, {{ elective.courseCode }}</h4>
+                                <span>{{ elective.description }}</span>
+                                <p *ngFor="let item of elective.attributes">{{ item.key }}: {{ item.value }}</p>
+                                <span>Teachers:</span>
+                                <p *ngFor="let teacher of elective.teachers">{{ teacher.name }}</p>
+                            </div>
+                        </ng-template>
+                    </p-pickList>
+                </div>
+                <div class="p-col-2 p-offset-5">
+                    <button
+                        pButton
+                        label="Submit form"
+                        type="button"
+                        (click)="submitForm()"
+                        style="width: 100%"
+                        [disabled]="!isStudent"
+                    ></button>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

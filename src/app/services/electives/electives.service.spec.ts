@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ElectivesService } from './electives.service';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ElectivesService', () => {
     let service: ElectivesService;
