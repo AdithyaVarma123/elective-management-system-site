@@ -147,7 +147,7 @@ export class UserService {
         });
     }
 
-    getlogDetails(page, sortBy, dir = 'desc'): any {
+    getlogDetails(page, sortBy, dir = 'asc'): any {
         const query = qs.stringify({
             page: page,
             sortBy: sortBy,
@@ -156,50 +156,12 @@ export class UserService {
         return new Promise<any>((resolve) => {
             const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
                 (res: any) => {
-                    let i = 0;
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    for (const x of res['docs']) {
-                        res['docs'][i]['rollNo'] = res['docs'][i]['user']['rollNo'];
-                        i += 1;
-                    }
-                    i = 0;
-                    for (const x of res['docs']) {
-                        const date = new Date(x['createdAt']);
-                        const hour = date.getHours() % 12;
-                        const ampm = date.getHours() > 12 ? 'pm' : 'am';
-                        res['docs'][i]['createdAt'] =
-                            date.getFullYear() +
-                            '-' +
-                            (date.getMonth() + 1) +
-                            '-' +
-                            date.getDate() +
-                            ' ' +
-                            hour +
-                            ':' +
-                            date.getMinutes() +
-                            ampm;
-                        i += 1;
-                    }
-                    i = 0;
-                    for (const x of res['docs']) {
-                        const date = new Date(x['updatedAt']);
-                        const hour = date.getHours() % 12;
-                        const ampm = date.getHours() > 12 ? 'pm' : 'am';
-                        res['docs'][i]['updatedAt'] =
-                            date.getFullYear() +
-                            '-' +
-                            (date.getMonth() + 1) +
-                            '-' +
-                            date.getDate() +
-                            ' ' +
-                            hour +
-                            ':' +
-                            date.getMinutes() +
-                            ampm;
-                        i += 1;
-                    }
+                    res.docs = res.docs.map(e => ({
+                        ...e,
+                        rollNo: e.user.rollNo,
+                        createdAt: new Date(e.createdAt).toLocaleString()
+                    }));
                     resolve(res);
-                    outer.unsubscribe();
                 },
                 () => {
                     outer.unsubscribe();

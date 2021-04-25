@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
+import { TabViewModule } from "primeng/tabview";
+import { DropdownModule } from "primeng/dropdown";
 
 const PageAdministrationRoutes: Routes = [
     {
@@ -28,7 +30,9 @@ const PageAdministrationRoutes: Routes = [
         RouterModule.forChild(PageAdministrationRoutes),
         ButtonModule,
         FileUploadModule,
-        AccordionModule
+        AccordionModule,
+        TabViewModule,
+        DropdownModule
     ],
     declarations: [PageAdministrationComponent]
 })
