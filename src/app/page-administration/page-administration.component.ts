@@ -13,7 +13,6 @@ import { ElectivesService } from '../services/electives/electives.service';
 export class PageAdministrationComponent implements OnInit {
     records: Record[];
     loading = false;
-    showDetails = false;
     cols: any[];
     eName = '';
     password = '';
@@ -27,7 +26,7 @@ export class PageAdministrationComponent implements OnInit {
     uname = '';
     rollNo = '';
     username = '';
-    userRole = '';
+    userRole = 'student';
     batch = '';
     delRol = '';
     updateName = '';
@@ -36,6 +35,20 @@ export class PageAdministrationComponent implements OnInit {
     updateBatch = '';
     page = 0;
     totalRecords = 0;
+    roleOptions = [
+        {
+            name: 'student',
+            value: 'student'
+        },
+        {
+            name: 'teacher',
+            value: 'teacher'
+        },
+        {
+            name: 'admin',
+            value: 'admin'
+        }
+    ];
 
     constructor(
         private userService: UserService,
