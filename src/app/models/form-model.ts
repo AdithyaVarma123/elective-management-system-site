@@ -8,4 +8,5 @@ export interface IFormModel {
     selectAllAtForm: boolean;
     electives: IElectiveModel[];
     state?: boolean;
+    active: boolean;
 }
