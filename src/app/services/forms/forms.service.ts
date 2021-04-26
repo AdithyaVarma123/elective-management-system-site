@@ -75,7 +75,8 @@ export class FormsService {
         end: string,
         shouldSelect: number,
         selectAllAtForm: boolean,
-        electives: string[]
+        electives: string[],
+        active ?: boolean
     ): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             this.http
@@ -85,7 +86,8 @@ export class FormsService {
                     end,
                     shouldSelect,
                     selectAllAtForm,
-                    electives
+                    electives,
+                    active
                 })
                 .subscribe(
                     () => resolve(true),
@@ -145,6 +147,12 @@ export class FormsService {
                         reject({ message: res?.failed });
                     }
                 }, err => reject(err));
+        });
+    }
+
+    public createClasses(formId: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.http.post(this.forms + 'create-classes?' + qs.stringify({ formId }), {}).subscribe(() => resolve(true), err => reject(err));
         });
     }
 }
