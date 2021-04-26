@@ -97,8 +97,50 @@
                     </ng-template>
                 </p-table>
             </p-tabPanel>
-            <p-tabPanel header="Notify users">
-
+            <p-tabPanel header="Notify users" [selected]="true">
+                <form class="p-grid" autocomplete="off">
+                    <div class="p-col-12">
+                        <label for="notifyType" class="margin">Custom notification type:</label>
+                        <p-dropdown id="notifyType" class="margin" [options]="notifyMode" [(ngModel)]="notifyType" optionValue="value" optionLabel="name" [ngModelOptions]="{standalone: true}" (onChange)="reset()"></p-dropdown>
+                        <label for="replaceText" class="margin" >Replace keywords {{'{'}}{{'{'}}name}}, {{'{'}}{{'{'}}username}}, {{'{'}}{{'{'}}rollNo}}:</label>
+                        <p-dropdown id="replaceText" name="replaceText" class="margin" [(ngModel)]="replaceMode" [options]="replaceModeOptions" optionLabel="name" optionValue="value" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                        <div *ngIf="notifyType === 'user' || notifyType == 'batch'">
+                            <label for="notifyUsers" class="margin">Enter {{notifyType === 'user' ? 'user rollNo' : 'batch'}}:</label>
+                            <input id="notifyUsers" type="text" pInputText [(ngModel)]="notifyItem" class="margin" name="notifyUsers" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+                            <button
+                                pButton
+                                type="button"
+                                class="p-button p-button-raised margin"
+                                label="Add"
+                                icon="pi pi-plus"
+                                (click)="updateItem(notifyType)"
+                            ></button>
+                            <p-card>
+                                <p-chip
+                                    *ngFor="let user of items"
+                                    class="margin-sides"
+                                    label="{{user}}"
+                                    [removable]="true"
+                                ></p-chip>
+                            </p-card>
+                        </div>
+                        <div *ngIf="notifyType === 'role'" class="margin-vertical">
+                            <label for="notifyRole" class="margin">Select role:</label>
+                            <p-dropdown id="notifyRole" class="margin" [options]="notifyRoles" [(ngModel)]="notifyRole" optionValue="value" optionLabel="name" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                        </div>
+                        <br/>
+                        <label for="notifyTitle" class="margin">Notification title:</label>
+                        <input id="notifyTitle" type="text" pInputText [(ngModel)]="notifyTitle" class="margin" name="notifyTitle" [ngModelOptions]="{standalone: true}" autocomplete="off" style="width: 50%"/>
+                        <br/>
+                        <div class="p-col-12 p-col-nogutter center-vertical">
+                            <label for="notifyBody" class="margin">Notification body:</label>
+                            <textarea id="notifyBody" [rows]="5" cols="100" pInputTextarea autoResize="autoResize" class="margin" [(ngModel)]="notifyBody" [ngModelOptions]="{standalone: true}"></textarea>
+                        </div>
+                    </div>
+                    <div class="p-col-12 center-horizontal">
+                        <button class="p-button p-button-info margin" (click)="customNotify()">Notify</button>
+                    </div>
+                </form>
             </p-tabPanel>
         </p-tabView>
     </div>

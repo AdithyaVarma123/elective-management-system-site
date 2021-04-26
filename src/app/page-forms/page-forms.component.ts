@@ -36,6 +36,7 @@ export class PageFormsComponent implements OnInit {
     loading = false;
     editDialog = false;
     currentForm: IFormModel = {
+        active: false,
         electives: [],
         end: undefined,
         selectAllAtForm: false,
@@ -266,5 +267,57 @@ export class PageFormsComponent implements OnInit {
         this.formService.generateList(form.id).then(() => {
             this.toastService.green('Downloaded generated list successfully!');
         }).catch(err => this.toastService.red(`An unexpected error occurred: ${err?.message}`));
+    }
+
+    swapForm(form: IFormModel) {
+        this.currentForm = { ...form };
+        this.currentForm.start = new Date(this.currentForm.start);
+        this.currentForm.end = new Date(this.currentForm.end);
+        // @ts-ignore
+        this.selectAllAtForm = this.currentForm.selectAllAtForm ? this.option[0].value : this.option[1].value;
+        this.confirmationService.confirm({
+            message: `Are you sure you want to ${ this.currentForm.active ? 'disable' : 'enable' } this form?`,
+            accept: () => {
+                this.formService
+                .updateForm(
+                    this.currentForm.id,
+                    // @ts-ignore
+                    this.currentForm.start.toISOString(),
+                    // @ts-ignore
+                    this.currentForm.end.toISOString(),
+                    this.currentForm.shouldSelect,
+                    // @ts-ignore
+                    this.selectAllAtForm,
+                    this.currentForm.electives.map((e) => e.id),
+                    !this.currentForm.active
+                )
+                .then((res) => {
+                    if (res) {
+                        this.toastService.green(`Form ${ this.currentForm.active ? 'disabled' : 'enabled' } successfully`);
+                        this.editDialog = false;
+                        this.ngOnInit();
+                    } else {
+                        this.editDialog = false;
+                        this.toastService.red('An unknown error occurred!');
+                    }
+                })
+                .catch(() => {
+                    this.editDialog = false;
+                    this.toastService.red('An unknown error occurred!');
+                });
+            }
+        });
+    }
+
+    createClasses(form: IFormModel) {
+        this.confirmationService.confirm({
+            message: `Are you sure you want to create classes for this form?`,
+            accept: () => {
+                this.formService.createClasses(form.id).then(() => {
+                    this.toastService.green('Create Classes successfully');
+                    this.ngOnInit();
+                }).catch(err => this.toastService.red(`Could not create classes: ${err?.message}`));
+            }
+        });
     }
 }

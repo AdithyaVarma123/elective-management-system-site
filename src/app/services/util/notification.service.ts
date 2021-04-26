@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import constants from '../../constants';
 import { DeviceUUID } from 'device-uuid';
 import { Router } from '@angular/router';
+import { scopes } from "../../models/general";
 @Injectable({
     providedIn: 'root'
 })
@@ -12,7 +13,7 @@ export class NotificationService {
 
     readonly VAPID_PUBLIC_KEY =
         'BM1czT5G3TkD1ieKRhPVozuoxC0DYwaC3np25qh0LaQpIYz0V6Ux5XdN-43TZ-oMuVwBMn53QXT5qV8wzgtXtqg';
-    private url = constants.server + '/notifications/';
+    private notification = constants.server + '/notifications/';
 
     public static getName(): string {
         const name = localStorage.getItem('name');
@@ -65,7 +66,7 @@ export class NotificationService {
                 .requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
                 .then((sub) => {
                     this.http
-                        .put(this.url + 'subscribe', {
+                        .put(this.notification + 'subscribe', {
                             sub,
                             name: NotificationService.getBrowserName() + NotificationService.getName()
                         })
@@ -82,7 +83,7 @@ export class NotificationService {
                 .requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
                 .then((sub) => {
                     this.http
-                        .post(this.url + 'unsubscribe', {
+                        .post(this.notification + 'unsubscribe', {
                             sub,
                             name: NotificationService.getBrowserName() + NotificationService.getName()
                         })
@@ -105,6 +106,22 @@ export class NotificationService {
                     break;
                 }
             }
+        });
+    }
+
+    public sendCustomNotification(
+        options: {
+            batches: string[];
+            users: string[];
+            role ?: scopes;
+            notifyAll: boolean;
+            title: string;
+            body: string;
+            replaceItems: boolean;
+        }
+    ): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.http.post(this.notification + 'custom-notify', options).subscribe((res: boolean) => resolve(res), err => reject(err));
         });
     }
 }
