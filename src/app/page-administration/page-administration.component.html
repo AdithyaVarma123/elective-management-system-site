@@ -1,146 +1,9 @@
-<!--<div class="p-grid parent center-vertical">
-    <div class="p-col-10 p-offset-1">
-        <p-accordion>
-            <div class="p-p-2">
-                <p-accordionTab header="Add users or electives">
-                    <div>
-                        <div class="p-col-12">
-                            <h2>Enter elective manually:</h2>
-                            <div class="p-grid">
-                                <div class="p-col-6">
-                                    <label for="ename">Name</label>
-                                    <input id="ename" type="text" pInputText [(ngModel)]="eName" />
-                                </div>
-                                <div class="p-col-6">
-                                    <label for="courseCode">Course Code</label>
-                                    <input id="courseCode" type="text" pInputText [(ngModel)]="courseCode" />
-                                </div>
-                            </div>
-                            <div class="p-grid">
-                                <div class="p-col-8">
-                                    <label for="desc">Description</label>
-                                </div>
-                            </div>
-                            <div class="p-grid">
-                                <div class="p-col-12">
-                                    <input id="desc" type="text" pInputText [(ngModel)]="desc" />
-                                </div>
-                            </div>
-                            <div class="p-grid">
-                                <div class="p-col-6">
-                                    <label for="version">Version</label>
-                                    <input id="version" type="number" pInputText [(ngModel)]="version" />
-                                </div>
-                                <div class="p-col-6">
-                                    <label for="strength">Strength</label>
-                                    <input id="strength" type="number" pInputText [(ngModel)]="strength" />
-                                </div>
-                            </div>
-                            <br />
-                            <div class="p-grid">
-                                <div class="p-col-10" *ngFor="let a of batches; let i = index; trackBy: trackByIdx">
-                                    <label for="batches{{ i }}">Batch {{ i + 1 }}: </label>
-                                    <input id="batches{{ i }}" type="text" pInputText [(ngModel)]="batches[i]" />
-                                </div>
-                                <div class="p-col-2">
-                                    <button class="p-button" (click)="addBatch()">+</button>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="p-grid">
-                                <div class="p-col-10" *ngFor="let a of teachers; let i = index; trackBy: trackByIdx">
-                                    <label>Teacher {{ i + 1 }}: </label>
-                                    <input type="text" pInputText [(ngModel)]="teachers[i]" />
-                                </div>
-                                <div class="p-col-2">
-                                    <button class="p-button" (click)="addTeacher()">+</button>
-                                </div>
-                            </div>
-                            Attributes:
-                            <br />
-                            <div class="p-grid">
-                                <div class="p-col-5" *ngFor="let a of attributes; let i = index; trackBy: trackByIdx">
-                                    <input
-                                        id="attributes{{ i }} key"
-                                        type="text"
-                                        placeholder="key"
-                                        pInputText
-                                        class="p-inputtext-sm"
-                                        [(ngModel)]="attributes[i]['key']"
-                                    />
-                                    <input
-                                        id="attributes{{ i }} value"
-                                        type="text"
-                                        placeholder="value"
-                                        pInputText
-                                        class="p-inputtext-sm"
-                                        [(ngModel)]="attributes[i]['value']"
-                                    />
-                                </div>
-                                <div class="p-col-5" *ngFor="let a of attributes; let i = index"></div>
-                                <div class="p-col-2">
-                                    <button class="p-button" (click)="addAttribute()">+</button>
-                                </div>
-                            </div>
-                            <div class="p-grid">
-                                <div class="p-col-12">
-                                    <button
-                                        pButton
-                                        type="button"
-                                        label="Submit"
-                                        class="p-button float-left"
-                                        (click)="addElective()"
-                                    ></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h2>Upload CSV for adding elective:</h2>
-                        <p-fileUpload
-                            name="myfile[]"
-                            url="http://localhost:3000/upload"
-                            customUpload="true"
-                            chooseLabel="upload"
-                            uploadLabel="Upload"
-                            (uploadHandler)="uploadCSVforElective($event.files)"
-                        ></p-fileUpload>
-
-
-                    </div>
-                </p-accordionTab>
-            </div>
-            <div class="p-p-2">
-                <p-accordionTab header="Remove users">
-
-                </p-accordionTab>
-            </div>
-            <div class="p-p-2">
-                <p-accordionTab header="Update users or electives">
-                    <div class="p-col-12">
-                    </div>
-                    <div class="p-col-12">
-                        <h2>Update Elective:</h2>
-                    </div>
-                </p-accordionTab>
-            </div>
-            <div class="p-p-2">
-                <p-accordionTab header="Get user log details:">
-                    <div class="p-col-12">
-                        <h2>Get user log details:</h2>
-
-                    </div>
-                </p-accordionTab>
-            </div>
-        </p-accordion>
-    </div>
-</div>-->
 <div class="p-grid">
     <div class="p-col-8 p-offset-2">
         <p-tabView>
             <p-tabPanel header="Add users">
                 <div class="p-grid">
                     <form class="p-col-12" autocomplete="off">
-                        <h2>Enter user manually:</h2>
                         <label for="rollno" class="margin">Roll number</label>
                         <input id="rollno" type="text" pInputText [(ngModel)]="rollNo" [ngModelOptions]="{standalone: true}" />
                         <label for="uname" class="margin">Name</label>
@@ -193,16 +56,15 @@
             <p-tabPanel header="Update users">
                 <form class="p-grid" autocomplete="off">
                     <div class="p-col-12">
-                        <h2>Update User:</h2>
                         <label for="updateName" class="margin">Enter Name:</label>
-                        <input id="updateName" type="text" pInputText [(ngModel)]="updateName" class="margin"[ngModelOptions]="{standalone: true}" autocomplete="off" />
+                        <input id="updateName" type="text" pInputText [(ngModel)]="updateName" class="margin" name="updateName" [ngModelOptions]="{standalone: true}" autocomplete="off" />
                         <label for="updatePass" class="margin">Password:</label>
-                        <input id="updatePass" type="password" pInputText [(ngModel)]="updatePassword" class="margin"[ngModelOptions]="{standalone: true}" autocomplete="off" />
+                        <input id="updatePass" type="password" pInputText [(ngModel)]="updatePassword" class="margin" name="updatePass" [ngModelOptions]="{standalone: true}" autocomplete="off" />
                         <br/>
                         <label for="updateRollNo" class="margin">Roll no:</label>
-                        <input id="updateRollNo" type="text" pInputText [(ngModel)]="updateRollNo" class="margin"[ngModelOptions]="{standalone: true}" />
+                        <input id="updateRollNo" type="text" pInputText [(ngModel)]="updateRollNo" class="margin" [ngModelOptions]="{standalone: true}" />
                         <label for="updateBatch" class="margin">Batch:</label>
-                        <input id="updateBatch" type="text" pInputText [(ngModel)]="updateBatch" class="margin"[ngModelOptions]="{standalone: true}" />
+                        <input id="updateBatch" type="text" pInputText [(ngModel)]="updateBatch" class="margin" [ngModelOptions]="{standalone: true}" />
                         <br/>
                         <button class="p-button p-button-info margin" (click)="updateUser()">Update</button>
                     </div>
@@ -217,7 +79,8 @@
                     (onLazyLoad)="getLogDetails($event)"
                     [paginator]="true"
                     [rows]="25"
-                    [totalRecords]="totalRecords">
+                    [totalRecords]="totalRecords"
+                    styleClass="p-datatable-gridlines">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns">

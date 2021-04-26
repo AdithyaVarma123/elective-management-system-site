@@ -4,7 +4,7 @@ import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
 import { LazyLoadEvent } from 'primeng/api';
-import { ElectivesService } from '../services/electives/electives.service';
+
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -21,8 +21,6 @@ export class PageAdministrationComponent implements OnInit {
     version;
     strength;
     batches = [''];
-    teachers = [''];
-    attributes = [{ value: '', key: '' }];
     uname = '';
     rollNo = '';
     username = '';
@@ -52,8 +50,7 @@ export class PageAdministrationComponent implements OnInit {
 
     constructor(
         private userService: UserService,
-        private toast: ToastService,
-        private electiveService: ElectivesService
+        private toast: ToastService
     ) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -86,34 +83,7 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .updateUser(body)
             .then((res) => {
-                if (res) this.toast.green('elective added');
-            })
-            .catch(() => {
-                this.toast.red(constants.unknownError);
-            });
-    }
-
-    addElective(): void {
-        for (const v of this.batches) {
-            if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(v)) {
-                this.toast.red('invalid batch code');
-                return;
-            }
-        }
-        const body = {
-            name: this.eName,
-            description: this.desc,
-            courseCode: this.courseCode,
-            version: '' + this.version,
-            strength: '' + this.strength,
-            attributes: this.attributes,
-            batches: this.batches,
-            teachers: this.teachers
-        };
-        this.electiveService
-            .addElective(body)
-            .then((res) => {
-                if (res) this.toast.green('elective added');
+                if (res) this.toast.green('User updated');
             })
             .catch(() => {
                 this.toast.red(constants.unknownError);
@@ -123,7 +93,7 @@ export class PageAdministrationComponent implements OnInit {
     getLogDetails(event: LazyLoadEvent): void {
         this.loading = true;
         this.page = event.first === 0 ? 0 : event.first / 25;
-        this.userService.getlogDetails(this.page, 'time').then((data) => {
+        this.userService.getlogDetails(this.page, 'createdAt').then((data) => {
             this.records = [...data.docs];
             this.totalRecords = data.count;
             this.loading = false;
@@ -180,17 +150,6 @@ export class PageAdministrationComponent implements OnInit {
             });
     }
 
-    uploadCSVforElective(evt: any): void {
-        this.electiveService
-            .addElectivesCSV(evt[0], true)
-            .then((res) => {
-                if (res) this.toast.green('Electives added');
-            })
-            .catch(() => {
-                this.toast.red(constants.unknownError);
-            });
-    }
-
     deleteUser(): void {
         this.userService
             .deleteUser(this.delRol)
@@ -200,18 +159,5 @@ export class PageAdministrationComponent implements OnInit {
             .catch(() => {
                 this.toast.red(constants.unknownError);
             });
-    }
-    addBatch() {
-        this.batches.push('');
-    }
-    addTeacher() {
-        this.teachers.push('');
-    }
-    addAttribute() {
-        this.attributes.push({ value: '', key: '' });
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    trackByIdx(index: number, obj: any): any {
-        return index;
     }
 }

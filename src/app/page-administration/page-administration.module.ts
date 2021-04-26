@@ -30,7 +30,6 @@ const PageAdministrationRoutes: Routes = [
         RouterModule.forChild(PageAdministrationRoutes),
         ButtonModule,
         FileUploadModule,
-        AccordionModule,
         TabViewModule,
         DropdownModule
     ],
