@@ -4,6 +4,7 @@ import { boolToString } from '../../util/general';
 import { HttpClient } from '@angular/common/http';
 import { IElectiveModel } from '../../models/elective-model';
 import * as qs from 'query-string';
+import { PaginationModel } from "../../models/pagination-model";
 
 @Injectable({
     providedIn: 'root'
@@ -47,8 +48,14 @@ export class ElectivesService {
         });
     }
 
-    search(pageNumber: number, name?: string, courseCode?: string, sortBy = 'name'): Promise<IElectiveModel[]> {
-        return new Promise<IElectiveModel[]>((resolve, reject) => {
+    updateElectives(body: any): Promise<{ status: boolean, message ?: string }> {
+        return new Promise<{status: boolean; message?: string}>((resolve, reject) => {
+            this.http.post(this.electives, body).subscribe(() => resolve({ status: true }), (err) => reject(err));
+        });
+    }
+
+    search(pageNumber: number, name?: string, courseCode?: string, sortBy = 'name'): Promise<PaginationModel<IElectiveModel>> {
+        return new Promise<PaginationModel<IElectiveModel>>((resolve, reject) => {
             this.http
                 .get(
                     this.electives +
@@ -64,10 +71,16 @@ export class ElectivesService {
                 .subscribe(
                     (res) => {
                         // @ts-ignore
-                        resolve(res.docs as IElectiveModel[]);
+                        resolve(res);
                     },
                     (err) => reject(err)
                 );
+        });
+    }
+
+    deleteElective(id: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.http.delete(this.electives + '?' + qs.stringify({ id })).subscribe(() => resolve(true), (err) => reject(err));
         });
     }
 }

@@ -96,9 +96,9 @@ export class PageFormsComponent implements OnInit {
 
     search(event) {
         if (this.searchBy === 'Name') {
-            this.electivesService.search(0, event.query).then((res) => (this.suggestedElectives = res));
+            this.electivesService.search(0, event.query).then((res) => (this.suggestedElectives = res.docs));
         } else {
-            this.electivesService.search(0, undefined, event.query).then((res) => (this.suggestedElectives = res));
+            this.electivesService.search(0, undefined, event.query).then((res) => (this.suggestedElectives = res.docs));
         }
     }
 
@@ -141,7 +141,7 @@ export class PageFormsComponent implements OnInit {
                 this.start.toISOString(),
                 this.end.toISOString(),
                 this.numElectives,
-                this.shouldSelectAll,
+                this.shouldSelectAll === 'Yes',
                 this.selectedElectives.map((e) => e.id)
             )
             .then((res) => {
@@ -235,7 +235,7 @@ export class PageFormsComponent implements OnInit {
                 this.formService
                     .deleteForm(form.id)
                     .then(() => {
-                        this.toastService.green('Form updated successfully');
+                        this.toastService.green('Form deleted successfully');
                         this.ngOnInit();
                     })
                     .catch(() => {
@@ -258,6 +258,13 @@ export class PageFormsComponent implements OnInit {
             this.responses = [...res.docs];
             this.loading = false;
             this.totalRecords = res.count;
-        });
+        }).catch();
+    }
+
+    generateList(form: IFormModel) {
+        this.toastService.blue('Generating response results!');
+        this.formService.generateList(form.id).then(() => {
+            this.toastService.green('Downloaded generated list successfully!');
+        }).catch(err => this.toastService.red(`An unexpected error occurred: ${err?.message}`));
     }
 }
