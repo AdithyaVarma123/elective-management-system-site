@@ -70,7 +70,8 @@
                     </div>
                 </div>
             </p-tabPanel>
-            <p-tabPanel header="Active forms" [selected]="this.authService.getScope() === 'teacher'">
+            <p-tabPanel header="Active forms" [selected]="true">
+                <h3 *ngIf="!!!activeForms.length">No active forms!</h3>
                 <div class="p-grid" *ngFor="let item of activeForms; let i = index">
                     <div class="p-col-10">
                         <p-card class="item" header="Electives form {{ i + 1 }}" (click)="openForm(i)">
@@ -98,6 +99,7 @@
                     [loading]="loading"
                     (onLazyLoad)="setPageForms($event)"
                     dataKey="id"
+                    styleClass="p-datatable-gridlines"
                 >
                     <ng-template pTemplate="header">
                         <th>Start</th>
@@ -119,8 +121,14 @@
                                 <button
                                     pButton
                                     icon="pi pi-trash"
-                                    class="p-button-rounded p-button-danger"
+                                    class="p-button-rounded p-button-danger p-mr-2"
                                     (click)="deleteForm(form)"
+                                ></button>
+                                <button
+                                    pButton
+                                    icon="pi pi-file-excel"
+                                    class="p-button-rounded p-button-info p-mr-2"
+                                    (click)="generateList(form)"
                                 ></button>
                             </td>
                         </tr>
@@ -216,6 +224,7 @@
         [loading]="loading"
         (onLazyLoad)="setPageResponses($event)"
         dataKey="id"
+        styleClass="p-datatable-gridlines"
     >
         <ng-template pTemplate="header">
             <th>User</th>

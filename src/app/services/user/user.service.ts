@@ -147,7 +147,7 @@ export class UserService {
         });
     }
 
-    getlogDetails(page, sortBy, dir = 'asc'): any {
+    getlogDetails(page, sortBy, dir = 'desc'): any {
         const query = qs.stringify({
             page: page,
             sortBy: sortBy,

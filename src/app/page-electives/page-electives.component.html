@@ -1,0 +1,250 @@
+<!-- Admin, teacher scope -->
+
+<div class="p-grid" *ngIf="!isStudent">
+    <div class="p-col-8 p-offset-2">
+        <p-tabView>
+            <p-tabPanel header="View / Edit electives">
+                <p-table
+                    [value]="electives"
+                    [lazy]="true"
+                    [paginator]="true"
+                    [rows]="25"
+                    [totalRecords]="totalRecords"
+                    [loading]="loading"
+                    (onLazyLoad)="setPageElectives($event)"
+                    dataKey="id"
+                    styleClass="p-datatable-gridlines"
+                >
+                    <ng-template pTemplate="header">
+                        <th>Name</th>
+                        <th>Course code</th>
+                        <th>Version</th>
+                        <th>Strength</th>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-elective>
+                        <tr>
+                            <td>{{ elective.name }}</td>
+                            <td>{{ elective.courseCode }}</td>
+                            <td>{{ elective.version }}</td>
+                            <td>{{ elective.strength }}</td>
+                            <td>
+                                <button
+                                    pButton
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success p-mr-2"
+                                    (click)="editElective(elective)"
+                                ></button>
+                                <button
+                                    pButton
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger"
+                                    [disabled]="isTeacher"
+                                    (click)="deleteElective(elective)"
+                                ></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+            <p-tabPanel header="Add electives">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <label for="ename" class="margin">Name</label>
+                        <input id="ename" type="text" pInputText [(ngModel)]="eName" class="margin"/>
+                        <label for="courseCode" class="margin">Course Code</label>
+                        <input id="courseCode" class="margin" type="text" pInputText [(ngModel)]="courseCode"/>
+                        <br/>
+                        <div class="p-grid">
+                            <div class="p-col-8 center-vertical">
+                                <label for="desc" class="margin">Description</label>
+                                <textarea id="desc" [rows]="5" cols="100" pInputTextarea autoResize="autoResize" class="margin" [(ngModel)]="desc"></textarea>
+                            </div>
+                        </div>
+                        <label for="version" class="margin">Version</label>
+                        <input id="version" class="margin" type="number" pInputText [(ngModel)]="version"/>
+                        <label for="strength" class="margin">Strength</label>
+                        <input id="strength" class="margin" type="number" pInputText [(ngModel)]="strength"/>
+                        <br />
+                        <div class="p-grid">
+                            <div class="p-col-10" *ngFor="let a of batches; let i = index; trackBy: trackByIdx">
+                                <label for="batches{{ i }}" class="margin">Batch {{ i + 1 }}: </label>
+                                <input id="batches{{ i }}" class="margin" type="text" pInputText [(ngModel)]="batches[i]"/>
+                                <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeBatch(i)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                            </div>
+                            <div class="p-col-2 center-vertical">
+                                <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addBatch()" icon="pi pi-plus" type="button"></button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="p-grid">
+                            <div class="p-col-10" *ngFor="let a of teachers; let i = index; trackBy: trackByIdx">
+                                <label class="margin">Teacher {{ i + 1 }}: </label>
+                                <input type="text" class="margin" pInputText [(ngModel)]="teachers[i]"/>
+                                <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeTeacher(i)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                            </div>
+                            <div class="p-col-2 center-vertical">
+                                <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addTeacher()" icon="pi pi-plus" type="button"></button>
+                            </div>
+                        </div>
+                        <div class="p-grid">
+                            <div class="p-col-10" *ngFor="let a of attributes; let i = index; trackBy: trackByIdx">
+                                <label class="margin">Attribute {{ i + 1 }}: </label>
+                                <input
+                                    id="attributes{{ i }} key"
+                                    type="text"
+                                    placeholder="key"
+                                    pInputText
+                                    class="p-inputtext-sm margin"
+                                    [(ngModel)]="attributes[i]['key']"
+
+                                />
+                                <input
+                                    id="attributes{{ i }} value"
+                                    type="text"
+                                    placeholder="value"
+                                    pInputText
+                                    class="p-inputtext-sm margin"
+                                    [(ngModel)]="attributes[i]['value']"
+                                />
+                                <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeAttribute(i)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                            </div>
+                            <div class="p-col-2 center-vertical">
+                                <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addAttribute()" icon="pi pi-plus" type="button"></button>
+                            </div>
+                        </div>
+                        <button
+                            pButton
+                            type="button"
+                            label="Add elective"
+                            class="p-button margin"
+                            (click)="addElective()"
+                        ></button>
+                    </div>
+                    <div class="p-col-12">
+                        <h2>Upload CSV for adding elective:</h2>
+                        <p-fileUpload
+                            name="myfile[]"
+                            url="http://localhost:3000/upload"
+                            customUpload="true"
+                            chooseLabel="upload"
+                            uploadLabel="Upload"
+                            (uploadHandler)="uploadCSVForElective($event.files)"
+                        ></p-fileUpload>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>
+
+<!-- Edit elective dialog -->
+
+<p-dialog [(visible)]="editDialog" [style]="{ width: '950px' }" header="Edit elective" [modal]="true">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <label for="ename1" class="margin">Name</label>
+            <input id="ename1" type="text" pInputText [(ngModel)]="selectedElective.name" class="margin"/>
+            <label for="courseCode1" class="margin">Course Code</label>
+            <input id="courseCode1" class="margin" type="text" pInputText [(ngModel)]="selectedElective.courseCode"/>
+            <br/>
+            <div class="p-grid">
+                <div class="p-col-8 center-vertical">
+                    <label for="desc1" class="margin">Description</label>
+                    <textarea id="desc1" [rows]="5" cols="100" pInputTextarea autoResize="autoResize" class="margin" [(ngModel)]="selectedElective.description"></textarea>
+                </div>
+            </div>
+            <label for="version" class="margin">Version</label>
+            <input id="version1" class="margin" type="number" pInputText [(ngModel)]="selectedElective.version"/>
+            <label for="strength" class="margin">Strength</label>
+            <input id="strength1" class="margin" type="number" pInputText [(ngModel)]="selectedElective.strength"/>
+            <br />
+            <div class="p-grid">
+                <div class="p-col-10" *ngFor="let a of selectedElective.batches; let i = index; trackBy: trackByIdx">
+                    <label for="1batches{{ i }}" class="margin">Batch {{ i + 1 }}: </label>
+                    <input id="1batches{{ i }}" class="margin" type="text" pInputText [(ngModel)]="selectedElective.batches[i]"/>
+                    <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeBatch(i, 1)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                </div>
+                <div class="p-col-2 center-vertical">
+                    <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addBatch(1)" icon="pi pi-plus" type="button"></button>
+                </div>
+            </div>
+            <br />
+            <div class="p-grid">
+                <div class="p-col-10" *ngFor="let a of selectedElective.teachers; let i = index; trackBy: trackByIdx">
+                    <label class="margin p-d-inline">Teacher {{ i + 1 }}: </label>
+                    <input type="text" class="margin p-d-inline" pInputText [(ngModel)]="selectedElective.teachers[i]"/>
+                    <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeTeacher(i, 1)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                </div>
+                <div class="p-col-2 center-vertical">
+                    <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addTeacher(1)" icon="pi pi-plus" type="button"></button>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-10" *ngFor="let a of selectedElective.attributes; let i = index; trackBy: trackByIdx">
+                    <label class="margin">Attribute {{ i + 1 }}: </label>
+                    <input
+                        type="text"
+                        placeholder="key"
+                        pInputText
+                        class="p-inputtext-sm margin"
+                        [(ngModel)]="selectedElective.attributes[i]['key']"
+
+                    />
+                    <input
+                        type="text"
+                        placeholder="value"
+                        pInputText
+                        class="p-inputtext-sm margin"
+                        [(ngModel)]="selectedElective.attributes[i]['value']"
+                    />
+                    <button class="p-button p-button-icon-only p-button-rounded p-button-danger p-button-sm margin" (click)="removeAttribute(i, 1)" pButton icon="pi pi-times" type="button" [disabled]="i === 0"></button>
+                </div>
+                <div class="p-col-2 center-vertical">
+                    <button class="p-button p-button-icon-only p-button-rounded" pButton (click)="addAttribute(1)" icon="pi pi-plus" type="button"></button>
+                </div>
+            </div>
+            <button
+                pButton
+                type="button"
+                label="Update elective"
+                class="p-button margin"
+                (click)="updateElective()"
+            ></button>
+        </div>
+    </div>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+<!-- Student scope -->
+
+<div class="p-grid" *ngIf="isStudent">
+    <div class="p-col-8 p-offset-2">
+        <p-table
+            [value]="electives"
+            [lazy]="true"
+            [paginator]="true"
+            [rows]="25"
+            [totalRecords]="totalRecords"
+            [loading]="loading"
+            (onLazyLoad)="setPageElectives($event)"
+            dataKey="id"
+            styleClass="p-datatable-gridlines"
+        >
+            <ng-template pTemplate="header">
+                <th>Name</th>
+                <th>Course code</th>
+                <th>Version</th>
+                <th>Description</th>
+            </ng-template>
+            <ng-template pTemplate="body" let-elective>
+                <tr>
+                    <td>{{ elective.name }}</td>
+                    <td>{{ elective.courseCode }}</td>
+                    <td>{{ elective.version }}</td>
+                    <td>{{ elective.description }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -36,6 +36,11 @@ const routes: Routes = [
         path: 'fill-form/:id',
         canActivate: [AuthGuard],
         loadChildren: () => import('./page-fill-form/page-fill-form.module').then((m) => m.PageFillFormModule)
+    },
+    {
+        path: 'electives',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-electives/page-electives.module').then(m => m.PageElectivesModule)
     }
 ];
 @NgModule({

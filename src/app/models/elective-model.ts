@@ -10,6 +10,6 @@ export interface IElectiveModel {
     version: number;
     strength: number;
     attributes: electiveAttributes;
-    batches: IBatchModel[];
-    teachers: IUserModel[];
+    batches: IBatchModel[] | string[];
+    teachers: IUserModel[] | string[];
 }

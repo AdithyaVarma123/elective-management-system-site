@@ -124,4 +124,27 @@ export class FormsService {
             );
         });
     }
+
+    public generateList(id: string) {
+        return new Promise<boolean>((resolve, reject) => {
+            this.http.get(this.forms + 'generate-elective-list?' + qs.stringify({ id }))
+                .subscribe((res: { status: boolean, downloadUri: string, failed ?: any[] }) => {
+                    if (res.status) {
+                        this.http.get(res.downloadUri, { responseType: 'blob' })
+                            .subscribe(fileRes => {
+                                const a = document.createElement('a');
+                                const objectUrl = URL.createObjectURL(fileRes);
+                                a.href = objectUrl;
+                                a.download = `${id}.csv`;
+                                a.click();
+                                URL.revokeObjectURL(objectUrl);
+                                resolve(true);
+                            }, err => reject(err));
+                    }
+                    else {
+                        reject({ message: res?.failed });
+                    }
+                }, err => reject(err));
+        });
+    }
 }
