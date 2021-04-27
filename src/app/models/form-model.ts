@@ -1,4 +1,5 @@
 import { IElectiveModel } from './elective-model';
+import { IUserModel } from './user-model';
 
 export interface IFormModel {
     id?: string;
@@ -9,4 +10,8 @@ export interface IFormModel {
     electives: IElectiveModel[];
     state?: boolean;
     active: boolean;
+    explicit: {
+        user: IUserModel;
+        elective: IElectiveModel;
+    }[];
 }

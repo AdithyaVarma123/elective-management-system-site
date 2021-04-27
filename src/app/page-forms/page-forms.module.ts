@@ -15,6 +15,8 @@ import { ChipModule } from 'primeng/chip';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PickListModule } from 'primeng/picklist';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const PageElectivesRoutes: Routes = [
     {
@@ -38,7 +40,9 @@ const PageElectivesRoutes: Routes = [
         ChipModule,
         TableModule,
         DialogModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        PickListModule,
+        ProgressSpinnerModule
     ],
     declarations: [PageFormsComponent]
 })

@@ -8,11 +8,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from "primeng/tabview";
-import { DropdownModule } from "primeng/dropdown";
-import { ChipModule } from "primeng/chip";
-import { CardModule } from "primeng/card";
-import { InputTextareaModule } from "primeng/inputtextarea";
+import { TabViewModule } from 'primeng/tabview';
+import { DropdownModule } from 'primeng/dropdown';
+import { ChipModule } from 'primeng/chip';
+import { CardModule } from 'primeng/card';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 const PageAdministrationRoutes: Routes = [
     {

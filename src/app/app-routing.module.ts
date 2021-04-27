@@ -40,7 +40,7 @@ const routes: Routes = [
     {
         path: 'electives',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./page-electives/page-electives.module').then(m => m.PageElectivesModule)
+        loadChildren: () => import('./page-electives/page-electives.module').then((m) => m.PageElectivesModule)
     }
 ];
 @NgModule({
