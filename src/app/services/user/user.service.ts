@@ -156,7 +156,7 @@ export class UserService {
         return new Promise<any>((resolve) => {
             const outer = this.http.get(this.user + 'tracked-data?' + query).subscribe(
                 (res: any) => {
-                    res.docs = res.docs.map(e => ({
+                    res.docs = res.docs.map((e) => ({
                         ...e,
                         rollNo: e.user.rollNo,
                         createdAt: new Date(e.createdAt).toLocaleString()

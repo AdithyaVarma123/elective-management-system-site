@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { IFormModel } from '../models/form-model';
 import { ConfirmationService } from 'primeng/api';
 import { IResponseModel } from '../models/response-model';
+import { rawListType } from '../models/general';
 
 interface item {
     name: string;
@@ -36,6 +37,7 @@ export class PageFormsComponent implements OnInit {
     loading = false;
     editDialog = false;
     currentForm: IFormModel = {
+        explicit: [],
         active: false,
         electives: [],
         end: undefined,
@@ -49,6 +51,14 @@ export class PageFormsComponent implements OnInit {
 
     responsesDialog = false;
     responses: IResponseModel[] = [];
+
+    explicitDialog = false;
+    rawList: rawListType = [];
+    rawListTarget: rawListType = [];
+    loadingExplicit = false;
+    slide = true;
+    newExplicit: rawListType = [];
+    electiveOptions: IElectiveModel[] = [];
 
     constructor(
         private formService: FormsService,
@@ -255,18 +265,24 @@ export class PageFormsComponent implements OnInit {
     setPageResponses(event) {
         this.loading = true;
         this.page = event.first === 0 ? 0 : event.first / 25;
-        this.formService.getResponses(this.currentForm.id, this.page).then((res) => {
-            this.responses = [...res.docs];
-            this.loading = false;
-            this.totalRecords = res.count;
-        }).catch();
+        this.formService
+            .getResponses(this.currentForm.id, this.page)
+            .then((res) => {
+                this.responses = [...res.docs];
+                this.loading = false;
+                this.totalRecords = res.count;
+            })
+            .catch();
     }
 
     generateList(form: IFormModel) {
         this.toastService.blue('Generating response results!');
-        this.formService.generateList(form.id).then(() => {
-            this.toastService.green('Downloaded generated list successfully!');
-        }).catch(err => this.toastService.red(`An unexpected error occurred: ${err?.message}`));
+        this.formService
+            .generateList(form.id)
+            .then(() => {
+                this.toastService.green('Downloaded generated list successfully!');
+            })
+            .catch((err) => this.toastService.red(`An unexpected error occurred: ${err?.message}`));
     }
 
     swapForm(form: IFormModel) {
@@ -276,35 +292,37 @@ export class PageFormsComponent implements OnInit {
         // @ts-ignore
         this.selectAllAtForm = this.currentForm.selectAllAtForm ? this.option[0].value : this.option[1].value;
         this.confirmationService.confirm({
-            message: `Are you sure you want to ${ this.currentForm.active ? 'disable' : 'enable' } this form?`,
+            message: `Are you sure you want to ${this.currentForm.active ? 'disable' : 'enable'} this form?`,
             accept: () => {
                 this.formService
-                .updateForm(
-                    this.currentForm.id,
-                    // @ts-ignore
-                    this.currentForm.start.toISOString(),
-                    // @ts-ignore
-                    this.currentForm.end.toISOString(),
-                    this.currentForm.shouldSelect,
-                    // @ts-ignore
-                    this.selectAllAtForm,
-                    this.currentForm.electives.map((e) => e.id),
-                    !this.currentForm.active
-                )
-                .then((res) => {
-                    if (res) {
-                        this.toastService.green(`Form ${ this.currentForm.active ? 'disabled' : 'enabled' } successfully`);
-                        this.editDialog = false;
-                        this.ngOnInit();
-                    } else {
+                    .updateForm(
+                        this.currentForm.id,
+                        // @ts-ignore
+                        this.currentForm.start.toISOString(),
+                        // @ts-ignore
+                        this.currentForm.end.toISOString(),
+                        this.currentForm.shouldSelect,
+                        // @ts-ignore
+                        this.selectAllAtForm,
+                        this.currentForm.electives.map((e) => e.id),
+                        !this.currentForm.active
+                    )
+                    .then((res) => {
+                        if (res) {
+                            this.toastService.green(
+                                `Form ${this.currentForm.active ? 'disabled' : 'enabled'} successfully`
+                            );
+                            this.editDialog = false;
+                            this.ngOnInit();
+                        } else {
+                            this.editDialog = false;
+                            this.toastService.red('An unknown error occurred!');
+                        }
+                    })
+                    .catch(() => {
                         this.editDialog = false;
                         this.toastService.red('An unknown error occurred!');
-                    }
-                })
-                .catch(() => {
-                    this.editDialog = false;
-                    this.toastService.red('An unknown error occurred!');
-                });
+                    });
             }
         });
     }
@@ -313,10 +331,55 @@ export class PageFormsComponent implements OnInit {
         this.confirmationService.confirm({
             message: `Are you sure you want to create classes for this form?`,
             accept: () => {
-                this.formService.createClasses(form.id).then(() => {
-                    this.toastService.green('Create Classes successfully');
-                    this.ngOnInit();
-                }).catch(err => this.toastService.red(`Could not create classes: ${err?.message}`));
+                this.formService
+                    .createClasses(form.id)
+                    .then(() => {
+                        this.toastService.green('Create Classes successfully');
+                        this.ngOnInit();
+                    })
+                    .catch((err) => this.toastService.red(`Could not create classes: ${err?.message}`));
+            }
+        });
+    }
+
+    editExplicit(form: IFormModel) {
+        this.slide = true;
+        this.explicitDialog = true;
+        this.loadingExplicit = true;
+        this.currentForm = { ...form };
+        this.formService.getRawList(form.id).then((res) => {
+            this.rawList = res;
+            this.rawListTarget = [...form.explicit];
+            this.loadingExplicit = false;
+        });
+    }
+
+    switchToConfirmation() {
+        this.electiveOptions = [...this.currentForm.electives];
+        // @ts-ignore
+        this.rawListTarget = this.rawListTarget.map((e) => ({
+            user: e.user,
+            elective: e.elective ? e.elective.id : this.electiveOptions[0].id
+        }));
+        this.slide = !this.slide;
+    }
+
+    setupNewExplicitItems() {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to add these explicit choices for selected users?',
+            accept: () => {
+                this.explicitDialog = false;
+                this.formService
+                    .setExplicit(
+                        this.currentForm.id,
+                        // @ts-ignore
+                        this.rawListTarget.map((e) => ({ user: e.user.id, elective: e.elective }))
+                    )
+                    .then(() => {
+                        this.ngOnInit();
+                        this.toastService.green('Updated successfully!');
+                    })
+                    .catch((err) => this.toastService.red(`Could not update: ${err?.message}`));
             }
         });
     }

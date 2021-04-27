@@ -4,7 +4,7 @@ import { boolToString } from '../../util/general';
 import { HttpClient } from '@angular/common/http';
 import { IElectiveModel } from '../../models/elective-model';
 import * as qs from 'query-string';
-import { PaginationModel } from "../../models/pagination-model";
+import { PaginationModel } from '../../models/pagination-model';
 
 @Injectable({
     providedIn: 'root'
@@ -48,13 +48,21 @@ export class ElectivesService {
         });
     }
 
-    updateElectives(body: any): Promise<{ status: boolean, message ?: string }> {
-        return new Promise<{status: boolean; message?: string}>((resolve, reject) => {
-            this.http.post(this.electives, body).subscribe(() => resolve({ status: true }), (err) => reject(err));
+    updateElectives(body: any): Promise<{ status: boolean; message?: string }> {
+        return new Promise<{ status: boolean; message?: string }>((resolve, reject) => {
+            this.http.post(this.electives, body).subscribe(
+                () => resolve({ status: true }),
+                (err) => reject(err)
+            );
         });
     }
 
-    search(pageNumber: number, name?: string, courseCode?: string, sortBy = 'name'): Promise<PaginationModel<IElectiveModel>> {
+    search(
+        pageNumber: number,
+        name?: string,
+        courseCode?: string,
+        sortBy = 'name'
+    ): Promise<PaginationModel<IElectiveModel>> {
         return new Promise<PaginationModel<IElectiveModel>>((resolve, reject) => {
             this.http
                 .get(
@@ -80,7 +88,10 @@ export class ElectivesService {
 
     deleteElective(id: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.http.delete(this.electives + '?' + qs.stringify({ id })).subscribe(() => resolve(true), (err) => reject(err));
+            this.http.delete(this.electives + '?' + qs.stringify({ id })).subscribe(
+                () => resolve(true),
+                (err) => reject(err)
+            );
         });
     }
 }

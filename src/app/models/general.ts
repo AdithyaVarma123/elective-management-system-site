@@ -1,3 +1,6 @@
+import { IUserModel } from './user-model';
+import { IElectiveModel } from './elective-model';
+
 export type scopes = 'student' | 'admin' | 'teacher';
 
 export interface AuthTokens {
@@ -12,3 +15,5 @@ export interface RefreshTokens {
 }
 
 export type electiveAttributes = { key: string; value: string }[];
+
+export type rawListType = { user: IUserModel; elective: IElectiveModel | undefined }[];

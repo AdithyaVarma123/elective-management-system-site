@@ -5,14 +5,41 @@
                 <div class="p-grid">
                     <form class="p-col-12" autocomplete="off">
                         <label for="rollno" class="margin">Roll number</label>
-                        <input id="rollno" type="text" pInputText [(ngModel)]="rollNo" [ngModelOptions]="{standalone: true}" />
+                        <input
+                            id="rollno"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="rollNo"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
                         <label for="uname" class="margin">Name</label>
-                        <input id="uname" type="text" pInputText [(ngModel)]="uname" [ngModelOptions]="{standalone: true}" />
-                        <br/>
+                        <input
+                            id="uname"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="uname"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
+                        <br />
                         <label for="username" class="margin">Username</label>
-                        <input id="username" type="text" class="margin" pInputText [(ngModel)]="username"[ngModelOptions]="{standalone: true}" />
+                        <input
+                            id="username"
+                            type="text"
+                            class="margin"
+                            pInputText
+                            [(ngModel)]="username"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
                         <label for="role" class="margin">User Role</label>
-                        <p-dropdown id="role" class="margin" [(ngModel)]="userRole" [options]="roleOptions" optionLabel="name" optionValue="value" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                        <p-dropdown
+                            id="role"
+                            class="margin"
+                            [(ngModel)]="userRole"
+                            [options]="roleOptions"
+                            optionLabel="name"
+                            optionValue="value"
+                            [ngModelOptions]="{ standalone: true }"
+                        ></p-dropdown>
                         <label for="batch" *ngIf="userRole === 'student'" class="margin">Batch</label>
                         <input
                             id="batch"
@@ -21,8 +48,9 @@
                             pInputText
                             [(ngModel)]="batch"
                             class="margin"
-                        [ngModelOptions]="{standalone: true}" />
-                        <br/>
+                            [ngModelOptions]="{ standalone: true }"
+                        />
+                        <br />
                         <button
                             pButton
                             type="button"
@@ -48,7 +76,14 @@
                 <form class="p-grid" autocomplete="off">
                     <div class="p-col-12">
                         <label for="delrol" class="margin">Enter Roll Number:</label>
-                        <input id="delrol" type="text" pInputText [(ngModel)]="delRol" class="margin"[ngModelOptions]="{standalone: true}" />
+                        <input
+                            id="delrol"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="delRol"
+                            class="margin"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
                         <button class="p-button p-button-danger margin" (click)="deleteUser()">Delete</button>
                     </div>
                 </form>
@@ -57,15 +92,47 @@
                 <form class="p-grid" autocomplete="off">
                     <div class="p-col-12">
                         <label for="updateName" class="margin">Enter Name:</label>
-                        <input id="updateName" type="text" pInputText [(ngModel)]="updateName" class="margin" name="updateName" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+                        <input
+                            id="updateName"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="updateName"
+                            class="margin"
+                            name="updateName"
+                            [ngModelOptions]="{ standalone: true }"
+                            autocomplete="off"
+                        />
                         <label for="updatePass" class="margin">Password:</label>
-                        <input id="updatePass" type="password" pInputText [(ngModel)]="updatePassword" class="margin" name="updatePass" [ngModelOptions]="{standalone: true}" autocomplete="off" />
-                        <br/>
+                        <input
+                            id="updatePass"
+                            type="password"
+                            pInputText
+                            [(ngModel)]="updatePassword"
+                            class="margin"
+                            name="updatePass"
+                            [ngModelOptions]="{ standalone: true }"
+                            autocomplete="off"
+                        />
+                        <br />
                         <label for="updateRollNo" class="margin">Roll no:</label>
-                        <input id="updateRollNo" type="text" pInputText [(ngModel)]="updateRollNo" class="margin" [ngModelOptions]="{standalone: true}" />
+                        <input
+                            id="updateRollNo"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="updateRollNo"
+                            class="margin"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
                         <label for="updateBatch" class="margin">Batch:</label>
-                        <input id="updateBatch" type="text" pInputText [(ngModel)]="updateBatch" class="margin" [ngModelOptions]="{standalone: true}" />
-                        <br/>
+                        <input
+                            id="updateBatch"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="updateBatch"
+                            class="margin"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
+                        <br />
                         <button class="p-button p-button-info margin" (click)="updateUser()">Update</button>
                     </div>
                 </form>
@@ -80,7 +147,8 @@
                     [paginator]="true"
                     [rows]="25"
                     [totalRecords]="totalRecords"
-                    styleClass="p-datatable-gridlines">
+                    styleClass="p-datatable-gridlines"
+                >
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns">
@@ -101,12 +169,44 @@
                 <form class="p-grid" autocomplete="off">
                     <div class="p-col-12">
                         <label for="notifyType" class="margin">Custom notification type:</label>
-                        <p-dropdown id="notifyType" class="margin" [options]="notifyMode" [(ngModel)]="notifyType" optionValue="value" optionLabel="name" [ngModelOptions]="{standalone: true}" (onChange)="reset()"></p-dropdown>
-                        <label for="replaceText" class="margin" >Replace keywords {{'{'}}{{'{'}}name}}, {{'{'}}{{'{'}}username}}, {{'{'}}{{'{'}}rollNo}}:</label>
-                        <p-dropdown id="replaceText" name="replaceText" class="margin" [(ngModel)]="replaceMode" [options]="replaceModeOptions" optionLabel="name" optionValue="value" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                        <p-dropdown
+                            id="notifyType"
+                            class="margin"
+                            [options]="notifyMode"
+                            [(ngModel)]="notifyType"
+                            optionValue="value"
+                            optionLabel="name"
+                            [ngModelOptions]="{ standalone: true }"
+                            (onChange)="reset()"
+                        ></p-dropdown>
+                        <label for="replaceText" class="margin"
+                            >Replace keywords {{ '{' }}{{ '{' }}name}}, {{ '{' }}{{ '{' }}username}}, {{ '{'
+                            }}{{ '{' }}rollNo}}:</label
+                        >
+                        <p-dropdown
+                            id="replaceText"
+                            name="replaceText"
+                            class="margin"
+                            [(ngModel)]="replaceMode"
+                            [options]="replaceModeOptions"
+                            optionLabel="name"
+                            optionValue="value"
+                            [ngModelOptions]="{ standalone: true }"
+                        ></p-dropdown>
                         <div *ngIf="notifyType === 'user' || notifyType == 'batch'">
-                            <label for="notifyUsers" class="margin">Enter {{notifyType === 'user' ? 'user rollNo' : 'batch'}}:</label>
-                            <input id="notifyUsers" type="text" pInputText [(ngModel)]="notifyItem" class="margin" name="notifyUsers" [ngModelOptions]="{standalone: true}" autocomplete="off" />
+                            <label for="notifyUsers" class="margin"
+                                >Enter {{ notifyType === 'user' ? 'user rollNo' : 'batch' }}:</label
+                            >
+                            <input
+                                id="notifyUsers"
+                                type="text"
+                                pInputText
+                                [(ngModel)]="notifyItem"
+                                class="margin"
+                                name="notifyUsers"
+                                [ngModelOptions]="{ standalone: true }"
+                                autocomplete="off"
+                            />
                             <button
                                 pButton
                                 type="button"
@@ -119,22 +219,49 @@
                                 <p-chip
                                     *ngFor="let user of items"
                                     class="margin-sides"
-                                    label="{{user}}"
+                                    label="{{ user }}"
                                     [removable]="true"
                                 ></p-chip>
                             </p-card>
                         </div>
                         <div *ngIf="notifyType === 'role'" class="margin-vertical">
                             <label for="notifyRole" class="margin">Select role:</label>
-                            <p-dropdown id="notifyRole" class="margin" [options]="notifyRoles" [(ngModel)]="notifyRole" optionValue="value" optionLabel="name" [ngModelOptions]="{standalone: true}"></p-dropdown>
+                            <p-dropdown
+                                id="notifyRole"
+                                class="margin"
+                                [options]="notifyRoles"
+                                [(ngModel)]="notifyRole"
+                                optionValue="value"
+                                optionLabel="name"
+                                [ngModelOptions]="{ standalone: true }"
+                            ></p-dropdown>
                         </div>
-                        <br/>
+                        <br />
                         <label for="notifyTitle" class="margin">Notification title:</label>
-                        <input id="notifyTitle" type="text" pInputText [(ngModel)]="notifyTitle" class="margin" name="notifyTitle" [ngModelOptions]="{standalone: true}" autocomplete="off" style="width: 50%"/>
-                        <br/>
+                        <input
+                            id="notifyTitle"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="notifyTitle"
+                            class="margin"
+                            name="notifyTitle"
+                            [ngModelOptions]="{ standalone: true }"
+                            autocomplete="off"
+                            style="width: 50%"
+                        />
+                        <br />
                         <div class="p-col-12 p-col-nogutter center-vertical">
                             <label for="notifyBody" class="margin">Notification body:</label>
-                            <textarea id="notifyBody" [rows]="5" cols="100" pInputTextarea autoResize="autoResize" class="margin" [(ngModel)]="notifyBody" [ngModelOptions]="{standalone: true}"></textarea>
+                            <textarea
+                                id="notifyBody"
+                                [rows]="5"
+                                cols="100"
+                                pInputTextarea
+                                autoResize="autoResize"
+                                class="margin"
+                                [(ngModel)]="notifyBody"
+                                [ngModelOptions]="{ standalone: true }"
+                            ></textarea>
                         </div>
                     </div>
                     <div class="p-col-12 center-horizontal">

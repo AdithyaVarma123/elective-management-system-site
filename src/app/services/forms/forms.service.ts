@@ -5,6 +5,7 @@ import { IFormModel } from '../../models/form-model';
 import * as qs from 'query-string';
 import { PaginationModel } from '../../models/pagination-model';
 import { IResponseModel } from '../../models/response-model';
+import { rawListType } from '../../models/general';
 
 @Injectable({
     providedIn: 'root'
@@ -76,7 +77,7 @@ export class FormsService {
         shouldSelect: number,
         selectAllAtForm: boolean,
         electives: string[],
-        active ?: boolean
+        active?: boolean
     ): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             this.http
@@ -129,11 +130,11 @@ export class FormsService {
 
     public generateList(id: string) {
         return new Promise<boolean>((resolve, reject) => {
-            this.http.get(this.forms + 'generate-elective-list?' + qs.stringify({ id }))
-                .subscribe((res: { status: boolean, downloadUri: string, failed ?: any[] }) => {
+            this.http.get(this.forms + 'generate-elective-list?' + qs.stringify({ id })).subscribe(
+                (res: { status: boolean; downloadUri: string; failed?: any[] }) => {
                     if (res.status) {
-                        this.http.get(res.downloadUri, { responseType: 'blob' })
-                            .subscribe(fileRes => {
+                        this.http.get(res.downloadUri, { responseType: 'blob' }).subscribe(
+                            (fileRes) => {
                                 const a = document.createElement('a');
                                 const objectUrl = URL.createObjectURL(fileRes);
                                 a.href = objectUrl;
@@ -141,18 +142,47 @@ export class FormsService {
                                 a.click();
                                 URL.revokeObjectURL(objectUrl);
                                 resolve(true);
-                            }, err => reject(err));
-                    }
-                    else {
+                            },
+                            (err) => reject(err)
+                        );
+                    } else {
                         reject({ message: res?.failed });
                     }
-                }, err => reject(err));
+                },
+                (err) => reject(err)
+            );
         });
     }
 
     public createClasses(formId: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.http.post(this.forms + 'create-classes?' + qs.stringify({ formId }), {}).subscribe(() => resolve(true), err => reject(err));
+            this.http.post(this.forms + 'create-classes?' + qs.stringify({ formId }), {}).subscribe(
+                () => resolve(true),
+                (err) => reject(err)
+            );
+        });
+    }
+
+    public getRawList(id: string): Promise<rawListType> {
+        return new Promise<rawListType>((resolve, reject) => {
+            this.http.get(this.forms + 'raw-list?' + qs.stringify({ id })).subscribe(
+                (res: rawListType) => resolve(res),
+                (err) => reject(err)
+            );
+        });
+    }
+
+    public setExplicit(id: string, options: { user: string; elective: string }[]): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.http
+                .put(this.forms + 'explicit', {
+                    id,
+                    options
+                })
+                .subscribe(
+                    () => resolve(true),
+                    (err) => reject(err)
+                );
         });
     }
 }

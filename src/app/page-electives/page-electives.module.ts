@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PageElectivesComponent } from './page-electives.component';
-import { TableModule } from "primeng/table";
-import { TabViewModule } from "primeng/tabview";
-import { FormsModule } from "@angular/forms";
-import { FileUploadModule } from "primeng/fileupload";
-import { InputTextModule } from "primeng/inputtext";
-import { ButtonModule } from "primeng/button";
-import { InputTextareaModule } from "primeng/inputtextarea";
-import { DialogModule } from "primeng/dialog";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
+import { FormsModule } from '@angular/forms';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const PageElectivesRoutes: Routes = [
     {
@@ -34,8 +34,6 @@ const PageElectivesRoutes: Routes = [
         DialogModule,
         ConfirmDialogModule
     ],
-    declarations: [
-        PageElectivesComponent
-    ]
+    declarations: [PageElectivesComponent]
 })
-export class PageElectivesModule { }
+export class PageElectivesModule {}

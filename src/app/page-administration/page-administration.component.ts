@@ -4,7 +4,7 @@ import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
 import { LazyLoadEvent } from 'primeng/api';
-import { NotificationService } from "../services/util/notification.service";
+import { NotificationService } from '../services/util/notification.service';
 
 @Component({
     selector: 'app-page-administration',
@@ -12,7 +12,6 @@ import { NotificationService } from "../services/util/notification.service";
     styleUrls: ['./page-administration.component.scss']
 })
 export class PageAdministrationComponent implements OnInit {
-
     records: Record[];
     loading = false;
     cols: any[];
@@ -50,7 +49,7 @@ export class PageAdministrationComponent implements OnInit {
         }
     ];
 
-    notifyMode: { name: string, value: string }[] = [
+    notifyMode: { name: string; value: string }[] = [
         {
             name: 'Users',
             value: 'user'
@@ -61,19 +60,19 @@ export class PageAdministrationComponent implements OnInit {
         },
         {
             name: 'Notify by role',
-            value: 'role',
+            value: 'role'
         },
         {
             name: 'Notify all users',
             value: 'all'
         }
-    ]
+    ];
     notifyType: 'user' | 'batch' | 'role' | 'all' = 'user';
 
     notifyItem = '';
     items: string[] = [];
 
-    notifyRoles: { name: string, value: string }[] = [
+    notifyRoles: { name: string; value: string }[] = [
         {
             name: 'Administrators',
             value: 'admin'
@@ -86,13 +85,13 @@ export class PageAdministrationComponent implements OnInit {
             name: 'Teachers',
             value: 'teacher'
         }
-    ]
+    ];
     notifyRole = 'student';
 
     notifyTitle = '';
     notifyBody = '';
     replaceMode = false;
-    replaceModeOptions: { name: string, value: boolean }[] = [
+    replaceModeOptions: { name: string; value: boolean }[] = [
         {
             name: 'Yes',
             value: true
@@ -224,8 +223,7 @@ export class PageAdministrationComponent implements OnInit {
                 this.items.push(this.notifyItem);
                 this.notifyItem = '';
             }
-        }
-        else {
+        } else {
             if (this.notifyItem.length > 0 && /^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.notifyItem)) {
                 this.items.push(this.notifyItem);
                 this.notifyItem = '';
@@ -253,29 +251,31 @@ export class PageAdministrationComponent implements OnInit {
             this.toastService.red('Enter a body!');
             return;
         }
-        this.notificationService.sendCustomNotification({
-            users: this.notifyType === 'user' ? this.items : [],
-            batches: this.notifyType === 'batch' ? this.items : [],
-            // @ts-ignore
-            role: this.notifyType === 'role' ? this.notifyRole : undefined,
-            notifyAll: this.notifyType === 'all',
-            title: this.notifyTitle,
-            body: this.notifyBody,
-            replaceItems: this.replaceMode
-        }).then(res => {
-            if (res) {
-                this.toastService.green('Notifications sent out successfully!');
-                this.notifyTitle = '';
-                this.notifyType = 'user';
-                this.notifyRole = 'student';
-                this.notifyBody = '';
-                this.items = [];
-                this.notifyItem = '';
-                this.replaceMode = false;
-            }
-            else {
-                this.toastService.red(`An unknown error occurred!`);
-            }
-        }).catch(err => this.toastService.red(`An unknown error occurred: ${err?.message}`));
+        this.notificationService
+            .sendCustomNotification({
+                users: this.notifyType === 'user' ? this.items : [],
+                batches: this.notifyType === 'batch' ? this.items : [],
+                // @ts-ignore
+                role: this.notifyType === 'role' ? this.notifyRole : undefined,
+                notifyAll: this.notifyType === 'all',
+                title: this.notifyTitle,
+                body: this.notifyBody,
+                replaceItems: this.replaceMode
+            })
+            .then((res) => {
+                if (res) {
+                    this.toastService.green('Notifications sent out successfully!');
+                    this.notifyTitle = '';
+                    this.notifyType = 'user';
+                    this.notifyRole = 'student';
+                    this.notifyBody = '';
+                    this.items = [];
+                    this.notifyItem = '';
+                    this.replaceMode = false;
+                } else {
+                    this.toastService.red(`An unknown error occurred!`);
+                }
+            })
+            .catch((err) => this.toastService.red(`An unknown error occurred: ${err?.message}`));
     }
 }

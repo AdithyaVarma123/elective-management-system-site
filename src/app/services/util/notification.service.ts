@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import constants from '../../constants';
 import { DeviceUUID } from 'device-uuid';
 import { Router } from '@angular/router';
-import { scopes } from "../../models/general";
+import { scopes } from '../../models/general';
 @Injectable({
     providedIn: 'root'
 })
@@ -109,19 +109,20 @@ export class NotificationService {
         });
     }
 
-    public sendCustomNotification(
-        options: {
-            batches: string[];
-            users: string[];
-            role ?: scopes;
-            notifyAll: boolean;
-            title: string;
-            body: string;
-            replaceItems: boolean;
-        }
-    ): Promise<boolean> {
+    public sendCustomNotification(options: {
+        batches: string[];
+        users: string[];
+        role?: scopes;
+        notifyAll: boolean;
+        title: string;
+        body: string;
+        replaceItems: boolean;
+    }): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.http.post(this.notification + 'custom-notify', options).subscribe((res: boolean) => resolve(res), err => reject(err));
+            this.http.post(this.notification + 'custom-notify', options).subscribe(
+                (res: boolean) => resolve(res),
+                (err) => reject(err)
+            );
         });
     }
 }
