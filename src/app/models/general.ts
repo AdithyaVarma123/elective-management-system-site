@@ -17,3 +17,5 @@ export interface RefreshTokens {
 export type electiveAttributes = { key: string; value: string }[];
 
 export type rawListType = { user: IUserModel; elective: IElectiveModel | undefined }[];
+
+export type vacancyType = { elective: string; vacancy: number }[];

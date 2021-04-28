@@ -5,7 +5,7 @@ import { IFormModel } from '../../models/form-model';
 import * as qs from 'query-string';
 import { PaginationModel } from '../../models/pagination-model';
 import { IResponseModel } from '../../models/response-model';
-import { rawListType } from '../../models/general';
+import { rawListType, vacancyType } from '../../models/general';
 
 @Injectable({
     providedIn: 'root'
@@ -163,10 +163,10 @@ export class FormsService {
         });
     }
 
-    public getRawList(id: string): Promise<rawListType> {
-        return new Promise<rawListType>((resolve, reject) => {
+    public getRawList(id: string): Promise<{ selections: rawListType; vacancy: vacancyType }> {
+        return new Promise<{ selections: rawListType; vacancy: vacancyType }>((resolve, reject) => {
             this.http.get(this.forms + 'raw-list?' + qs.stringify({ id })).subscribe(
-                (res: rawListType) => resolve(res),
+                (res: { selections: rawListType; vacancy: vacancyType }) => resolve(res),
                 (err) => reject(err)
             );
         });
