@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { IFormModel } from '../models/form-model';
 import { ConfirmationService } from 'primeng/api';
 import { IResponseModel } from '../models/response-model';
-import { rawListType } from '../models/general';
+import { rawListType, vacancyType } from '../models/general';
 
 interface item {
     name: string;
@@ -59,6 +59,10 @@ export class PageFormsComponent implements OnInit {
     slide = true;
     newExplicit: rawListType = [];
     electiveOptions: IElectiveModel[] = [];
+
+    vacancyDialog = false;
+    vacancy: vacancyType = [];
+    loadingVacancy = false;
 
     constructor(
         private formService: FormsService,
@@ -348,9 +352,19 @@ export class PageFormsComponent implements OnInit {
         this.loadingExplicit = true;
         this.currentForm = { ...form };
         this.formService.getRawList(form.id).then((res) => {
-            this.rawList = res;
+            this.rawList = res.selections;
             this.rawListTarget = [...form.explicit];
             this.loadingExplicit = false;
+        });
+    }
+
+    viewVacancy(form: IFormModel) {
+        this.vacancyDialog = true;
+        this.loadingVacancy = true;
+        this.currentForm = { ...form };
+        this.formService.getRawList(form.id).then((res) => {
+            this.vacancy = res.vacancy;
+            this.loadingVacancy = false;
         });
     }
 

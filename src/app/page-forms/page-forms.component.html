@@ -106,12 +106,22 @@
                                     class="margin p-button p-button-secondary"
                                 ></button>
                             </div>
-                            <div class="p-col-12 p-col-nogutter" *ngIf="!isAdmin">
+                            <div class="p-col-12 p-col-nogutter">
                                 <button
                                     pButton
                                     label="Rearrange users"
                                     type="button"
                                     (click)="editExplicit(item)"
+                                    style="width: 100%"
+                                    class="margin p-button p-button-secondary"
+                                ></button>
+                            </div>
+                            <div class="p-col-12 p-col-nogutter">
+                                <button
+                                    pButton
+                                    label="Elective vacancy"
+                                    type="button"
+                                    (click)="viewVacancy(item)"
                                     style="width: 100%"
                                     class="margin p-button p-button-secondary"
                                 ></button>
@@ -327,14 +337,7 @@
         </div>
     </div>
     <div *ngIf="!slide">
-        <p-table
-            [value]="rawListTarget"
-            [paginator]="true"
-            [rows]="25"
-            [totalRecords]="totalRecords"
-            dataKey="id"
-            styleClass="p-datatable-gridlines"
-        >
+        <p-table [value]="rawListTarget" dataKey="id" styleClass="p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <th>User</th>
                 <th>Selection</th>
@@ -363,6 +366,41 @@
                     (click)="setupNewExplicitItems()"
                 ></button>
             </div>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- View vacancy dialog -->
+
+<p-dialog [(visible)]="vacancyDialog" [style]="{ width: '950px' }" header="Elective vancancy" [modal]="true">
+    <div>
+        <div class="p-grid center-horizontal" *ngIf="loadingExplicit">
+            <div class="col-12 center-horizontal">
+                <p-progressSpinner
+                    [style]="{ width: '50px', height: '50px' }"
+                    styleClass="custom-spinner"
+                    strokeWidth="8"
+                    fill="#EEEEEE"
+                    animationDuration=".5s"
+                    class="margin-vertical"
+                ></p-progressSpinner>
+            </div>
+        </div>
+        <div *ngIf="!loadingExplicit">
+            <p-table [value]="vacancy" dataKey="id" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="header">
+                    <th>Elective</th>
+                    <th>Vacant slots</th>
+                    <th>Maximum strength</th>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{ item.elective.name }}, {{ item.elective.version }}</td>
+                        <td>{{ item.vacancy }}</td>
+                        <td>{{ item.elective.strength }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </div>
 </p-dialog>
