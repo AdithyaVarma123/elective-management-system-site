@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
-import { User } from '../models/general';
 import { ToastService } from '../services/util/toast.service';
 import constants from '../constants';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NotificationService } from '../services/util/notification.service';
+import { IUserModel } from '../models/user-model';
 
 @Component({
     selector: 'app-page-profile',
@@ -16,14 +16,15 @@ import { NotificationService } from '../services/util/notification.service';
 export class PageProfileComponent implements OnInit {
     subscribed = true;
     label = 'Subscribe';
-    user: User = {
+    user: IUserModel = {
+        classes: [],
+        password: '',
         name: '',
         id: '',
         username: '',
         rollNo: '',
         role: 'student',
-        batch: undefined,
-        electives: undefined
+        batch: undefined
     };
     constructor(
         public dialogService: DialogService,
@@ -38,15 +39,8 @@ export class PageProfileComponent implements OnInit {
                 this.toast.red(constants.unknownError);
             });
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    async ngOnInit(): Promise<void> {
-        await this.userService.getNotificationStatus().then((result) => {
-            if (result) {
-                this.label = 'Unsubscribe';
-            }
-            this.subscribed = result;
-        });
+    ngOnInit() {
+        this.notifyButton();
     }
 
     subscription(): void {
@@ -55,12 +49,25 @@ export class PageProfileComponent implements OnInit {
         } else {
             this.notifservice.subscribeToNotifications();
         }
+        setTimeout(() => {
+            this.label = 'Unsubscribe';
+            this.notifyButton();
+        }, 1500);
     }
 
     changePass() {
         this.dialogService.open(ChangePasswordComponent, {
             header: 'Change password',
             width: '20%'
+        });
+    }
+
+    notifyButton() {
+        this.userService.getNotificationStatus().then((result) => {
+            if (result) {
+                this.label = 'Unsubscribe';
+            }
+            this.subscribed = result;
         });
     }
 }

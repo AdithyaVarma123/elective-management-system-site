@@ -4,6 +4,7 @@ import { PageAdministrationComponent } from './page-administration.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 describe('PageAdministrationComponent', () => {
     let component: PageAdministrationComponent;
@@ -12,7 +13,11 @@ describe('PageAdministrationComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [PageAdministrationComponent],
-            imports: [HttpClientTestingModule, RouterTestingModule],
+            imports: [
+                HttpClientTestingModule,
+                RouterTestingModule,
+                ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
+            ],
             providers: [MessageService]
         }).compileComponents();
     }));

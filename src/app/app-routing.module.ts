@@ -18,6 +18,7 @@ const routes: Routes = [
     },
     {
         path: 'administration',
+        canActivate: [AuthGuard],
         loadChildren: () =>
             import('./page-administration/page-administration.module').then((m) => m.PageAdministrationModule)
     },
@@ -25,6 +26,21 @@ const routes: Routes = [
         path: 'resetPassword',
         loadChildren: () =>
             import('./page-reset-password/page-reset-password.module').then((m) => m.PageResetPasswordModule)
+    },
+    {
+        path: 'forms',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-forms/page-forms.module').then((m) => m.PageFormsModule)
+    },
+    {
+        path: 'fill-form/:id',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-fill-form/page-fill-form.module').then((m) => m.PageFillFormModule)
+    },
+    {
+        path: 'electives',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-electives/page-electives.module').then((m) => m.PageElectivesModule)
     }
 ];
 @NgModule({

@@ -3,7 +3,9 @@ import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
-import {LazyLoadEvent} from "primeng/api";
+import { LazyLoadEvent } from 'primeng/api';
+import { NotificationService } from '../services/util/notification.service';
+
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -12,7 +14,6 @@ import {LazyLoadEvent} from "primeng/api";
 export class PageAdministrationComponent implements OnInit {
     records: Record[];
     loading = false;
-    showDetails = false;
     cols: any[];
     eName = '';
     password = '';
@@ -21,12 +22,10 @@ export class PageAdministrationComponent implements OnInit {
     version;
     strength;
     batches = [''];
-    teachers = [''];
-    attributes = [{ value: '', key: '' }];
     uname = '';
     rollNo = '';
     username = '';
-    userRole = '';
+    userRole = 'student';
     batch = '';
     delRol = '';
     updateName = '';
@@ -35,8 +34,79 @@ export class PageAdministrationComponent implements OnInit {
     updateBatch = '';
     page = 0;
     totalRecords = 0;
+    roleOptions = [
+        {
+            name: 'student',
+            value: 'student'
+        },
+        {
+            name: 'teacher',
+            value: 'teacher'
+        },
+        {
+            name: 'admin',
+            value: 'admin'
+        }
+    ];
 
-    constructor(private userService: UserService, private toast: ToastService) {}
+    notifyMode: { name: string; value: string }[] = [
+        {
+            name: 'Users',
+            value: 'user'
+        },
+        {
+            name: 'Batches',
+            value: 'batch'
+        },
+        {
+            name: 'Notify by role',
+            value: 'role'
+        },
+        {
+            name: 'Notify all users',
+            value: 'all'
+        }
+    ];
+    notifyType: 'user' | 'batch' | 'role' | 'all' = 'user';
+
+    notifyItem = '';
+    items: string[] = [];
+
+    notifyRoles: { name: string; value: string }[] = [
+        {
+            name: 'Administrators',
+            value: 'admin'
+        },
+        {
+            name: 'Students',
+            value: 'student'
+        },
+        {
+            name: 'Teachers',
+            value: 'teacher'
+        }
+    ];
+    notifyRole = 'student';
+
+    notifyTitle = '';
+    notifyBody = '';
+    replaceMode = false;
+    replaceModeOptions: { name: string; value: boolean }[] = [
+        {
+            name: 'Yes',
+            value: true
+        },
+        {
+            name: 'No',
+            value: false
+        }
+    ];
+
+    constructor(
+        private userService: UserService,
+        private toastService: ToastService,
+        private notificationService: NotificationService
+    ) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ngOnInit() {
@@ -48,13 +118,14 @@ export class PageAdministrationComponent implements OnInit {
             { field: 'platform', header: 'Platform' },
             { field: 'rollNo', header: 'Roll Number' }
         ];
+        this.notifyType = 'user';
         // @ts-ignore
-        this.getLogDetails({first: 0});
+        this.getLogDetails({ first: 0 });
     }
 
     updateUser(): void {
         if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.updateBatch)) {
-            this.toast.red('invalid batch code');
+            this.toastService.red('invalid batch code');
             return;
         }
         const body = [
@@ -68,44 +139,17 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .updateUser(body)
             .then((res) => {
-                if (res) this.toast.green('elective added');
+                if (res) this.toastService.green('User updated');
             })
             .catch(() => {
-                this.toast.red(constants.unknownError);
-            });
-    }
-
-    addElective(): void {
-        for (const v of this.batches) {
-            if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(v)) {
-                this.toast.red('invalid batch code');
-                return;
-            }
-        }
-        const body = {
-            name: this.eName,
-            description: this.desc,
-            courseCode: this.courseCode,
-            version: '' + this.version,
-            strength: '' + this.strength,
-            attributes: this.attributes,
-            batches: this.batches,
-            teachers: this.teachers
-        };
-        this.userService
-            .addelective(body)
-            .then((res) => {
-                if (res) this.toast.green('elective added');
-            })
-            .catch(() => {
-                this.toast.red(constants.unknownError);
+                this.toastService.red(constants.unknownError);
             });
     }
 
     getLogDetails(event: LazyLoadEvent): void {
         this.loading = true;
         this.page = event.first === 0 ? 0 : event.first / 25;
-        this.userService.getlogDetails(this.page, 'time').then((data) => {
+        this.userService.getlogDetails(this.page, 'createdAt').then((data) => {
             this.records = [...data.docs];
             this.totalRecords = data.count;
             this.loading = false;
@@ -116,7 +160,7 @@ export class PageAdministrationComponent implements OnInit {
         let body;
         if (this.userRole === 'student')
             if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.batch)) {
-                this.toast.red('invalid batch code');
+                this.toastService.red('invalid batch code');
                 return;
             }
         if (this.userRole == 'student') {
@@ -144,10 +188,10 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .addUser(body)
             .then((res) => {
-                if (res) this.toast.green('User added');
+                if (res) this.toastService.green('User added');
             })
             .catch(() => {
-                this.toast.red(constants.unknownError);
+                this.toastService.red(constants.unknownError);
             });
     }
 
@@ -155,21 +199,10 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .uploadcsv(evt[0], true)
             .then((res) => {
-                if (res) this.toast.green('User added');
+                if (res) this.toastService.green('User added');
             })
             .catch(() => {
-                this.toast.red(constants.unknownError);
-            });
-    }
-
-    uploadCSVforElective(evt: any): void {
-        this.userService
-            .uploadcsvforelective(evt[0], true)
-            .then((res) => {
-                if (res) this.toast.green('Electives added');
-            })
-            .catch(() => {
-                this.toast.red(constants.unknownError);
+                this.toastService.red(constants.unknownError);
             });
     }
 
@@ -177,23 +210,72 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .deleteUser(this.delRol)
             .then((res) => {
-                if (res) this.toast.green('User deleted');
+                if (res) this.toastService.green('User deleted');
             })
             .catch(() => {
-                this.toast.red(constants.unknownError);
+                this.toastService.red(constants.unknownError);
             });
     }
-    addBatch() {
-        this.batches.push('');
+
+    updateItem(type: 'user' | 'batch') {
+        if (type === 'user') {
+            if (this.notifyItem.length > 0) {
+                this.items.push(this.notifyItem);
+                this.notifyItem = '';
+            }
+        } else {
+            if (this.notifyItem.length > 0 && /^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(this.notifyItem)) {
+                this.items.push(this.notifyItem);
+                this.notifyItem = '';
+            }
+        }
     }
-    addTeacher() {
-        this.teachers.push('');
+
+    reset() {
+        this.notifyItem = '';
+        this.items = [];
     }
-    addAttribute() {
-        this.attributes.push({ value: '', key: '' });
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    trackByIdx(index: number, obj: any): any {
-        return index;
+
+    customNotify() {
+        if (this.notifyType === 'user' || this.notifyType === 'batch') {
+            if (this.items.length === 0) {
+                this.toastService.red(`Add at least one ${this.notifyType}`);
+                return;
+            }
+        }
+        if (this.notifyTitle.length === 0) {
+            this.toastService.red('Enter a title!');
+            return;
+        }
+        if (this.notifyBody.length === 0) {
+            this.toastService.red('Enter a body!');
+            return;
+        }
+        this.notificationService
+            .sendCustomNotification({
+                users: this.notifyType === 'user' ? this.items : [],
+                batches: this.notifyType === 'batch' ? this.items : [],
+                // @ts-ignore
+                role: this.notifyType === 'role' ? this.notifyRole : undefined,
+                notifyAll: this.notifyType === 'all',
+                title: this.notifyTitle,
+                body: this.notifyBody,
+                replaceItems: this.replaceMode
+            })
+            .then((res) => {
+                if (res) {
+                    this.toastService.green('Notifications sent out successfully!');
+                    this.notifyTitle = '';
+                    this.notifyType = 'user';
+                    this.notifyRole = 'student';
+                    this.notifyBody = '';
+                    this.items = [];
+                    this.notifyItem = '';
+                    this.replaceMode = false;
+                } else {
+                    this.toastService.red(`An unknown error occurred!`);
+                }
+            })
+            .catch((err) => this.toastService.red(`An unknown error occurred: ${err?.message}`));
     }
 }
