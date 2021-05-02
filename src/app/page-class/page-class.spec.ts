@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PageClassComponent } from './page-class.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { MessageService } from "primeng/api";
 
 describe('PageClassComponent', () => {
     let component: PageClassComponent;
@@ -8,7 +11,9 @@ describe('PageClassComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PageClassComponent]
+            declarations: [PageClassComponent],
+            imports: [HttpClientTestingModule, RouterTestingModule],
+            providers: [MessageService]
         }).compileComponents();
     }));
 
