@@ -15,6 +15,10 @@
         custom-progress-spinner-color 6s ease-in-out infinite;
 }
 
+:host ::ng-deep .p-multiselect {
+    width: 100%;
+}
+
 @keyframes custom-progress-spinner-color {
     100%,
     0% {

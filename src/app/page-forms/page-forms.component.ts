@@ -54,10 +54,8 @@ export class PageFormsComponent implements OnInit {
 
     explicitDialog = false;
     rawList: rawListType = [];
-    rawListTarget: rawListType = [];
+    explicitCheckbox: boolean[] = [];
     loadingExplicit = false;
-    slide = true;
-    newExplicit: rawListType = [];
     electiveOptions: IElectiveModel[] = [];
 
     vacancyDialog = false;
@@ -103,10 +101,6 @@ export class PageFormsComponent implements OnInit {
         if (this.authService.getScope() !== 'student') {
             this.setPageForms({ first: 0 });
         }
-    }
-
-    openForm(idx: number) {
-        this.router.navigate(['fill-form', this.activeForms[idx].id]).then().catch();
     }
 
     search(event) {
@@ -347,13 +341,20 @@ export class PageFormsComponent implements OnInit {
     }
 
     editExplicit(form: IFormModel) {
-        this.slide = true;
         this.explicitDialog = true;
         this.loadingExplicit = true;
         this.currentForm = { ...form };
         this.formService.getRawList(form.id).then((res) => {
             this.rawList = res.selections;
-            this.rawListTarget = [...form.explicit];
+            for (const v of this.rawList) {
+                // @ts-ignore
+                v.electives = v.electives.map((e) => e.id);
+            }
+            this.electiveOptions = [...this.currentForm.electives];
+            this.explicitCheckbox = Array(this.rawList.length).fill(false);
+            for (const [i] of this.currentForm.explicit.entries()) {
+                this.explicitCheckbox[i] = true;
+            }
             this.loadingExplicit = false;
         });
     }
@@ -368,26 +369,22 @@ export class PageFormsComponent implements OnInit {
         });
     }
 
-    switchToConfirmation() {
-        this.electiveOptions = [...this.currentForm.electives];
-        // @ts-ignore
-        this.rawListTarget = this.rawListTarget.map((e) => ({
-            user: e.user,
-            elective: e.elective ? e.elective.id : this.electiveOptions[0].id
-        }));
-        this.slide = !this.slide;
-    }
-
     setupNewExplicitItems() {
         this.confirmationService.confirm({
             message: 'Are you sure you want to add these explicit choices for selected users?',
             accept: () => {
                 this.explicitDialog = false;
+                const finalArr = [];
+                for (const [i, v] of this.rawList.map((e) => ({ user: e.user.id, electives: e.electives })).entries()) {
+                    if (this.explicitCheckbox[i]) {
+                        finalArr.push(v);
+                    }
+                }
                 this.formService
                     .setExplicit(
                         this.currentForm.id,
                         // @ts-ignore
-                        this.rawListTarget.map((e) => ({ user: e.user.id, elective: e.elective }))
+                        finalArr
                     )
                     .then(() => {
                         this.ngOnInit();

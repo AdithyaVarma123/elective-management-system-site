@@ -12,6 +12,6 @@ export interface IFormModel {
     active: boolean;
     explicit: {
         user: IUserModel;
-        elective: IElectiveModel;
+        electives: IElectiveModel[];
     }[];
 }

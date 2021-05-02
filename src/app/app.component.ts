@@ -44,7 +44,8 @@ export class AppComponent implements OnInit {
                         },
                         {
                             label: 'Classes',
-                            icon: 'pi pi-book'
+                            icon: 'pi pi-book',
+                            routerLink: ['classes']
                         },
                         {
                             label: 'Administration',

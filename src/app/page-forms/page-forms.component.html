@@ -49,11 +49,11 @@
                             (click)="addElective()"
                         ></button>
                     </div>
-                    <div class="p-col-6 p-offset-3">
+                    <div class="p-col-8 p-offset-2">
                         <p-card>
                             <p-chip
                                 *ngFor="let elective of selectedElectives"
-                                class="margin-sides"
+                                class="p-mr-2"
                                 label="{{ elective.name }}, {{ elective.courseCode }}, {{ elective.version }}"
                                 [removable]="true"
                             ></p-chip>
@@ -74,7 +74,11 @@
                 <h3 *ngIf="!!!activeForms.length">No active forms!</h3>
                 <div class="p-grid" *ngFor="let item of activeForms; let i = index">
                     <div class="p-col-10">
-                        <p-card class="item" header="Electives form {{ i + 1 }}" (click)="openForm(i)">
+                        <p-card
+                            class="item"
+                            header="Electives form {{ i + 1 }}"
+                            [routerLink]="['/fill-form', this.activeForms[i].id]"
+                        >
                             To be filled by {{ item.end }}
                             <br />
                             <br />
@@ -297,61 +301,49 @@
 
 <!-- Assign users dialog -->
 
-<p-dialog [(visible)]="explicitDialog" [style]="{ width: '950px' }" header="Rearrange users" [modal]="true">
-    <div *ngIf="slide">
-        <div class="p-grid center-horizontal" *ngIf="loadingExplicit">
-            <div class="col-12 center-horizontal">
-                <p-progressSpinner
-                    [style]="{ width: '50px', height: '50px' }"
-                    styleClass="custom-spinner"
-                    strokeWidth="8"
-                    fill="#EEEEEE"
-                    animationDuration=".5s"
-                    class="margin-vertical"
-                ></p-progressSpinner>
-            </div>
-        </div>
-        <div *ngIf="!loadingExplicit">
-            <p-pickList
-                [source]="rawList"
-                [target]="rawListTarget"
-                [dragdrop]="true"
-                sourceHeader="Users without explicit elective"
-                targetHeader="Users with explicit elective"
-            >
-                <ng-template let-item pTemplate="item">
-                    <span>{{ item.user.rollNo }}, assigned: {{ item.elective ? item.elective.name : 'none' }}</span>
-                </ng-template>
-            </p-pickList>
-        </div>
-        <div class="p-grid center-horizontal">
-            <div class="p-col-12 center-horizontal">
-                <button
-                    pButton
-                    type="button"
-                    class="p-button p-button-raised margin"
-                    label="Confirm"
-                    (click)="switchToConfirmation()"
-                ></button>
-            </div>
+<p-dialog
+    [(visible)]="explicitDialog"
+    [style]="{ width: '950px' }"
+    header="Rearrange users"
+    [modal]="true"
+    [responsive]="true"
+    [maximizable]="true"
+>
+    <div class="p-grid center-horizontal" *ngIf="loadingExplicit">
+        <div class="col-12 center-horizontal">
+            <p-progressSpinner
+                [style]="{ width: '50px', height: '50px' }"
+                styleClass="custom-spinner"
+                strokeWidth="8"
+                fill="#EEEEEE"
+                animationDuration=".5s"
+                class="margin-vertical"
+            ></p-progressSpinner>
         </div>
     </div>
-    <div *ngIf="!slide">
-        <p-table [value]="rawListTarget" dataKey="id" styleClass="p-datatable-gridlines">
+    <div *ngIf="!loadingExplicit">
+        <p-table [value]="rawList" dataKey="id" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10">
             <ng-template pTemplate="header">
                 <th>User</th>
-                <th>Selection</th>
+                <th>Set explicit</th>
+                <th>Electives</th>
             </ng-template>
-            <ng-template pTemplate="body" let-item>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
                 <tr>
                     <td>{{ item.user.rollNo }}</td>
                     <td>
-                        <p-dropdown
+                        <p-checkbox [(ngModel)]="explicitCheckbox[rowIndex]" [binary]="true"></p-checkbox>
+                    </td>
+                    <td>
+                        <p-multiSelect
                             [options]="electiveOptions"
-                            [(ngModel)]="item.elective"
+                            [(ngModel)]="item.electives"
+                            defaultLabel="Select electives"
                             optionValue="id"
                             optionLabel="name"
-                        ></p-dropdown>
+                            selectedItemsLabel="{0} items selected"
+                            [disabled]="!explicitCheckbox[rowIndex]"
+                        ></p-multiSelect>
                     </td>
                 </tr>
             </ng-template>
@@ -413,7 +405,7 @@
             class="item"
             *ngFor="let item of activeForms; let i = index"
             header="Electives form {{ i + 1 }}"
-            (click)="openForm(i)"
+            [routerLink]="['/fill-form', activeForms[i].id]"
         >
             To be filled by {{ item.end }}
         </p-card>

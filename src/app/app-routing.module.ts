@@ -41,6 +41,16 @@ const routes: Routes = [
         path: 'electives',
         canActivate: [AuthGuard],
         loadChildren: () => import('./page-electives/page-electives.module').then((m) => m.PageElectivesModule)
+    },
+    {
+        path: 'classes',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-classes/page-classes.module').then((m) => m.PageClassesModule)
+    },
+    {
+        path: 'class/:id',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./page-class/page-class.module').then((m) => m.PageClassModule)
     }
 ];
 @NgModule({
