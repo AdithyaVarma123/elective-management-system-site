@@ -1,8 +1,12 @@
 <div class="p-grid" *ngIf="isStudent">
     <div class="p-col-8 p-offset-2 margin-vertical">
         <h3 *ngIf="!!!classes.length">No classes found!</h3>
-        <p-card *ngFor="let item of classes" header="{{item.elective.name}}, v{{item.elective.version}}, teacher: {{item.teacher.name}}"
-                class="item" [routerLink]="['/class', item.id]">
+        <p-card
+            *ngFor="let item of classes"
+            header="{{ item.elective.name }}, v{{ item.elective.version }}, teacher: {{ item.teacher.name }}"
+            class="item"
+            [routerLink]="['/class', item.id]"
+        >
         </p-card>
     </div>
 </div>
@@ -27,8 +31,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{item.elective.name}}</td>
-                    <td>{{item.elective.version}}</td>
+                    <td>{{ item.elective.name }}</td>
+                    <td>{{ item.elective.version }}</td>
                     <td>
                         <button
                             pButton
@@ -63,8 +67,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{item.elective.name}}</td>
-                    <td>{{item.elective.version}}</td>
+                    <td>{{ item.elective.name }}</td>
+                    <td>{{ item.elective.version }}</td>
                     <td>
                         <button
                             pButton
@@ -88,13 +92,7 @@
 </div>
 
 <p-dialog [(visible)]="studentsDialog" [style]="{ width: '950px' }" header="Elective students" [modal]="true">
-    <p-table
-        [value]="students"
-        [paginator]="true"
-        [rows]="10"
-        dataKey="id"
-        styleClass="p-datatable-gridlines"
-    >
+    <p-table [value]="students" [paginator]="true" [rows]="10" dataKey="id" styleClass="p-datatable-gridlines">
         <ng-template pTemplate="header">
             <th>Name</th>
             <th>Roll no</th>
@@ -102,9 +100,9 @@
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr>
-                <td>{{item.name}}</td>
-                <td>{{item.rollNo}}</td>
-                <td>{{item.batch.batchString}}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.rollNo }}</td>
+                <td>{{ item.batch.batchString }}</td>
             </tr>
         </ng-template>
     </p-table>

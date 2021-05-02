@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PageClassesComponent } from './page-classes.component';
-import { CardModule } from "primeng/card";
-import { TableModule } from "primeng/table";
-import { ButtonModule } from "primeng/button";
-import { DialogModule } from "primeng/dialog";
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 const PageClassesRoutes: Routes = [
     {
@@ -24,8 +24,6 @@ const PageClassesRoutes: Routes = [
         ButtonModule,
         DialogModule
     ],
-    declarations: [
-        PageClassesComponent
-    ]
+    declarations: [PageClassesComponent]
 })
-export class PageClassesModule { }
+export class PageClassesModule {}

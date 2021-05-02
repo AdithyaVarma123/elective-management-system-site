@@ -348,7 +348,7 @@ export class PageFormsComponent implements OnInit {
             this.rawList = res.selections;
             for (const v of this.rawList) {
                 // @ts-ignore
-                v.electives = v.electives.map(e => e.id);
+                v.electives = v.electives.map((e) => e.id);
             }
             this.electiveOptions = [...this.currentForm.electives];
             this.explicitCheckbox = Array(this.rawList.length).fill(false);

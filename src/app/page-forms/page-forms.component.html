@@ -74,7 +74,11 @@
                 <h3 *ngIf="!!!activeForms.length">No active forms!</h3>
                 <div class="p-grid" *ngFor="let item of activeForms; let i = index">
                     <div class="p-col-10">
-                        <p-card class="item" header="Electives form {{ i + 1 }}" [routerLink]="['/fill-form', this.activeForms[i].id]">
+                        <p-card
+                            class="item"
+                            header="Electives form {{ i + 1 }}"
+                            [routerLink]="['/fill-form', this.activeForms[i].id]"
+                        >
                             To be filled by {{ item.end }}
                             <br />
                             <br />
@@ -297,7 +301,14 @@
 
 <!-- Assign users dialog -->
 
-<p-dialog [(visible)]="explicitDialog" [style]="{ width: '950px' }" header="Rearrange users" [modal]="true" [responsive]="true" [maximizable]="true">
+<p-dialog
+    [(visible)]="explicitDialog"
+    [style]="{ width: '950px' }"
+    header="Rearrange users"
+    [modal]="true"
+    [responsive]="true"
+    [maximizable]="true"
+>
     <div class="p-grid center-horizontal" *ngIf="loadingExplicit">
         <div class="col-12 center-horizontal">
             <p-progressSpinner
@@ -324,9 +335,15 @@
                         <p-checkbox [(ngModel)]="explicitCheckbox[rowIndex]" [binary]="true"></p-checkbox>
                     </td>
                     <td>
-                        <p-multiSelect [options]="electiveOptions" [(ngModel)]="item.electives"
-                                       defaultLabel="Select electives" optionValue="id" optionLabel="name"
-                                       selectedItemsLabel="{0} items selected" [disabled]="!explicitCheckbox[rowIndex]"></p-multiSelect>
+                        <p-multiSelect
+                            [options]="electiveOptions"
+                            [(ngModel)]="item.electives"
+                            defaultLabel="Select electives"
+                            optionValue="id"
+                            optionLabel="name"
+                            selectedItemsLabel="{0} items selected"
+                            [disabled]="!explicitCheckbox[rowIndex]"
+                        ></p-multiSelect>
                     </td>
                 </tr>
             </ng-template>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ClassesService } from "../services/classes/classes.service";
-import { IClassModel } from "../models/class-model";
-import { AuthService } from "../services/auth/auth.service";
-import { IUserModel } from "../models/user-model";
+import { ClassesService } from '../services/classes/classes.service';
+import { IClassModel } from '../models/class-model';
+import { AuthService } from '../services/auth/auth.service';
+import { IUserModel } from '../models/user-model';
 
 @Component({
     selector: 'app-page-classes',
@@ -10,7 +10,6 @@ import { IUserModel } from "../models/user-model";
     styleUrls: ['./page-classes.component.scss']
 })
 export class PageClassesComponent implements OnInit {
-
     classes: IClassModel[] = [];
     isStudent = true;
     isTeacher = false;
@@ -23,10 +22,7 @@ export class PageClassesComponent implements OnInit {
     studentsDialog = false;
     students: IUserModel[] = [];
 
-    constructor(
-        private classesService: ClassesService,
-        private authService: AuthService
-    ) {
+    constructor(private classesService: ClassesService, private authService: AuthService) {
         this.isStudent = authService.getScope() === 'student';
         this.isTeacher = authService.getScope() === 'teacher';
         this.isAdmin = authService.getScope() === 'admin';
@@ -34,7 +30,7 @@ export class PageClassesComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.isStudent || this.isTeacher) {
-            this.classesService.getActiveClasses().then(classes => this.classes = classes);
+            this.classesService.getActiveClasses().then((classes) => (this.classes = classes));
         }
     }
 
@@ -54,5 +50,4 @@ export class PageClassesComponent implements OnInit {
             this.studentsDialog = true;
         });
     }
-
 }

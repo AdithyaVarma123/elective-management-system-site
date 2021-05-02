@@ -50,7 +50,7 @@ const routes: Routes = [
     {
         path: 'class/:id',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./page-class/page-class.module').then(m => m.PageClassModule)
+        loadChildren: () => import('./page-class/page-class.module').then((m) => m.PageClassModule)
     }
 ];
 @NgModule({
