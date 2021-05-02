@@ -16,6 +16,12 @@ export interface RefreshTokens {
 
 export type electiveAttributes = { key: string; value: string }[];
 
-export type rawListType = { user: IUserModel; elective: IElectiveModel | undefined }[];
+export type rawListType = { user: IUserModel; electives: IElectiveModel[] }[];
 
-export type vacancyType = { elective: string; vacancy: number }[];
+export type vacancyType = { elective: IElectiveModel; vacancy: number }[];
+
+export interface Failed {
+    item: any;
+    reason: string;
+    error?: any;
+}

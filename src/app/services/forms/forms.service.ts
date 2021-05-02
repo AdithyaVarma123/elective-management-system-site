@@ -5,7 +5,9 @@ import { IFormModel } from '../../models/form-model';
 import * as qs from 'query-string';
 import { PaginationModel } from '../../models/pagination-model';
 import { IResponseModel } from '../../models/response-model';
-import { rawListType, vacancyType } from '../../models/general';
+import { Failed, rawListType, vacancyType } from "../../models/general";
+import { IUserModel } from "../../models/user-model";
+import { IElectiveModel } from "../../models/elective-model";
 
 @Injectable({
     providedIn: 'root'
@@ -163,10 +165,25 @@ export class FormsService {
         });
     }
 
-    public getRawList(id: string): Promise<{ selections: rawListType; vacancy: vacancyType }> {
-        return new Promise<{ selections: rawListType; vacancy: vacancyType }>((resolve, reject) => {
+    public getRawList(id: string): Promise<{
+        selections: { user: IUserModel; electives: IElectiveModel[] }[];
+        unresponsive: IUserModel[],
+        failed: Failed[],
+        vacancy: { elective: IElectiveModel; vacancy: number }[];
+    }> {
+        return new Promise<{
+            selections: { user: IUserModel; electives: IElectiveModel[] }[];
+            unresponsive: IUserModel[],
+            failed: Failed[],
+            vacancy: { elective: IElectiveModel; vacancy: number }[];
+        }>((resolve, reject) => {
             this.http.get(this.forms + 'raw-list?' + qs.stringify({ id })).subscribe(
-                (res: { selections: rawListType; vacancy: vacancyType }) => resolve(res),
+                (res: {
+                    selections: { user: IUserModel; electives: IElectiveModel[] }[];
+                    unresponsive: IUserModel[],
+                    failed: Failed[],
+                    vacancy: { elective: IElectiveModel; vacancy: number }[];
+                }) => resolve(res),
                 (err) => reject(err)
             );
         });

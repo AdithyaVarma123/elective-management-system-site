@@ -17,6 +17,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PickListModule } from 'primeng/picklist';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MultiSelectModule } from "primeng/multiselect";
+import { CheckboxModule } from "primeng/checkbox";
 
 const PageElectivesRoutes: Routes = [
     {
@@ -42,7 +44,9 @@ const PageElectivesRoutes: Routes = [
         DialogModule,
         ConfirmDialogModule,
         PickListModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        MultiSelectModule,
+        CheckboxModule
     ],
     declarations: [PageFormsComponent]
 })
