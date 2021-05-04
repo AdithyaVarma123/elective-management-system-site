@@ -1,1 +1,74 @@
-<div class="app-page-class">PageClass worked!</div>
+<div class="p-grid">
+    <div class="p-col-8 center-horizontal">
+        <h2>{{ class.elective.name }}, v{{ class.elective.version }}, teacher: {{ class.teacher.name }}</h2>
+    </div>
+    <div class="p-col-8 p-offset-2" *ngIf="!isStudent">
+        <h2>Upload class resource</h2>
+        <p-fileUpload
+            name="myfile[]"
+            customUpload="true"
+            chooseLabel="upload"
+            uploadLabel="Upload"
+            (uploadHandler)="uploadResource($event.files)"
+        ></p-fileUpload>
+    </div>
+    <div class="p-col-8 p-offset-2">
+        <p-table [paginator]="true" [rows]="10" [value]="items" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+                <th>Name</th>
+                <th>Created at</th>
+                <th>Action</th>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{ item.file.name }}</td>
+                    <td>{{ item.createdAt }}</td>
+                    <td>
+                        <button
+                            pButton
+                            type="button"
+                            class="p-button-rounded p-button-success p-mr-2 p-button-icon-only"
+                            icon="pi pi-download"
+                            (click)="downloadFile(item.file)"
+                        ></button>
+                        <button
+                            *ngIf="item.file.shouldTrack && !isStudent"
+                            pButton
+                            type="button"
+                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
+                            icon="pi pi-eye"
+                            (click)="viewTracked(item.file)"
+                        ></button>
+                        <button
+                            *ngIf="!isStudent"
+                            pButton
+                            type="button"
+                            class="p-button-rounded p-button-danger p-mr-2 p-button-icon-only"
+                            icon="pi pi-trash"
+                            (click)="deleteResource(item.file)"
+                        ></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-dialog [(visible)]="trackAccessDialog" [style]="{ width: '950px' }" header="Download list" [modal]="true">
+    <p-table [value]="tracked" [paginator]="true" [rows]="10" dataKey="id" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="header">
+            <th>Name</th>
+            <th>Roll no</th>
+            <th>Downloaded at</th>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{ item.user.name }}</td>
+                <td>{{ item.user.rollNo }}</td>
+                <td>{{ item.time }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
