@@ -31,6 +31,8 @@ export class PageClassesComponent implements OnInit {
     ngOnInit(): void {
         if (this.isStudent || this.isTeacher) {
             this.classesService.getActiveClasses().then((classes) => (this.classes = classes));
+        } else {
+            this.setPage({ first: 0 });
         }
     }
 
