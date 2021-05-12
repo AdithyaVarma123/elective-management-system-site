@@ -37,6 +37,7 @@ export class PageFormsComponent implements OnInit {
     loading = false;
     editDialog = false;
     currentForm: IFormModel = {
+        id: '',
         explicit: [],
         active: false,
         electives: [],
@@ -280,7 +281,7 @@ export class PageFormsComponent implements OnInit {
             .then(() => {
                 this.toastService.green('Downloaded generated list successfully!');
             })
-            .catch((err) => this.toastService.red(`An unexpected error occurred: ${err?.message}`));
+            .catch((err) => this.toastService.red(`An unexpected error occurred: ${err?.error?.message}`));
     }
 
     swapForm(form: IFormModel) {
@@ -335,7 +336,7 @@ export class PageFormsComponent implements OnInit {
                         this.toastService.green('Create Classes successfully');
                         this.ngOnInit();
                     })
-                    .catch((err) => this.toastService.red(`Could not create classes: ${err?.message}`));
+                    .catch((err) => this.toastService.red(`Could not create classes: ${err?.error?.message}`));
             }
         });
     }
@@ -390,7 +391,7 @@ export class PageFormsComponent implements OnInit {
                         this.ngOnInit();
                         this.toastService.green('Updated successfully!');
                     })
-                    .catch((err) => this.toastService.red(`Could not update: ${err?.message}`));
+                    .catch((err) => this.toastService.red(`Could not update: ${err?.error?.message}`));
             }
         });
     }

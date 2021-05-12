@@ -1,6 +1,14 @@
 <div class="p-grid" *ngIf="isStudent">
     <div class="p-col-8 p-offset-2 margin-vertical">
         <h3 *ngIf="!!!classes.length">No classes found!</h3>
+        <button
+            pButton
+            class="p-button p-button-secondary margin"
+            label="Request elective change"
+            (click)="requestElectiveChange()"
+            [disabled]="canRequestElectiveChange"
+            *ngIf="!!!classes.length"
+        ></button>
         <p-card
             *ngFor="let item of classes"
             header="{{ item.elective.name }}, v{{ item.elective.version }}, teacher: {{ item.teacher.name }}"
@@ -10,84 +18,140 @@
         </p-card>
     </div>
 </div>
+
 <div class="p-grid" *ngIf="!isStudent">
-    <div class="p-col-8 p-offset-2 margin-vertical">
-        <p-table
-            [value]="classes"
-            [lazy]="true"
-            [paginator]="true"
-            [rows]="25"
-            [totalRecords]="totalRecords"
-            [loading]="loading"
-            (onLazyLoad)="setPage($event)"
-            dataKey="id"
-            styleClass="p-datatable-gridlines"
-            *ngIf="isAdmin"
-        >
-            <ng-template pTemplate="header">
-                <th>Elective</th>
-                <th>Version</th>
-                <th>Students</th>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-                <tr>
-                    <td>{{ item.elective.name }}</td>
-                    <td>{{ item.elective.version }}</td>
-                    <td>
-                        <button
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
-                            icon="pi pi-eye"
-                            (click)="viewStudents(item)"
-                        ></button>
-                        <button
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-secondary p-mr-2 p-button-icon-only"
-                            icon="pi pi-arrow-right"
-                            [routerLink]="['/class', item.id]"
-                        ></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-        <p-table
-            [value]="classes"
-            [paginator]="true"
-            [rows]="10"
-            dataKey="id"
-            styleClass="p-datatable-gridlines"
-            *ngIf="isTeacher"
-        >
-            <ng-template pTemplate="header">
-                <th>Elective</th>
-                <th>Version</th>
-                <th>Students</th>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-                <tr>
-                    <td>{{ item.elective.name }}</td>
-                    <td>{{ item.elective.version }}</td>
-                    <td>
-                        <button
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
-                            icon="pi pi-eye"
-                            (click)="viewStudents(item)"
-                        ></button>
-                        <button
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-secondary p-mr-2 p-button-icon-only"
-                            icon="pi pi-arrow-right"
-                            [routerLink]="['/class', item.id]"
-                        ></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+    <div class="p-col-8 p-offset-2">
+        <p-tabView>
+            <p-tabPanel header="Classes">
+                <div class="p-grid">
+                    <div class="p-col-12 margin-vertical">
+                        <p-table
+                            [value]="classes"
+                            [lazy]="true"
+                            [paginator]="true"
+                            [rows]="25"
+                            [totalRecords]="totalRecords"
+                            [loading]="loading"
+                            (onLazyLoad)="setPage($event)"
+                            dataKey="id"
+                            styleClass="p-datatable-gridlines"
+                            *ngIf="isAdmin"
+                        >
+                            <ng-template pTemplate="header">
+                                <th>Elective</th>
+                                <th>Version</th>
+                                <th>Students</th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.elective.name }}</td>
+                                    <td>{{ item.elective.version }}</td>
+                                    <td>
+                                        <button
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
+                                            icon="pi pi-eye"
+                                            title="View students"
+                                            (click)="viewStudents(item)"
+                                        ></button>
+                                        <button
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-secondary p-mr-2 p-button-icon-only"
+                                            icon="pi pi-arrow-right"
+                                            title="Goto class"
+                                            [routerLink]="['/class', item.id]"
+                                        ></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <p-table
+                            [value]="classes"
+                            [paginator]="true"
+                            [rows]="10"
+                            dataKey="id"
+                            styleClass="p-datatable-gridlines"
+                            *ngIf="isTeacher"
+                        >
+                            <ng-template pTemplate="header">
+                                <th>Elective</th>
+                                <th>Version</th>
+                                <th>Students</th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.elective.name }}</td>
+                                    <td>{{ item.elective.version }}</td>
+                                    <td>
+                                        <button
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
+                                            icon="pi pi-eye"
+                                            (click)="viewStudents(item)"
+                                            title="View students"
+                                        ></button>
+                                        <button
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-secondary p-mr-2 p-button-icon-only"
+                                            icon="pi pi-arrow-right"
+                                            title="Goto class"
+                                            [routerLink]="['/class', item.id]"
+                                        ></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Elective change Requests" [disabled]="!isAdmin">
+                <p-table
+                    [value]="electiveChangeRequests"
+                    [paginator]="true"
+                    [rows]="10"
+                    dataKey="id"
+                    styleClass="p-datatable-gridlines"
+                >
+                    <ng-template pTemplate="header">
+                        <th>Roll no</th>
+                        <th>Request date</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Action</th>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>{{ item.user.rollNo }}</td>
+                            <td>{{ item.requestDate }}</td>
+                            <td>{{ item.from.name }}</td>
+                            <td>{{ item.to.name }}</td>
+                            <td>
+                                <button
+                                    pButton
+                                    type="button"
+                                    class="p-button-rounded p-button-danger p-mr-2 p-button-icon-only"
+                                    icon="pi pi-trash"
+                                    title="Remove change request"
+                                    (click)="removeChangeRequest(item)"
+                                ></button>
+                                <button
+                                    pButton
+                                    type="button"
+                                    class="p-button-rounded p-button-success p-mr-2 p-button-icon-only"
+                                    icon="pi pi-check"
+                                    (click)="confirmChange(item)"
+                                    title="Confirm change request"
+                                ></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+        </p-tabView>
     </div>
 </div>
 
@@ -107,3 +171,47 @@
         </ng-template>
     </p-table>
 </p-dialog>
+
+<p-dialog
+    [(visible)]="electiveChangeDialog"
+    [style]="{ width: '950px' }"
+    header="Request elective change"
+    [modal]="true"
+    [responsive]="true"
+    [contentStyle]="{ overflow: 'visible' }"
+>
+    <div class="p-grid">
+        <div class="p-col-10 p-offset-1 center-horizontal">
+            <label for="fromElective" class="margin">From elective:</label>
+            <p-dropdown
+                id="fromElective"
+                class="margin"
+                [(ngModel)]="fromRequest"
+                [options]="classes"
+                optionLabel="elective.name"
+                optionValue="id"
+                [ngModelOptions]="{ standalone: true }"
+            ></p-dropdown>
+            <label for="toElective" class="margin">To elective:</label>
+            <p-dropdown
+                id="toElective"
+                class="margin"
+                [(ngModel)]="toRequest"
+                [options]="requestElectives"
+                optionLabel="name"
+                optionValue="id"
+                [ngModelOptions]="{ standalone: true }"
+            ></p-dropdown>
+        </div>
+        <div class="p-col-2 p-offset-5">
+            <button
+                pButton
+                type="button"
+                label="Submit"
+                class="p-button margin-sides"
+                (click)="requestChange()"
+            ></button>
+        </div>
+    </div>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

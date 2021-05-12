@@ -276,6 +276,6 @@ export class PageAdministrationComponent implements OnInit {
                     this.toastService.red(`An unknown error occurred!`);
                 }
             })
-            .catch((err) => this.toastService.red(`An unknown error occurred: ${err?.message}`));
+            .catch((err) => this.toastService.red(`An unknown error occurred: ${err?.error?.message}`));
     }
 }

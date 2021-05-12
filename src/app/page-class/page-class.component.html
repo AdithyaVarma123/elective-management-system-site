@@ -1,58 +1,173 @@
 <div class="p-grid">
-    <div class="p-col-8 center-horizontal">
+    <div class="p-col-10 p-offset-1">
         <h2>{{ class.elective.name }}, v{{ class.elective.version }}, teacher: {{ class.teacher.name }}</h2>
     </div>
-    <div class="p-col-8 p-offset-2" *ngIf="!isStudent">
-        <h2>Upload class resource</h2>
-        <p-fileUpload
-            name="myfile[]"
-            customUpload="true"
-            chooseLabel="upload"
-            uploadLabel="Upload"
-            (uploadHandler)="uploadResource($event.files)"
-        ></p-fileUpload>
-    </div>
-    <div class="p-col-8 p-offset-2">
-        <p-table [paginator]="true" [rows]="10" [value]="items" styleClass="p-datatable-gridlines">
-            <ng-template pTemplate="header">
-                <th>Name</th>
-                <th>Created at</th>
-                <th>Action</th>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-                <tr>
-                    <td>{{ item.file.name }}</td>
-                    <td>{{ item.createdAt }}</td>
-                    <td>
+    <div class="p-col-10 p-offset-1">
+        <p-tabView>
+            <p-tabPanel header="Resources">
+                <div class="p-grid">
+                    <div class="p-col-10 p-offset-1" *ngIf="!isStudent">
+                        <h2>Upload class resource</h2>
+                        <p-fileUpload
+                            name="myfile[]"
+                            customUpload="true"
+                            chooseLabel="upload"
+                            uploadLabel="Upload"
+                            (uploadHandler)="uploadResource($event.files)"
+                        ></p-fileUpload>
+                    </div>
+                    <div class="p-col-10 p-offset-1">
+                        <p-table [paginator]="true" [rows]="10" [value]="items" styleClass="p-datatable-gridlines">
+                            <ng-template pTemplate="header">
+                                <th>Name</th>
+                                <th>Created at</th>
+                                <th>Action</th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.file.name }}</td>
+                                    <td>{{ item.createdAt }}</td>
+                                    <td>
+                                        <button
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-success p-mr-2 p-button-icon-only"
+                                            icon="pi pi-download"
+                                            (click)="downloadFile(item.file)"
+                                        ></button>
+                                        <button
+                                            *ngIf="item.file.shouldTrack && !isStudent"
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
+                                            icon="pi pi-eye"
+                                            (click)="viewTracked(item.file)"
+                                        ></button>
+                                        <button
+                                            *ngIf="!isStudent"
+                                            pButton
+                                            type="button"
+                                            class="p-button-rounded p-button-danger p-mr-2 p-button-icon-only"
+                                            icon="pi pi-trash"
+                                            (click)="deleteResource(item.file)"
+                                        ></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel [header]="panelName" *ngIf="isStudent || isTeacher">
+                <div class="p-grid">
+                    <div class="p-col-10 p-offset-1" *ngIf="isTeacher">
                         <button
                             pButton
-                            type="button"
-                            class="p-button-rounded p-button-success p-mr-2 p-button-icon-only"
-                            icon="pi pi-download"
-                            (click)="downloadFile(item.file)"
+                            class="p-button p-button-secondary margin"
+                            label="Create quiz"
+                            (click)="createQuiz()"
                         ></button>
-                        <button
-                            *ngIf="item.file.shouldTrack && !isStudent"
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-info p-mr-2 p-button-icon-only"
-                            icon="pi pi-eye"
-                            (click)="viewTracked(item.file)"
-                        ></button>
-                        <button
-                            *ngIf="!isStudent"
-                            pButton
-                            type="button"
-                            class="p-button-rounded p-button-danger p-mr-2 p-button-icon-only"
-                            icon="pi pi-trash"
-                            (click)="deleteResource(item.file)"
-                        ></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+                    </div>
+                    <div class="p-col-12">
+                        <p-table
+                            [paginator]="true"
+                            [rows]="10"
+                            [value]="newQuizItems"
+                            styleClass="p-datatable-gridlines"
+                        >
+                            <ng-template pTemplate="header">
+                                <th>Name</th>
+                                <th>Open from</th>
+                                <th>Closes at</th>
+                                <th>Quiz time</th>
+                                <th>Actions</th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.start }}</td>
+                                    <td>{{ item.end }}</td>
+                                    <td>{{ item.time }} minutes</td>
+                                    <td>
+                                        <button
+                                            *ngIf="isStudent"
+                                            pButton
+                                            class="p-button p-button-rounded p-button-info p-mr-2 p-button-icon-only"
+                                            icon="pi pi-play"
+                                            title="Start quiz"
+                                            (click)="startQuiz(item)"
+                                        ></button>
+                                        <button
+                                            *ngIf="isTeacher"
+                                            pButton
+                                            class="p-button p-button-rounded p-button-warning p-mr-2 p-button-icon-only"
+                                            icon="pi pi-pencil"
+                                            title="Edit quiz"
+                                            (click)="editQuiz(item)"
+                                        ></button>
+                                        <button
+                                            *ngIf="isTeacher"
+                                            pButton
+                                            class="p-button p-button-rounded p-button-danger p-mr-2 p-button-icon-only"
+                                            icon="pi pi-trash"
+                                            title="Delete quiz"
+                                            (click)="deleteQuiz(item)"
+                                        ></button>
+                                        <button
+                                            *ngIf="isTeacher"
+                                            pButton
+                                            class="p-button p-button-rounded p-button-secondary p-mr-2 p-button-icon-only"
+                                            icon="pi pi-eye"
+                                            title="View scores"
+                                            (click)="showScores(item)"
+                                        ></button>
+                                        <button
+                                            *ngIf="isTeacher"
+                                            pButton
+                                            class="p-button p-button-rounded p-button-success p-mr-2 p-button-icon-only"
+                                            icon="pi pi-print"
+                                            title="Publish results"
+                                            (click)="publishScores(item)"
+                                        ></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Old quizzes" *ngIf="isStudent">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <p-table
+                            [paginator]="true"
+                            [rows]="10"
+                            [value]="oldQuizItems"
+                            styleClass="p-datatable-gridlines"
+                        >
+                            <ng-template pTemplate="header">
+                                <th>Name</th>
+                                <th>Started quiz at</th>
+                                <th>Submitted at</th>
+                                <th>Score</th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.quiz.name }}</td>
+                                    <td>{{ item.start }}</td>
+                                    <td>{{ item.end }}</td>
+                                    <td>{{ !item.published ? 'Not published' : item.score }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
     </div>
 </div>
+
+<!-- Track downloads dialog -->
 
 <p-dialog [(visible)]="trackAccessDialog" [style]="{ width: '950px' }" header="Download list" [modal]="true">
     <p-table [value]="tracked" [paginator]="true" [rows]="10" dataKey="id" styleClass="p-datatable-gridlines">
@@ -66,6 +181,258 @@
                 <td>{{ item.user.name }}</td>
                 <td>{{ item.user.rollNo }}</td>
                 <td>{{ item.time }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+<!-- Create quiz dialog -->
+
+<p-dialog
+    [(visible)]="createQuizDialog"
+    [style]="{ width: '950px' }"
+    header="Create quiz"
+    [modal]="true"
+    [responsive]="true"
+    [maximizable]="true"
+    [contentStyle]="{ overflow: 'visible' }"
+>
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="name" class="margin">Name:</label>
+            <input autocomplete="off" pInputText type="text" class="item" [(ngModel)]="name" id="name" />
+        </div>
+        <div class="p-col-6">
+            <label for="pwd" class="margin">Password:</label>
+            <input
+                autocomplete="off"
+                pInputText
+                type="password"
+                class="item"
+                [(ngModel)]="password"
+                id="pwd"
+                placeholder="Leave empty for no password"
+            />
+        </div>
+        <div class="p-col-6">
+            <label for="startTime" class="margin">Start time:</label>
+            <p-calendar [(ngModel)]="start" class="item" showTime="true" hourFormat="24" id="startTime"></p-calendar>
+        </div>
+        <div class="p-col-6">
+            <label for="endTime" class="margin">End time:</label>
+            <p-calendar
+                [(ngModel)]="end"
+                class="item"
+                showTime="true"
+                hourFormat="24"
+                id="endTime"
+                (onSelect)="setMaxTime()"
+            ></p-calendar>
+        </div>
+        <div class="p-col-8">
+            <label for="time" class="margin">Time:</label>
+            <input
+                autocomplete="off"
+                type="number"
+                style="width: 85%"
+                min="0"
+                [max]="maxTime"
+                pInputText
+                [(ngModel)]="time"
+                id="time"
+                placeholder="Quiz time in minutes, leave as 0 for max time"
+            />
+        </div>
+        <div class="p-col-12">
+            <p-fileUpload
+                name="myfile[1]"
+                customUpload="true"
+                chooseLabel="upload"
+                uploadLabel="Create Quiz"
+                (uploadHandler)="uploadQuiz($event.files)"
+            ></p-fileUpload>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Edit quiz dialog -->
+
+<p-dialog
+    [(visible)]="editQuizDialog"
+    [style]="{ width: '950px' }"
+    header="Edit quiz"
+    [modal]="true"
+    [responsive]="true"
+    [maximizable]="true"
+    [contentStyle]="{ overflow: 'visible' }"
+>
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="name" class="margin">Name:</label>
+            <input autocomplete="off" pInputText type="text" class="item" [(ngModel)]="name" id="name" />
+        </div>
+        <div class="p-col-6">
+            <label for="pwd" class="margin">Password:</label>
+            <input
+                autocomplete="off"
+                pInputText
+                type="password"
+                class="item"
+                [(ngModel)]="password"
+                id="pwd"
+                placeholder="Leave empty for no password"
+            />
+        </div>
+        <div class="p-col-6">
+            <label for="startTime" class="margin">Start time:</label>
+            <p-calendar [(ngModel)]="start" class="item" showTime="true" hourFormat="24" id="startTime"></p-calendar>
+        </div>
+        <div class="p-col-6">
+            <label for="endTime" class="margin">End time:</label>
+            <p-calendar
+                [(ngModel)]="end"
+                class="item"
+                showTime="true"
+                hourFormat="24"
+                id="endTime"
+                (onSelect)="setMaxTime()"
+            ></p-calendar>
+        </div>
+        <div class="p-col-8">
+            <label for="time" class="margin">Time:</label>
+            <input
+                autocomplete="off"
+                type="number"
+                style="width: 85%"
+                min="0"
+                [max]="maxTime"
+                pInputText
+                [(ngModel)]="time"
+                id="time"
+                placeholder="Quiz time in minutes, leave as 0 for max time"
+            />
+        </div>
+        <div class="p-col-2 p-offset-5">
+            <button pButton class="p-button p-button-primary" label="Submit" (click)="submitEditQuiz()"></button>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Quiz dialog -->
+
+<p-dialog
+    [(visible)]="quizDialog"
+    [style]="{ width: '950px' }"
+    [header]="currentQuiz.name"
+    [closable]="false"
+    [dismissableMask]="false"
+    [modal]="true"
+    [responsive]="true"
+    [maximizable]="true"
+    [contentStyle]="{ overflow: 'visible' }"
+>
+    <div class="p-grid" *ngIf="!hasPassword && useProgressBar">
+        <div class="p-col-12 center-horizontal"><b>Time remaining:</b>&nbsp;{{ timeRemainingReadable }}</div>
+        <div class="p-col-12">
+            <p-progressBar [value]="quizProgressBar" [showValue]="false"></p-progressBar>
+        </div>
+    </div>
+    <div class="p-grid center-horizontal" *ngIf="quizDialogLoading">
+        <div class="p-col-12 center-horizontal">
+            <p-progressSpinner
+                [style]="{ width: '50px', height: '50px' }"
+                styleClass="custom-spinner"
+                strokeWidth="8"
+                fill="#EEEEEE"
+                animationDuration=".5s"
+                class="margin-vertical"
+            ></p-progressSpinner>
+        </div>
+    </div>
+    <div class="p-grid" *ngIf="hasPassword && !quizDialogLoading">
+        <div class="p-col-12 center-horizontal">
+            <label for="quizPwd" class="margin">Password:</label>
+            <input pInputText type="password" class="item" [(ngModel)]="quizPassword" autocomplete="off" />
+        </div>
+        <div class="p-col-2 p-offset-5">
+            <button pButton class="p-button p-button-primary" label="Submit" (click)="sendQuizStart()"></button>
+        </div>
+    </div>
+    <div class="p-grid" *ngIf="!hasPassword && !quizDialogLoading">
+        <div class="p-col-12">
+            <span style="font-size: 1.2em">
+                <b style="font-size: 1.5em">{{ currentQuestion }})</b>
+                &nbsp;
+                {{ nextQuizItem.question.name }}
+            </span>
+            <br />
+        </div>
+        <div class="p-col-12" *ngFor="let option of nextQuizItem.question.options; let i = index">
+            <p-radioButton [name]="option" value="{{ i + 1 }}" [(ngModel)]="currentAnswer"> </p-radioButton>
+            <label [for]="option" class="margin-sides">{{ option }}</label>
+        </div>
+        <div class="p-col-12">
+            <button
+                pButton
+                class="p-button p-button-secondary p-button-icon-only"
+                icon="pi pi-times"
+                (click)="currentAnswer = -1"
+            ></button>
+        </div>
+        <div class="p-col-12">
+            <button
+                pButton
+                class="p-button p-button-warning float-left margin"
+                label="Previous"
+                icon="pi pi-arrow-left"
+                *ngIf="currentQuestion > 1"
+                (click)="getQuestion('prev')"
+            ></button>
+            <button
+                pButton
+                class="p-button p-button-success float-right margin"
+                [label]="nextButtonLabel"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (click)="getQuestion('next')"
+            ></button>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Scores dialog -->
+
+<p-dialog
+    [(visible)]="viewScoresDialog"
+    [style]="{ width: '950px' }"
+    header="Quiz Scores {{ currentQuiz.name }}"
+    [modal]="true"
+>
+    <p-table
+        [value]="scores"
+        [paginator]="true"
+        [rows]="10"
+        dataKey="id"
+        styleClass="p-datatable-gridlines"
+        [lazy]="true"
+        [loading]="loading"
+        (onLazyLoad)="getScores($event)"
+        [totalRecords]="totalRecords"
+    >
+        <ng-template pTemplate="header">
+            <th>Roll no</th>
+            <th>Started at</th>
+            <th>Submitted at</th>
+            <th>Attended</th>
+            <th>Score</th>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{ item.user.rollNo }}</td>
+                <td>{{ item.start }}</td>
+                <td>{{ item.end }}</td>
+                <td>{{ item.attended }}</td>
+                <td>{{ item.score }}</td>
             </tr>
         </ng-template>
     </p-table>
