@@ -3,7 +3,7 @@ import { IUserModel } from './user-model';
 import { electiveAttributes } from './general';
 
 export interface IElectiveModel {
-    id?: string;
+    id: string;
     name: string;
     description: string;
     courseCode: string;

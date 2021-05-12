@@ -1,5 +1,5 @@
 export interface IBatchModel {
-    id?: string;
+    id: string;
     year: number;
     numYears: number;
     degree: string;

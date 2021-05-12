@@ -8,6 +8,13 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TabViewModule } from 'primeng/tabview';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 const PageClassRoutes: Routes = [
     {
@@ -24,7 +31,14 @@ const PageClassRoutes: Routes = [
         ButtonModule,
         DialogModule,
         FileUploadModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        TabViewModule,
+        FormsModule,
+        InputTextModule,
+        CalendarModule,
+        ProgressSpinnerModule,
+        RadioButtonModule,
+        ProgressBarModule
     ],
     declarations: [PageClassComponent]
 })

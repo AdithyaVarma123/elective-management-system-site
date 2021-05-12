@@ -7,6 +7,10 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TabViewModule } from 'primeng/tabview';
 
 const PageClassesRoutes: Routes = [
     {
@@ -22,7 +26,11 @@ const PageClassesRoutes: Routes = [
         CardModule,
         TableModule,
         ButtonModule,
-        DialogModule
+        DialogModule,
+        DropdownModule,
+        FormsModule,
+        ConfirmDialogModule,
+        TabViewModule
     ],
     declarations: [PageClassesComponent]
 })

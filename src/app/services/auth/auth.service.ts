@@ -58,6 +58,7 @@ export class AuthService {
                                     localStorage.setItem('refresh_token', tokens.refresh_token);
                                     localStorage.setItem('id_token', tokens.id_token);
                                     localStorage.setItem('scope', scope);
+                                    localStorage.setItem('username', username);
                                     this.accessToken = tokens.access_token;
                                     this.refreshToken();
                                     resolve(true);

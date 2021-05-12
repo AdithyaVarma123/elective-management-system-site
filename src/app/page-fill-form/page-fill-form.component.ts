@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth/auth.service';
 export class PageFillFormComponent implements OnInit {
     id: string;
     form: IFormModel = {
+        id: '',
         explicit: [],
         active: false,
         electives: [],

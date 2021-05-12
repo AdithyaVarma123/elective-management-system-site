@@ -3,7 +3,7 @@ import { IUserModel } from './user-model';
 import { IFormModel } from './form-model';
 
 export interface IResponseModel {
-    id?: string;
+    id: string;
     user: IUserModel;
     responses: IElectiveModel[];
     form: IFormModel;

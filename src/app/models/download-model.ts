@@ -2,7 +2,7 @@ import { IUserModel } from './user-model';
 import { IClassModel } from './class-model';
 
 export interface IDownloadModel {
-    id?: string;
+    id: string;
     path: string;
     shouldTrack: boolean;
     fileId: string;

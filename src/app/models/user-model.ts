@@ -3,7 +3,7 @@ import { IBatchModel } from './batch-model';
 import { IClassModel } from './class-model';
 
 export interface IUserModel {
-    id?: string;
+    id: string;
     name: string;
     username: string;
     password: string;

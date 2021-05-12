@@ -32,6 +32,7 @@ export class PageElectivesComponent implements OnInit {
 
     editDialog = false;
     selectedElective: IElectiveModel = {
+        id: '',
         attributes: [],
         batches: [],
         courseCode: '',
