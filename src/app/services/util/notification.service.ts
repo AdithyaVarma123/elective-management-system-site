@@ -5,11 +5,12 @@ import constants from '../../constants';
 import { DeviceUUID } from 'device-uuid';
 import { Router } from '@angular/router';
 import { scopes } from '../../models/general';
+import { AuthService } from '../auth/auth.service';
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationService {
-    constructor(private swPush: SwPush, private http: HttpClient, private router: Router) {}
+    constructor(private swPush: SwPush, private http: HttpClient, private router: Router, private auth: AuthService) {}
 
     readonly VAPID_PUBLIC_KEY =
         'BM1czT5G3TkD1ieKRhPVozuoxC0DYwaC3np25qh0LaQpIYz0V6Ux5XdN-43TZ-oMuVwBMn53QXT5qV8wzgtXtqg';
@@ -20,7 +21,7 @@ export class NotificationService {
         if (name !== null && name !== undefined && name.length > 0) {
             return name;
         } else {
-            localStorage.setItem('name', new DeviceUUID().get());
+            localStorage.setItem('name', new DeviceUUID().get() + localStorage.getItem('username'));
             return localStorage.getItem('name');
         }
     }
@@ -61,7 +62,7 @@ export class NotificationService {
     }
 
     public subscribeToNotifications(): void {
-        if (this.swPush.isEnabled) {
+        if (this.swPush.isEnabled && this.auth.isLoggedIn) {
             this.swPush
                 .requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
                 .then((sub) => {
