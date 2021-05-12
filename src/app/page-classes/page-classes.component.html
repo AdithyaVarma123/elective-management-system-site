@@ -7,7 +7,6 @@
             label="Request elective change"
             (click)="requestElectiveChange()"
             [disabled]="canRequestElectiveChange"
-            *ngIf="!!!classes.length"
         ></button>
         <p-card
             *ngFor="let item of classes"
