@@ -4,7 +4,7 @@ import { IBatchModel } from './batch-model';
 import { IDownloadModel } from './download-model';
 
 export interface IClassModel {
-    id?: string;
+    id: string;
     batches: IBatchModel[];
     elective: IElectiveModel;
     students: IUserModel[];
