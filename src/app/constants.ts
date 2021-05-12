@@ -1,5 +1,5 @@
 export default {
-    server: 'https://localhost:3000',
+    server: 'https://amrita-elective.tk',
     refreshTime: 780000,
     unknownError: 'An unknown error occurred!'
 };
