@@ -78,21 +78,14 @@ export class NotificationService {
         }
     }
 
-    public unsubscribeToNotifications(): void {
-        if (this.swPush.isEnabled) {
-            this.swPush
-                .requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
-                .then((sub) => {
-                    this.http
-                        .post(this.notification + 'unsubscribe', {
-                            sub,
-                            name: NotificationService.getBrowserName() + NotificationService.getName()
-                        })
-                        .subscribe();
-                    this.clickHandler();
-                })
-                .catch((err) => console.error('Could not unsubscribe to notifications', err));
-        }
+    public unsubscribeToNotifications(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.http
+            .post(this.notification + 'unsubscribe', {
+                name: NotificationService.getBrowserName() + NotificationService.getName()
+            })
+            .subscribe(() => resolve(), err => reject(err));
+        });
     }
 
     public clickHandler(): void {
