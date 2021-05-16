@@ -7,7 +7,8 @@ import { AuthTokens, RefreshTokens, scopes } from '../../models/general';
 import { fromHexString, getCode } from '../../util/general';
 import { sha256 } from 'js-sha256';
 import { Base64 } from 'js-base64';
-import { NotificationService } from '../util/notification.service';
+import { NotificationService } from "../util/notification.service";
+
 @Injectable({
     providedIn: 'root'
 })
@@ -17,7 +18,7 @@ export class AuthService {
     private auth = constants.server + '/oauth/';
     private interval;
 
-    constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {
+    constructor(private http: HttpClient, private router: Router) {
         window.addEventListener('online', this.refreshToken);
     }
 
@@ -86,7 +87,7 @@ export class AuthService {
 
     logout(): Promise<boolean> {
         return new Promise<boolean>(async (resolve, reject) => {
-            await this.notificationService.unsubscribeToNotifications();
+            await NotificationService.self.unsubscribeToNotifications();
             const query = qs.stringify({
                 refresh_token: localStorage.getItem('refresh_token'),
                 id_token: localStorage.getItem('id_token')
