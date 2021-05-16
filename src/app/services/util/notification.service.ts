@@ -10,8 +10,10 @@ import { AuthService } from '../auth/auth.service';
     providedIn: 'root'
 })
 export class NotificationService {
-    constructor(private swPush: SwPush, private http: HttpClient, private router: Router, private auth: AuthService) {}
-
+    constructor(private swPush: SwPush, private http: HttpClient, private router: Router, private auth: AuthService) {
+        NotificationService.self = this;
+    }
+    static self: any;
     readonly VAPID_PUBLIC_KEY =
         'BM1czT5G3TkD1ieKRhPVozuoxC0DYwaC3np25qh0LaQpIYz0V6Ux5XdN-43TZ-oMuVwBMn53QXT5qV8wzgtXtqg';
     private notification = constants.server + '/notifications/';
