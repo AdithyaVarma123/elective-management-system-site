@@ -87,7 +87,11 @@ export class AuthService {
 
     logout(): Promise<boolean> {
         return new Promise<boolean>(async (resolve, reject) => {
-            await NotificationService.self.unsubscribeToNotifications();
+            try {
+                await NotificationService.self.unsubscribeToNotifications();
+            }
+                // eslint-disable-next-line no-empty
+            catch(err) {}
             const query = qs.stringify({
                 refresh_token: localStorage.getItem('refresh_token'),
                 id_token: localStorage.getItem('id_token')
