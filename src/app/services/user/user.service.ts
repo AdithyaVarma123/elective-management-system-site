@@ -38,9 +38,9 @@ export class UserService {
                     newPassword
                 })
                 .subscribe(
-                    () => {
+                    (res: any) => {
                         outer.unsubscribe();
-                        resolve(true);
+                        resolve(res.status);
                     },
                     (err) => {
                         outer.unsubscribe();
