@@ -33,7 +33,10 @@ export class PageResetPasswordComponent implements OnInit {
                 this.user
                     .resetpass(this.newpass, this.code)
                     .then((result) => {
-                        if (result) this.toast.green('email sent for reset');
+                        if (result) {
+                            this.toast.green('Password successfully reset!');
+                            this.router.navigate(['']).then().catch();
+                        }
                     })
                     .catch((err) => {
                         this.toast.red(err.name, 3000, false, err?.description);
