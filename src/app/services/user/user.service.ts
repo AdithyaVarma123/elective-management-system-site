@@ -91,7 +91,10 @@ export class UserService {
                 (res: any) => {
                     outer.unsubscribe();
                     if (res.failed.length == 0) resolve(true);
-                    else resolve(false);
+                    else {
+                        console.log(res);
+                        resolve(false);
+                    };
                 },
                 (err) => {
                     outer.unsubscribe();

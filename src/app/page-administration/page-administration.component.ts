@@ -143,6 +143,9 @@ export class PageAdministrationComponent implements OnInit {
             .updateUser(body)
             .then((res) => {
                 if (res) this.toastService.green('User updated');
+                else {
+                    this.toastService.red('User not updated');
+                }
             })
             .catch(() => {
                 this.toastService.red(constants.unknownError);

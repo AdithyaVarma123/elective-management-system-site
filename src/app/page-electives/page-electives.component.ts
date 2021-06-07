@@ -150,6 +150,9 @@ export class PageElectivesComponent implements OnInit {
                     this.strength = undefined;
                     this.setPageElectives({ first: 0 });
                 }
+                else{
+                    this.toastService.red(constants.unknownError);
+                }
             })
             .catch(() => {
                 this.toastService.red(constants.unknownError);
