@@ -54,3 +54,4 @@ cypress/videos
 cypress/screenshots
 coverage-e2e
 combined-coverage
+reports
