@@ -11,7 +11,7 @@
     "coverage:combined": "yarn copy:reports && yarn combine:reports && yarn finalize:combined-report",
     "copy:reports": "shx mkdir reports && shx cp coverage-e2e/coverage-final.json reports/from-cypress.json && shx cp coverage/coverage-final.json reports/from-karma.json",
     "combine:reports": "npx nyc merge reports && shx mv coverage.json .nyc_output/out.json",
-    "finalize:combined-report": "npx nyc report --reporter lcov  --report-dir combined-coverage",
+    "finalize:combined-report": "npx nyc report --reporter html --reporter text --reporter json-summary --reporter lcov  --report-dir combined-coverage",
     "coverage:reset": "shx rm -rf .nyc_output && shx rm -rf reports && shx rm -rf coverage && shx rm -rf coverage-e2e && shx rm -rf combined-coverage",
     "lint": "eslint . --ext .ts --quiet",
     "lint:fix": "eslint . --fix --ext .ts --quiet && npm run prettier",
