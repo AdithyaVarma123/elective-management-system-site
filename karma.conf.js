@@ -23,7 +23,7 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcov', 'text-lcov', 'lcovonly' ],
+      reports: [ 'html', 'lcov', 'text-lcov', 'lcovonly', 'json'],
       fixWebpackSourcePaths: true
     },
     jasmineHtmlReporter: {
@@ -44,10 +44,11 @@ module.exports = function (config) {
       subdir: '.',
       reporters: [
         { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'text-summary' },
+        { type: 'lcov' }
       ]
     },
-    reporters: ['progress', 'kjhtml', 'sonarqube'],
+    reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

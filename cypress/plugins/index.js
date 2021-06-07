@@ -1,22 +1,24 @@
-/// <reference types="cypress" />
-// ***********************************************************
-// This example plugins/index.js can be used to load plugins
-//
-// You can change the location of this file or turn off loading
-// the plugins file with the 'pluginsFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/plugins-guide
-// ***********************************************************
+// cypress/plugins/index.js
 
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
+// multiple tasks are being used
+const cyExtendsTask = require('@bahmutov/cypress-extends');
+const cyCodeCoverageTask = require('@cypress/code-coverage/task');
 
-/**
- * @type {Cypress.PluginConfig}
- */
-// eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  // `on` is used to hook into various events Cypress emits. `config` is the resolved Cypress config
+
+  // there may be multiple events that increase complexity. We have to return from each. What do we do with multiple returns?
+
+  on('before:browser:launch', (browser = {}, launchOptions) => {
+    // some complex before:browser:launch configuration. There can be multiples of this, but at the end launchOptions need to be returned.
+    return launchOptions;
+  });
+
+  // let's say we have multiple tasks are being used. This is a pattern to combine the tasks into an object and return them collectively
+  const allTasks = Object.assign({},
+    cyCodeCoverageTask(on, config),
+    cyExtendsTask(config.configFile)
+  );
+
+  return allTasks;
 }

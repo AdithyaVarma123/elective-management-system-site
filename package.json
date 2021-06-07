@@ -5,11 +5,23 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod --aot --base-href /app/",
-    "test": "ng test",
-    "e2e": "ng e2e",
+    "unit": "ng test",
+    "e2e": "ng run elective-management-system-site:cypress-run --headless",
+    "test": "yarn coverage:reset && yarn unit && yarn e2e && yarn coverage:combined",
+    "coverage:combined": "yarn copy:reports && yarn combine:reports && yarn finalize:combined-report",
+    "copy:reports": "shx mkdir reports && shx cp coverage-e2e/coverage-final.json reports/from-cypress.json && shx cp coverage/coverage-final.json reports/from-karma.json",
+    "combine:reports": "npx nyc merge reports && shx mv coverage.json .nyc_output/out.json",
+    "finalize:combined-report": "npx nyc report --reporter lcov  --report-dir combined-coverage",
+    "coverage:reset": "shx rm -rf .nyc_output && shx rm -rf reports && shx rm -rf coverage && shx rm -rf coverage-e2e && shx rm -rf combined-coverage",
     "lint": "eslint . --ext .ts --quiet",
     "lint:fix": "eslint . --fix --ext .ts --quiet && npm run prettier",
     "prettier": "prettier src/ -w"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": false,
+    "report-dir": "coverage-e2e",
+    "include": ["src/app/**/*.ts"]
   },
   "private": true,
   "dependencies": {
@@ -23,6 +35,7 @@
     "@angular/platform-browser-dynamic": "~11.2.4",
     "@angular/router": "~11.2.4",
     "@angular/service-worker": "~11.2.4",
+    "@cypress/webpack-preprocessor": "^5.9.0",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "caller-path": "^3.0.1",
@@ -45,6 +58,7 @@
     "primeng": "^11.3.0-rc.1",
     "query-string": "^6.14.1",
     "rxjs": "~6.6.0",
+    "shx": "^0.3.3",
     "tslib": "^2.0.0",
     "update": "^0.7.4",
     "zone.js": "~0.11.3"
@@ -53,10 +67,16 @@
     "@angular-devkit/build-angular": "^0.901.15",
     "@angular/cli": "~11.2.3",
     "@angular/compiler-cli": "~11.2.4",
+    "@bahmutov/cypress-extends": "^1.1.0",
     "@briebug/cypress-schematic": "^5.0.0",
+    "@cypress/code-coverage": "^3.9.6",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "cypress": "7.4.0",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "istanbul-lib-coverage": "^3.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.1.0",
@@ -65,7 +85,12 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ngx-build-plus": "^12.0.1",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "ts-loader": "8.2.0",
     "ts-node": "~8.3.0",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.5",
+    "webpack": "^4.44.2"
   }
 }
