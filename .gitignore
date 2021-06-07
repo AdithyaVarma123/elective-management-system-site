@@ -52,3 +52,5 @@ karma.conf.js
 .scannerwork/report-task.txt
 cypress/videos
 cypress/screenshots
+coverage-e2e
+combined-coverage
