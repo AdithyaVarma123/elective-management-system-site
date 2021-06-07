@@ -50,3 +50,5 @@ Thumbs.db
 .scannerwork/report-task.txt
 karma.conf.js
 .scannerwork/report-task.txt
+cypress/videos
+cypress/screenshots
