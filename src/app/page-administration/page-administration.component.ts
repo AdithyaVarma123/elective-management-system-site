@@ -1,11 +1,14 @@
+// @ts-ignore
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
+// @ts-ignore
 import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from '../services/util/notification.service';
 
+// @ts-ignore
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
