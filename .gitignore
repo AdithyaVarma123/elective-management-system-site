@@ -22,7 +22,10 @@ speed-measure-plugin*.json
 *.launch
 .settings/
 *.sublime-workspace
-
+.nyc_output
+coverage
+.scannerwork
+.vscode
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -47,3 +50,8 @@ Thumbs.db
 .scannerwork/report-task.txt
 karma.conf.js
 .scannerwork/report-task.txt
+cypress/videos
+cypress/screenshots
+coverage-e2e
+combined-coverage
+reports

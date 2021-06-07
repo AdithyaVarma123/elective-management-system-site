@@ -1,11 +1,14 @@
+// @ts-ignore
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import constants from '../constants';
 import { ToastService } from '../services/util/toast.service';
 import { Record } from './record';
+// @ts-ignore
 import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from '../services/util/notification.service';
 
+// @ts-ignore
 @Component({
     selector: 'app-page-administration',
     templateUrl: './page-administration.component.html',
@@ -140,6 +143,9 @@ export class PageAdministrationComponent implements OnInit {
             .updateUser(body)
             .then((res) => {
                 if (res) this.toastService.green('User updated');
+                else {
+                    this.toastService.red('User not updated');
+                }
             })
             .catch(() => {
                 this.toastService.red(constants.unknownError);
