@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 describe("Login", () => {
-    it("wrong email for reset password", () => {
+    it("wrong email for change password", () => {
         cy.visit("http://localhost:4200/");
         cy.get('.p-button-danger > .p-button-label').click();
         cy.get('#emailId').type('kjosephsubash@gmail.com');
