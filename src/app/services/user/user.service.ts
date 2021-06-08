@@ -5,6 +5,7 @@ import { boolToString } from '../../util/general';
 import * as qs from 'query-string';
 import { NotificationService } from '../util/notification.service';
 import { IUserModel } from '../../models/user-model';
+import {ToastService} from "../util/toast.service";
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class UserService {
     private user = constants.server + '/users/';
     private notification = constants.server + '/notifications/';
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,private toastService: ToastService,) {}
 
     getBasic(): Promise<IUserModel> {
         return new Promise<IUserModel>((resolve, reject) => {
@@ -134,6 +135,7 @@ export class UserService {
                         resolve(res.id);
                     },
                     (err) => {
+                        this.toastService.red('Incorrect Roll Number');
                         reject(err);
                     }
                 );
