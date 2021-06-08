@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
-describe("Login", () => {
-    it("should visit login page", () => {
+describe("Users", () => {
+    it("should delete user", () => {
         cy.visit("http://localhost:4200/");
         cy.get('#email').type('kjosephsubash@gmail.com');
         cy.get('#password').type('admin');
