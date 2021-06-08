@@ -1,9 +1,9 @@
 # ElectiveManagementSystemSite
 ![build status](https://github.com/AdithyaVarma123/elective-management-system-site/actions/workflows/deploy.yml/badge.svg)
-[![Quality Gate Status](http://amrita-elective.tk:9000/api/project_badges/measure?project=ems_site&metric=alert_status)](http://amrita-elective.tk:9000/dashboard?id=ems_site)
-[![Security Rating](http://amrita-elective.tk:9000/api/project_badges/measure?project=ems_site&metric=security_rating)](http://amrita-elective.tk:9000/dashboard?id=ems_site)
-[![Coverage](http://amrita-elective.tk:9000/api/project_badges/measure?project=ems_site&metric=coverage)](http://amrita-elective.tk:9000/dashboard?id=ems_site)
-[![Lines of Code](http://amrita-elective.tk:9000/api/project_badges/measure?project=ems_site&metric=ncloc)](http://amrita-elective.tk:9000/dashboard?id=ems_site)
+[![Quality Gate Status](http://139.59.48.46:9000/api/project_badges/measure?project=ems_site&metric=alert_status)](http://139.59.48.46:9000/dashboard?id=ems_site)
+[![Security Rating](http://139.59.48.46:9000/api/project_badges/measure?project=ems_site&metric=security_rating)](http://139.59.48.46:9000/dashboard?id=ems_site)
+[![Coverage](http://139.59.48.46:9000/api/project_badges/measure?project=ems_site&metric=coverage)](http://139.59.48.46:9000/dashboard?id=ems_site)
+[![Lines of Code](http://139.59.48.46:9000/api/project_badges/measure?project=ems_site&metric=ncloc)](http://139.59.48.46:9000/dashboard?id=ems_site)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
 
