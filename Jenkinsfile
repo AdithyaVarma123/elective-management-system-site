@@ -9,12 +9,25 @@ pipeline {
     }
 
     stage('Integrate') {
+      when {
+        not {
+          branch 'master'
+        }
+
+      }
       steps {
         sh 'npm run test'
       }
     }
 
     stage('Deploy') {
+      when {
+        branch 'master'
+      }
+      environment {
+        sonar_login = credentials('sonar_login')
+        webhook_api = credentials('webhook_site')
+      }
       steps {
         sh 'sonar-scanner -Dsonar.login="$sonar_login"'
         sh 'zip -r -q result.zip dist'
