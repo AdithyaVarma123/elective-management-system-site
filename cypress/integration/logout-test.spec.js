@@ -7,6 +7,6 @@ describe("Logout", () => {
         cy.get(':nth-child(3) > .ng-valid > .p-radiobutton > .p-radiobutton-box > .p-radiobutton-icon').click({force:true});
         cy.get('.float-right > .p-button-label').click();
         cy.wait(3000);
-        cy.get('p-button > .p-button > .p-button-label').click();
+        cy.get('p-button > .p-button > .p-button-label',{timeout:10000}).click();
     });
 });
