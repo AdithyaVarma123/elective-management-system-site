@@ -2,6 +2,13 @@
 describe("Login", () => {
     it("should reset password", () => {
         cy.visit("http://localhost:4200/");
+        cy.intercept('PUT', 'https://amrita-elective.tk/users/requestReset', {
+            statusCode: 200,
+            body: {
+                "status": true,
+                "message": ""
+            }
+        });
         cy.get('#email').type('kjosephsubash@gmail.com');
         cy.get('#password').type('admin');
         cy.get(':nth-child(3) > .ng-valid > .p-radiobutton > .p-radiobutton-box > .p-radiobutton-icon').click({force:true});
