@@ -122,7 +122,7 @@ export class PageElectivesComponent implements OnInit {
         for (const v of this.batches) {
             if (!/^\d{4}-\d-[a-zA-Z]{4,5}-[a-zA-Z]{3,4}$/.test(v)) {
                 this.toastService.red('invalid batch code');
-                return;
+                throw 'bad batch';
             }
         }
         const body = {

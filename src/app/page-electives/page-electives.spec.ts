@@ -27,4 +27,9 @@ describe('PageElectivesComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('Should fail for bad batch', () => {
+        component.batches = ['some_failing_batch'];
+        expect(() => {component.addElective();}).toThrow('bad batch');
+    });
+
 });
