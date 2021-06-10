@@ -216,7 +216,11 @@ export class PageAdministrationComponent implements OnInit {
         this.userService
             .deleteUser(this.delRol)
             .then((res) => {
+                console.log(res);
                 if (res) this.toastService.green('User deleted');
+                else {
+                    this.toastService.red('Incorrect userID');
+                }
             })
             .catch(() => {
                 this.toastService.red(constants.unknownError);

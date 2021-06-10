@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 describe("Users", () => {
-    it("should delete user", () => {
+    it("should update users", () => {
         cy.visit("http://localhost:4200/");
         cy.get('#email').type('kjosephsubash@gmail.com');
         cy.get('#password').type('admin');
@@ -9,8 +9,11 @@ describe("Users", () => {
         cy.wait(3000);//login
         cy.get(':nth-child(5) > .p-menuitem-link > .p-menuitem-text').click();
         cy.wait(2000);
-        cy.get('#p-tabpanel-1-label > .p-tabview-title').click();
-        cy.get('#delrol').type('cb.en.u4cse18155');
-        cy.get('#p-tabpanel-1 > .p-grid > .p-col-12 > .p-button').click();
+        cy.get('#p-tabpanel-2-label > .p-tabview-title').click();
+        cy.get('#updateName').type('mohit');
+        cy.get('#updatePass').type('admin');
+        cy.get('#updateRollNo').type('cb.en.u4cse18155');
+        cy.get('#updateBatch').type('2018-4-BTECH');
+        cy.get('#p-tabpanel-2 > .p-grid > .p-col-12 > .p-button').click();
     });
 });

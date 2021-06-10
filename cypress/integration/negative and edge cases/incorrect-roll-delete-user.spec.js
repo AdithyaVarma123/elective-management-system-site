@@ -10,7 +10,7 @@ describe("Users", () => {
         cy.get(':nth-child(5) > .p-menuitem-link > .p-menuitem-text').click();
         cy.wait(2000);
         cy.get('#p-tabpanel-1-label > .p-tabview-title').click();
-        cy.get('#delrol').type('cb.en.u4cse18155');
+        cy.get('#delrol').type('cb.en.u4cse12345');
         cy.get('#p-tabpanel-1 > .p-grid > .p-col-12 > .p-button').click();
     });
 });
