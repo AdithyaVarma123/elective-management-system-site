@@ -22,5 +22,6 @@ describe("Forms", () => {
         cy.get('.p-dialog-header-close-icon',{timeout:10000}).click();
         cy.get(':nth-child(1) > .p-col-2 > .p-grid > :nth-child(3) > .margin > .p-button-label',{timeout:10000}).click();
         cy.get('.p-dialog-header-close-icon',{timeout:10000}).click();
+
     });
 });
