@@ -5,7 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import createSpy = jasmine.createSpy;
+import { UserService } from '../services/user/user.service';
+
 
 describe('PageAdministrationComponent', () => {
     let component: PageAdministrationComponent;
@@ -19,7 +20,7 @@ describe('PageAdministrationComponent', () => {
                 RouterTestingModule,
                 ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
             ],
-            providers: [MessageService]
+            providers: [MessageService,UserService]
         }).compileComponents();
     }));
 
@@ -32,4 +33,26 @@ describe('PageAdministrationComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+  it('should add user', () => {
+    component.addUser();
+    const body = {
+      users: {
+        name: 'sreekar',
+        username:'sreekar-test',
+        rollNo: 'cb.en.u4cse18123',
+        role: 'student',
+        batch: '2018-4BTECH-CSE'
+      },
+      defaultRollNoAsEmail: true
+    };
+    const userService = TestBed.get(UserService);
+    expect(userService.addUser(body)).toBeTruthy();
+  });
+
+  it('delete user', () => {
+    component.deleteUser();
+    const userService = TestBed.get(UserService);
+    expect(userService.deleteUser('cb.en.u4cse18182')).toBeTruthy();
+  });
 });

@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 import { ServiceWorkerModule, SwPush, SwUpdate } from '@angular/service-worker';
+import { UserService } from '../services/user/user.service';
 
 describe('PageProfileComponent', () => {
     let component: PageProfileComponent;
@@ -31,4 +32,11 @@ describe('PageProfileComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+  it('notify', () => {
+    component.notifyButton();
+    const userService = TestBed.get(UserService);
+
+    expect(userService.getNotificationStatus).toBeTruthy();
+  });
 });

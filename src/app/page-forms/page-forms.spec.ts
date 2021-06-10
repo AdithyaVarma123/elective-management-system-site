@@ -26,4 +26,11 @@ describe('PageElectivesComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+    it('add Elective', () => {
+      component.addElective();
+      if (component.selectedElective){
+        expect(component.selectedElectives).toContain(component.selectedElective);
+      }
+    });
 });
