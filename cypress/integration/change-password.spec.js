@@ -12,7 +12,5 @@ describe("Password", () => {
         cy.get('#oldpass').type('admin');
         cy.get('#newpass').type('admin');
         cy.get('.ng-star-inserted > .p-button > .p-button-label').click();
-        cy.wait(1000);
-        cy.get('.p-dialog-header-close-icon').click();
     });
 });
