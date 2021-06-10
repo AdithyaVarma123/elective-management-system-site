@@ -6,12 +6,9 @@ describe("Electives", () => {
         cy.get('#password').type('admin');
         cy.get(':nth-child(3) > .ng-valid > .p-radiobutton > .p-radiobutton-box > .p-radiobutton-icon').click({force:true});
         cy.get('.float-right > .p-button-label').click();
-        cy.wait(3000);//login
-        cy.get(':nth-child(2) > .p-menuitem-link > .p-menuitem-text').click();
-        cy.wait(1000);
-        cy.get('#p-tabpanel-1-label > .p-tabview-title').click();
-        cy.wait(1000);
-        cy.get('#ename').type('test');
+        cy.get(':nth-child(2) > .p-menuitem-link > .p-menuitem-text',{timeout:10000}).click();
+        cy.get('#p-tabpanel-1-label > .p-tabview-title',{timeout:10000}).click();
+        cy.get('#ename',{timeout:10000}).type('test');
         cy.get('#courseCode').type('testa');
         cy.get('#desc').type('some test');
         cy.get('#version').type('1');
