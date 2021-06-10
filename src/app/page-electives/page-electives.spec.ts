@@ -27,10 +27,4 @@ describe('PageElectivesComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('add batch', () => {
-      component.addBatch(2018);
-      console.log(component.selectedElective.batches);
-     expect(component.selectedElective.batches).toContain(2018);
-    });
-
 });
